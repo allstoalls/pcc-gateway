@@ -9,8 +9,7 @@ the same adapter.
 """
 
 from pcc.extern import c_int64, c_ptr, extern, c_obj, c_rawptr
-from pcc.py_runtime.py.py_abi_constants import PYBYTESOBJECT_DATA_OFFSET
-from pcc.unsafe import load_i64, ptr_add, stack_alloc
+from pcc.unsafe import abi_constant, load_i64, ptr_add, stack_alloc
 
 from .dns import (
     DNS_IO_EOF,
@@ -162,7 +161,7 @@ class NativeDnsTransport:
         output_count = stack_alloc(8)
         outcome = _platform_socket_write_observe(
             handle,
-            ptr_add(data, PYBYTESOBJECT_DATA_OFFSET + offset),
+            ptr_add(data, abi_constant("object.bytes.data_offset") + offset),
             len(data) - offset,
             0,
             output_count,

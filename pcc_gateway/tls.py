@@ -39,11 +39,8 @@ import os
 from threading import Lock
 
 from pcc.extern import c_int64, c_ptr, extern, c_obj, c_rawptr
-from pcc.py_runtime.py.py_abi_constants import (
-    PYBYTEARRAYOBJECT_DATA_OFFSET,
-    PYBYTESOBJECT_DATA_OFFSET,
-)
 from pcc.unsafe import (
+    abi_constant,
     call_i64_i64_ptr,
     cstr,
     dynamic_library_close,
@@ -1186,7 +1183,7 @@ class PccNativeTlsProvider:
         store_ptr(
             request,
             _PCC_TLS_REQ_OUTPUT0,
-            ptr_add(output, PYBYTEARRAYOBJECT_DATA_OFFSET),
+            ptr_add(output, abi_constant("object.bytearray.data_offset")),
         )
         store_i64(request, _PCC_TLS_REQ_OUTPUT0_CAP, limit)
         status = self._invoke(PCC_TLS_OP_READ, request)
@@ -1200,7 +1197,7 @@ class PccNativeTlsProvider:
         store_ptr(
             request,
             _PCC_TLS_REQ_INPUT0,
-            ptr_add(data, PYBYTESOBJECT_DATA_OFFSET),
+            ptr_add(data, abi_constant("object.bytes.data_offset")),
         )
         store_i64(request, _PCC_TLS_REQ_INPUT0_LEN, length)
         status = self._invoke(PCC_TLS_OP_WRITE, request)

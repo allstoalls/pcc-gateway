@@ -48,22 +48,42 @@ PCC_PACKAGE_SITE=/path/to/pcc-gateway \
 can also be copied into pcc's default site
 (`~/.local/share/pcc/environments/<tag>/site-packages`).
 
-## Status: not compiling yet (was already red in the core)
+## Status
 
-The pcc1 path of the gateway was already failing inside the core at HEAD
-(same errors as `pcc.gateway`), so this is not an extraction gap. Fixed on
-2026-09-06 (gateway sources here + compiler fixes in the core working tree):
-may_park resolution (`virtual_thread.call` around duck-typed transport reads,
-typed `connection` helpers, a hoisted nested park), `stack_alloc` module
-constants, builtin-typed receivers, except-handler delegation slots, finally
-and handler dominance in may_park state machines, cross-module int globals.
+`local_http_app.py` **compiles, links and runs** as an ordinary external pcc
+package (verified 2026-09-06 with a host `pcc` built from the core working
+tree; no libpython, self backend, nothing linked from outside the compiler).
 
-Remaining compile error: a boxed negative literal passed into a sibling
-class `__init__` whose ABI slot is `i64` (`GatewayConnection(app, -1, ...)`
-→ `'%int.obj.neg' defined with type 'ptr' but expected 'i64'`). The fix
-belongs in the core's `class_gen.emit_instantiate` (unbox with
-`py_int_value_i64` when the caller module keeps ints as objects); see the
-core's `docs/knowledge/2026-09-06-session-handoff.md`.
+Getting there fixed nine compiler defects in the core, all of which were
+already latent inside it:
+
+- `stack_alloc(SIZE)` now folds a module-scope int constant and constant
+  arithmetic over such constants.
+- Builtin-typed receivers (`", ".join(...)`) are no longer treated as
+  open-world methods that might park.
+- The delegation-slot planner visits `except` handler bodies.
+- The `finally` exception root and a named handler's release re-derive their
+  frame pointer per block (may_park state machines split at every park).
+- Cross-module integer globals bridge the raw-`i64` and boxed representations.
+- A signed integer literal (`FLOOR = -7`) exports as a constant like `7` did;
+  previously a raw-int provider stored `i64` into a slot the importer read as
+  a tagged object pointer and `-7` arrived as `-4`.
+- A sibling module's ABI slot type wins over the caller's int policy, so a
+  boxed `-1` reaches an `i64` parameter correctly.
+- Values loaded from module-level globals are re-derived at pin/unpin and call
+  sites a park boundary made unreachable from their definition.
+- Module resolution is case-exact, so on macOS `from pkg import App` no longer
+  resolves the class `App` to `pkg/app.py` and compiles it twice.
+
+Remaining defect, pre-existing and shared with the core's asyncio/threading
+paths: a virtual thread spawned from a plain `def` never runs its body
+(`virtual_thread.result(...)` returns `None`), so the probe exits 0 without
+printing `PCC1_GATEWAY_HTTP1_LOCAL_OK`. Tracked as a core issue
+(`RT-P1-MAY-PARK-CALLER-SILENT-DEF-RED`).
+
+The package also no longer reaches into pcc internals: the byte payload
+offsets come from the public `pcc.unsafe.abi_constant` intrinsic instead of
+`pcc.py_runtime.py.py_abi_constants`.
 
 ## Tests
 
