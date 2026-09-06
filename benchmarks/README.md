@@ -65,6 +65,25 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
+The [handler-layer diagnostic](results/2026-09-07-handler-layers.json), produced
+by `benchmarks/layers.py`, isolates the larger remaining cost. Five rotated
+repeats at zero wait/C100 give **39,266.7 QPS** for TaskScope, **62,125.3** with
+the request's structured child joins/cleanup written directly, and **86,322.4**
+for asyncio. Native instructions/request fall from 339,683 to 213,667 when
+the scope wrappers are expanded. Five host-model tests check payload and
+failure cancellation/draining for these diagnostic variants.
+
+The JSON-only ablation reaches 141,280.9 QPS but removes child tasks/waits;
+it is a diagnostic floor, not an application result. The goal is to recover
+scope-wrapper overhead while keeping the public TaskScope API and full
+workload, not to replace the benchmark with an ablation.
+
+```bash
+uv run python benchmarks/layers.py \
+  --runtime-archive /path/to/libpy_runtime_pcc_py.a \
+  --output benchmarks/results/my-handler-layers.json
+```
+
 The [first-entry compiler A/B](results/2026-09-07-first-entry-idle-ab.json)
 completed after other CPU-heavy programs were stopped: 42 runs / 441,000
 requests, seven rotating repeats and the same fixed compiler/runtime in both
