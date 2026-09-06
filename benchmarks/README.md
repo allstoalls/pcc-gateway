@@ -23,7 +23,19 @@ Darwin process peak RSS and CPU totals, source hashes and compiler identities.
 Process memory and CPU include startup and warmups. Incomplete runs are marked
 as such and cannot supply performance conclusions.
 
-## Latest optimized three-way run (2026-09-07)
+## Current pcc/pcc1/asyncio result (2026-09-07)
+
+The [latest table](results/2026-09-07-factory-three-way.md) and
+[raw samples](results/2026-09-07-factory-three-way.json) use newly built pcc1
+`53978d6bf7db` and the same source/runtime for host pcc. At zero wait/C100,
+medians are **48,665.6 / 48,532.9 / 90,630.4 QPS**. All 90 runs / 241,650
+requests passed. The first-entry flag was enabled in both native arms;
+TaskScope's fork/close factory paths are included. Both compilers passed the
+application execution boundary; native pcc1 passed HTTP, dashboard and the
+failure/cancellation/rejected-fork canary. Shared-installation promotion and
+new-source Stage2/Stage3 fixed-point qualification remain pending.
+
+## Earlier optimized three-way run (2026-09-07)
 
 The [complete table](results/2026-09-07-optimized-three-way.md) and
 [raw report](results/2026-09-07-optimized-three-way.json) contain the latest
@@ -64,6 +76,16 @@ and archive hashes before/after measurement, and rejects existing output names.
 Application binaries and compilation logs go under `benchmarks/build/<output-stem>/`.
 
 ## Runtime optimization A/B (2026-09-07)
+
+The [continuation-factory A/B](results/2026-09-07-continuation-factory-ab.json)
+keeps the public TaskScope API and the complete handler workload. A fixed
+compiler/runtime compiles frozen control and candidate package trees. Across
+seven rotating repeats, zero-wait/C100 median QPS rises from **42,473.8 to
+47,228.3 (+11.2%)**, with process instructions per measured request down
+**10.9%**. Same-run asyncio is **91,354.7 QPS**. All 42 runs validate counts and
+latencies. The candidate's normal fork/close paths return completed
+continuations without full local-variable frames; waiting cleanup remains
+deferred. Native pcc1 application qualification subsequently passed; see the current three-way result above.
 
 The [handler-layer diagnostic](results/2026-09-07-handler-layers.json), produced
 by `benchmarks/layers.py`, isolates the larger remaining cost. Five rotated

@@ -67,6 +67,7 @@ class TaskScope:
         # layout is closed-world, so every slot must exist on construction.
         self.close_reason = ""
 
+    @virtual_thread.continuation_factory
     def fork(self, thread):
         """Adopt one already-spawned child and return its handle.
 
@@ -77,13 +78,9 @@ class TaskScope:
         if self.closed or self.joined:
             # spawn() ran before fork() could validate the scope. Retire the
             # rejected handle as well so this API cannot orphan a child.
-            self._retire_child(thread)
-        if self.closed:
-            raise TaskScopeError("scope " + self.name + " is closed")
-        if self.joined:
-            raise TaskScopeError("scope " + self.name + " already joined")
+            return virtual_thread.continuation(_reject_scope_fork, self, thread)
         self.children.append(thread)
-        return thread
+        return virtual_thread.completed(thread)
 
     def join(self) -> None:
         """Wait for every child, then re-raise the first failure.
@@ -132,13 +129,24 @@ class TaskScope:
         """Return one child's terminal outcome code."""
         return virtual_thread.outcome(thread)
 
-    def close(self, reason: str = "scope closed") -> None:
+    @virtual_thread.continuation_factory
+    def close(self, reason: str = "scope closed"):
         """Release scope ownership, cancelling and draining any stragglers.
 
         Safe to call from ``finally`` after a successful ``join()`` (where it
         is a no-op), after a failed one, or instead of one when the scope
         body raised before reaching the barrier.
         """
+        if self.closed:
+            return virtual_thread.completed(None)
+        if self.joined:
+            self.closed = True
+            self.close_reason = reason
+            return virtual_thread.completed(None)
+        return virtual_thread.continuation(_close_scope_children, self, reason)
+
+    def _close_unjoined(self, reason: str) -> None:
+        """The deferred cleanup path; keep cancellation behind its barrier."""
         if self.closed:
             return
         self.closed = True
@@ -162,6 +170,20 @@ class TaskScope:
             # A cancelled sibling raises on join by design. Cleanup must
             # preserve the scope's primary failure or lifetime error.
             pass
+
+
+def _reject_scope_fork(scope: "TaskScope", thread):
+    scope._retire_child(thread)
+    if scope.closed:
+        raise TaskScopeError("scope " + scope.name + " is closed")
+    if scope.joined:
+        raise TaskScopeError("scope " + scope.name + " already joined")
+    scope.children.append(thread)
+    return thread
+
+
+def _close_scope_children(scope: "TaskScope", reason: str):
+    scope._close_unjoined(reason)
 
 
 def run_until_complete(thread):

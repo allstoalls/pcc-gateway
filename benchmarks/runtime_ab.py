@@ -20,10 +20,13 @@ import sys
 from compare import ROOT, digest, percentile, process_metrics, save
 
 
-def source_identity(core):
+def source_identity(core, programs=()):
     paths = [ROOT / "benchmark_native.py", ROOT / "benchmark_asyncio.py",
              ROOT / "pcc_gateway/structured.py",
              *sorted((core / "pcc").rglob("*.py"))]
+    for program in programs:
+        paths.append(program)
+        paths.extend(sorted((program.parent / "pcc_gateway").rglob("*.py")))
     state = hashlib.sha256()
     for path in paths:
         state.update(str(path).encode())
@@ -38,6 +41,9 @@ def main():
     parser.add_argument("--pcc", default=shutil.which("pcc"))
     parser.add_argument("--compiler-source", type=Path,
                         help="immutable pcc source tree used by the host compiler")
+    parser.add_argument("--control-program", type=Path, default=ROOT / "benchmark_native.py",
+                        help="control workload; sibling pcc_gateway sources may be frozen with it")
+    parser.add_argument("--candidate-program", type=Path, default=ROOT / "benchmark_native.py")
     parser.add_argument("--control-env", action="append", default=[], metavar="KEY=VALUE")
     parser.add_argument("--candidate-env", action="append", default=[], metavar="KEY=VALUE")
     parser.add_argument("--concurrency", type=int, default=100)
@@ -72,6 +78,8 @@ def main():
     build = ROOT / "benchmarks/build" / args.output.stem
     archives = {"control": args.control_runtime.resolve(),
                 "candidate": args.candidate_runtime.resolve()}
+    programs = {"control": args.control_program.resolve(),
+                "candidate": args.candidate_program.resolve()}
     env = dict(os.environ)
     env.pop("LC_ALL", None)
     env.pop("PCC_PACKAGE_SITE", None)
@@ -86,22 +94,23 @@ def main():
               "compiler_sha256": digest(args.pcc), "compiler_source": str(compiler_source),
               "archives": {}, "arm_environment": arm_env,
               "summary_output": args.summary, "python_version": sys.version,
+              "programs": {key: str(path) for key, path in programs.items()},
               "runs": [], "summary": []}
     with _performance_lock():
         build.mkdir(parents=True, exist_ok=False)
-        report["source_identity"] = source_identity(compiler_source)
+        report["source_identity"] = source_identity(compiler_source, programs.values())
         save(args.output, report)
         binaries = {}
         for label, archive in archives.items():
             binary = build / label
             command = [args.pcc, "--backend", "self", "--python-libpython", "off",
-                       "--ir-scaffold", "on", str(ROOT / "benchmark_native.py"),
+                       "--ir-scaffold", "on", str(programs[label]),
                        "-o", str(binary)]
             compile_env = dict(env, **arm_env[label])
             compile_env["PCC_RUNTIME_ARCHIVE"] = str(archive)
             print("Compiling " + label, flush=True)
             with (build / (label + "-compile.log")).open("w") as stream:
-                ran = subprocess.run(command, env=compile_env, cwd=ROOT, stdout=stream,
+                ran = subprocess.run(command, env=compile_env, cwd=programs[label].parent, stdout=stream,
                                      stderr=subprocess.STDOUT, timeout=300)
             if ran.returncode:
                 raise RuntimeError(label + " compile failed; see " + str(build))
@@ -145,7 +154,10 @@ def main():
                             or row["concurrency"] != args.concurrency or row["delay_ms"] != delay
                             or row["rounds"] != rounds or not math.isfinite(row["elapsed_ms"])
                             or row["elapsed_ms"] <= 0 or row["elapsed_ms"] < rounds * max(0, delay - 2)):
-                        raise RuntimeError("incomplete or invalid " + label + " measurements")
+                        report["validation_failure"] = {"implementation": label,
+                            "command": command, "measurement": row, "stderr": ran.stderr}
+                        save(args.output, report)
+                        raise RuntimeError("incomplete or invalid " + label + " measurements; retained in report")
                     row.update(implementation=label, repetition=repeat, **process_metrics(ran.stderr))
                     report["runs"].append(row)
                     save(args.output, report)
@@ -164,7 +176,7 @@ def main():
                     if values:
                         summary[key + "_per_request_median"] = statistics.median(values)
                 report["summary"].append(summary)
-        if source_identity(compiler_source) != report["source_identity"]:
+        if source_identity(compiler_source, programs.values()) != report["source_identity"]:
             raise RuntimeError("compiler/workload sources changed during comparison")
         for label, archive in archives.items():
             if digest(archive) != report["archives"][label]["sha256"]:

@@ -42,39 +42,40 @@ uv run pytest -q
 uv run pytest -q -x -m integration tests/test_native_examples.py
 ```
 
-The default suite passes **285 tests**. Native integration tests run separately;
+The default suite passes **290 tests**. Native integration tests run separately;
 `PCC_TEST_PCC1=/path/to/pcc1` selects a candidate compiler.
 
 ## Performance (2026-09-07)
 
 Apple M2 Max, macOS 26.5.1, Python **3.15.0rc1**. Both native arms use the
-same optimized runtime (empty I/O poll and reference-store optimizations).
+same compiler source and runtime, including the scope factory optimization.
 Each request runs two child waits and validates the joined JSON result;
 one carrier/event loop, five repeats. Figures are median handler QPS,
 excluding HTTP sockets, compilation and startup.
 
 | Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | asyncio QPS |
 |---:|---:|---:|---:|---:|
-| 0 | 1 | 15,550.5 | 15,194.2 | 5,701.0 |
-| 0 | 10 | 21,301.6 | 18,749.3 | 20,800.4 |
-| 0 | 100 | 22,092.9 | 22,241.0 | 42,647.1 |
-| 100 | 1 | 10.0 | 10.0 | 9.9 |
-| 100 | 10 | 99.0 | 99.1 | 98.4 |
-| 100 | 100 | 940.7 | 944.0 | 953.0 |
+| 0 | 1 | 31,185.3 | 31,771.9 | 9,398.3 |
+| 0 | 10 | 46,043.5 | 46,597.5 | 51,590.1 |
+| 0 | 100 | 48,665.6 | 48,532.9 | 90,630.4 |
+| 100 | 1 | 9.9 | 9.9 | 9.8 |
+| 100 | 10 | 98.7 | 98.9 | 97.7 |
+| 100 | 100 | 931.2 | 930.9 | 938.4 |
 
-At zero wait / concurrency 100, pcc1 is still **1.92× slower than asyncio**.
+At zero wait / concurrency 100, pcc1 is still **1.87× slower than asyncio**.
 All **90 runs / 241,650 requests** passed output and sample-count checks.
 System load varied during the run; use the recorded ranges when comparing results.
 
 Reproduce with the checked-in scripts:
 
 ```bash
-uv run python benchmarks/compare.py --pcc1 /path/to/qualified/pcc1 \
+PCC_GENERATOR_FIRST_ENTRY_INIT=1 uv run python benchmarks/compare.py \
+  --pcc1 /path/to/qualified/pcc1 \
   --output benchmarks/results/my-comparison.json
 ```
 
-See the [full results](benchmarks/results/2026-09-07-optimized-three-way.md),
-[raw samples](benchmarks/results/2026-09-07-optimized-three-way.json) and
+See the [full results](benchmarks/results/2026-09-07-factory-three-way.md),
+[raw samples](benchmarks/results/2026-09-07-factory-three-way.json) and
 [benchmark notes](benchmarks/README.md) for latency, CPU/RSS, compiler/runtime
 selection, profiling and earlier experiments. Optimization is tracked in
 [pcc #188](https://github.com/allstoalls/pcc/issues/188).
