@@ -7,11 +7,13 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import pcc
 import pcc_gateway.server as gateway_server_module
 import pcc.virtual_thread as virtual_thread
-import pcc_gateway.web.models as web_models
+import pcc_gateway.models as gateway_models
 
 from pcc_gateway.config import BufferLimits, Http1Limits, ListenerConfig
+from pcc_gateway.control import GatewayControlHostModel, GatewayProcessControl
 from pcc_gateway.lifecycle import (
     AdmissionLimits,
     GatewayLifecycle,
@@ -63,10 +65,21 @@ from pcc_gateway.web import App, BodyStream, Request, Response, get, post, proxy
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 PCC1_PRODUCT_SOURCE = (
     REPO / "tests" / "fixtures" / "gateway" / "current_pcc1_gateway_app.py"
 )
+
+
+@pytest.fixture(autouse=True)
+def host_process_control(monkeypatch):
+    """Keep host server tests on the explicit signal-control model."""
+    monkeypatch.setattr(
+        gateway_server_module,
+        "GatewayProcessControl",
+        lambda: GatewayProcessControl(GatewayControlHostModel()),
+    )
 
 
 class RecordingHooks(GatewayHooks):
@@ -385,6 +398,7 @@ class ClosePathTlsChannel:
     """TLS owner double for finalization failure injection only."""
 
     def __init__(self, close_notify_results=()) -> None:
+        self.provider_name = "close-path-test"
         self.handshake_complete = False
         self.failed = False
         self.released = False
@@ -1489,8 +1503,8 @@ def test_proxy_parser_4xx_takes_pending_owner_without_appending_502(
     bodies = []
 
     class TrackingBody(BodyStream):
-        def __init__(self, max_bytes: int = 16777216) -> None:
-            super().__init__(max_bytes)
+        def __init__(self, *args, **kwargs) -> None:
+            super().__init__(*args, **kwargs)
             self.cancel_calls = 0
             self.close_calls = 0
             bodies.append(self)
@@ -1503,7 +1517,7 @@ def test_proxy_parser_4xx_takes_pending_owner_without_appending_502(
             self.close_calls += 1
             super().close()
 
-    monkeypatch.setattr(web_models, "BodyStream", TrackingBody)
+    monkeypatch.setattr(gateway_models, "BodyStream", TrackingBody)
     hooks = RecordingHooks()
     transport = ProxyFakeTransport()
     # This is observed while the early proxy waits for another chunk.  The
@@ -2771,7 +2785,7 @@ def test_unowned_tls_provider_configuration_fails_closed() -> None:
 
 
 def test_app_run_has_top_level_pcc1_gateway_closure_edge() -> None:
-    source = (REPO / "pcc" / "web" / "app.py").read_text(encoding="utf-8")
+    source = (REPO / "pcc_gateway" / "web" / "app.py").read_text(encoding="utf-8")
     assert "from pcc_gateway.server import GatewayServer" in source
     assert "        from pcc_gateway.server import GatewayServer" not in source
 
@@ -2782,7 +2796,7 @@ def test_native_spawn_entries_have_compiler_visible_may_park_chain() -> None:
     )
     from pcc.py_frontend.parser import parse
 
-    path = REPO / "pcc" / "gateway" / "server.py"
+    path = REPO / "pcc_gateway" / "server.py"
     module = parse(path.read_text(encoding="utf-8"), str(path))
     _function_ids, names = compute_vthread_may_park_functions(module)
     assert {
@@ -2807,7 +2821,7 @@ def test_current_pcc1_self_no_libpython_product_shaped_gateway_core(
     threaded_pcc_py_runtime_archive: Path,
 ) -> None:
     """Compile with current pcc1; this does not claim a live listener gate."""
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the gateway product gate")
 

@@ -80,16 +80,22 @@ class ConnectionClosed:
         self.reason = reason
 
 
-_TOKEN_EXTRA = b"!#$%&'*+-.^_`|~"
-
-
 def _is_token(data: bytes) -> bool:
     if len(data) == 0:
         return False
     for value in data:
         if 48 <= value <= 57 or 65 <= value <= 90 or 97 <= value <= 122:
             continue
-        if value in _TOKEN_EXTRA:
+        # RFC tchar punctuation: ! # $ % & ' * + - . ^ _ ` | ~.
+        if (
+            value == 33
+            or 35 <= value <= 39
+            or 42 <= value <= 43
+            or 45 <= value <= 46
+            or 94 <= value <= 96
+            or value == 124
+            or value == 126
+        ):
             continue
         return False
     return True
@@ -242,7 +248,24 @@ def _parse_chunk_size_line(line: bytes) -> int:
     return size
 
 
-def _parse_headers(lines, max_count: int):
+def _latin1_text(data: bytes) -> str:
+    characters: list[str] = []
+    for value in data:
+        characters.append(chr(value))
+    return "".join(characters)
+
+
+def _latin1_bytes(text: str) -> bytes:
+    output = bytearray(b"")
+    for character in text:
+        value = ord(character)
+        if value > 255:
+            raise Http1Error(500, "bad-header", "header value is outside Latin-1")
+        output.append(value)
+    return bytes(output)
+
+
+def _parse_headers(lines: list[bytes], max_count: int):
     headers = []
     names = {}
     for line in lines:
@@ -261,8 +284,8 @@ def _parse_headers(lines, max_count: int):
             raise Http1Error(400, "bad-header-value", "invalid header field value")
         if len(headers) >= max_count:
             raise Http1Error(431, "too-many-headers", "header count limit exceeded")
-        name = name_bytes.decode("ascii").lower()
-        value = value_bytes.decode("latin1").strip(" \t")
+        name = name_bytes.decode("utf-8").lower()
+        value = _latin1_text(value_bytes).strip(" \t")
         headers.append((name, value))
         if name in names:
             names[name].append(value)
@@ -301,15 +324,16 @@ class Http1ServerCodec:
         self.body_received = 0
 
     def _parse_head(self, block: bytes):
-        lines = block.split(b"\r\n")
+        lines: list[bytes] = block.split(b"\r\n")
         if not lines or len(lines[0]) == 0:
             raise Http1Error(400, "empty-request-line", "request line is empty")
-        request_line = lines[0]
+        request_line: bytes = lines[0]
         if len(request_line) > self.max_request_line:
             raise Http1Error(414, "request-line-too-long", "request line limit exceeded")
-        if b"\t" in request_line or request_line.count(b" ") != 2:
+        request_parts: list[bytes] = request_line.split(b" ")
+        if b"\t" in request_line or len(request_parts) != 3:
             raise Http1Error(400, "bad-request-line", "invalid request-line spacing")
-        method_bytes, target_bytes, version_bytes = request_line.split(b" ")
+        method_bytes, target_bytes, version_bytes = request_parts
         if not _is_token(method_bytes):
             raise Http1Error(400, "bad-method", "invalid HTTP method")
         if len(target_bytes) == 0:
@@ -365,7 +389,7 @@ class Http1ServerCodec:
         if "connection" in names:
             for value in names["connection"]:
                 connection_tokens.extend(_split_commas(value))
-        version = version_bytes.decode("ascii")
+        version = version_bytes.decode("utf-8")
         keep_alive = version == "HTTP/1.1"
         if "close" in connection_tokens:
             keep_alive = False
@@ -382,13 +406,13 @@ class Http1ServerCodec:
             expect_continue = True
 
         event = RequestHead(
-            method_bytes.decode("ascii"),
-            target_bytes.decode("latin1"),
+            method_bytes.decode("utf-8"),
+            _latin1_text(target_bytes),
             version,
             headers,
             keep_alive,
             expect_continue,
-            content_length if content_length >= 0 else 0,
+            content_length if chunked or content_length >= 0 else 0,
             chunked,
         )
         if chunked:
@@ -570,8 +594,8 @@ _REASONS = {
 
 def _validate_output_header(name: str, value: str) -> None:
     try:
-        name_bytes = name.encode("ascii")
-        value_bytes = value.encode("latin1")
+        name_bytes = name.encode("utf-8")
+        value_bytes = _latin1_bytes(value)
     except UnicodeError as error:
         raise Http1Error(500, "bad-response-header", "response header encoding rejected") from error
     if not _is_token(name_bytes) or _contains_bad_value_byte(value_bytes):
@@ -582,7 +606,7 @@ class Http1ResponseEncoder:
     def head(
         self,
         status: int,
-        headers=None,
+        headers: list[tuple[str, str]] = None,
         content_length: int = -1,
         chunked: bool = False,
         keep_alive: bool = True,
@@ -592,7 +616,7 @@ class Http1ResponseEncoder:
         if content_length >= 0 and chunked:
             raise ValueError("response cannot be both fixed-length and chunked")
         reason = _REASONS.get(status, "")
-        output = bytearray(("HTTP/1.1 " + str(status) + " " + reason + "\r\n").encode("ascii"))
+        output = bytearray(("HTTP/1.1 " + str(status) + " " + reason + "\r\n").encode("utf-8"))
         for name, value in headers:
             _validate_output_header(name, value)
             lower = name.lower()
@@ -602,12 +626,12 @@ class Http1ResponseEncoder:
                     "response-framing-owned",
                     "response framing headers belong to the gateway encoder",
                 )
-            output.extend(name.encode("ascii"))
+            output.extend(name.encode("utf-8"))
             output.extend(b": ")
-            output.extend(value.encode("latin1"))
+            output.extend(_latin1_bytes(value))
             output.extend(b"\r\n")
         if content_length >= 0:
-            output.extend(("Content-Length: " + str(content_length) + "\r\n").encode("ascii"))
+            output.extend(("Content-Length: " + str(content_length) + "\r\n").encode("utf-8"))
         if chunked:
             output.extend(b"Transfer-Encoding: chunked\r\n")
         if not keep_alive:
@@ -618,9 +642,9 @@ class Http1ResponseEncoder:
     def chunk(self, data: bytes) -> bytes:
         if len(data) == 0:
             return b""
-        return (format(len(data), "x").encode("ascii") + b"\r\n" + data + b"\r\n")
+        return (format(len(data), "x").encode("utf-8") + b"\r\n" + data + b"\r\n")
 
-    def end_chunks(self, trailers=None) -> bytes:
+    def end_chunks(self, trailers: list[tuple[str, str]] = None) -> bytes:
         if trailers is None:
             trailers = []
         output = bytearray(b"0\r\n")
@@ -633,9 +657,9 @@ class Http1ResponseEncoder:
                 "host",
             ):
                 raise Http1Error(500, "bad-response-trailer", "framing field in response trailer")
-            output.extend(name.encode("ascii"))
+            output.extend(name.encode("utf-8"))
             output.extend(b": ")
-            output.extend(value.encode("latin1"))
+            output.extend(_latin1_bytes(value))
             output.extend(b"\r\n")
         output.extend(b"\r\n")
         return bytes(output)

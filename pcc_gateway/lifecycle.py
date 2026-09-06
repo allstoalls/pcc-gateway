@@ -27,7 +27,7 @@ class GatewayGeneration:
     ) -> None:
         if owner_lock is None:
             owner_lock = Lock()
-        self._lock = owner_lock
+        self._lock: Lock = owner_lock
         self.generation_id = generation_id
         self.config = config
         self._resources = []
@@ -253,7 +253,7 @@ class GatewayMetrics:
     )
 
     def __init__(self) -> None:
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self._values = {}
         for name in self.NAMES:
             self._values[name] = 0
@@ -325,7 +325,7 @@ class GatewayLifecycle:
         # admission check+counter update atomic without acquiring a second
         # potentially parking lock while the first is held.  Standalone metric
         # calls use the same lock through GatewayMetrics.add/get/snapshot.
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.metrics = GatewayMetrics()
         self.metrics._lock = self._lock
         self._state = STATE_NEW

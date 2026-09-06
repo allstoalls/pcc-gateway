@@ -24,7 +24,10 @@ from pcc_gateway.buffer import (
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
 def test_view_retains_segment_until_last_release() -> None:
@@ -102,7 +105,7 @@ def test_close_releases_all_queued_views_once() -> None:
 def test_current_pcc1_self_no_libpython_slow_peer_backpressure_gc_matrix(
     tmp_path: Path, pcc_py_runtime_archive: Path
 ) -> None:
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the gateway buffer gate")
     source = tmp_path / "buffer_app.py"

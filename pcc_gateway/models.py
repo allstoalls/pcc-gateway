@@ -8,6 +8,7 @@ the framework above it.
 
 import json
 import threading
+from threading import Event, Lock
 import pcc.virtual_thread as virtual_thread
 
 from pcc_gateway.buffer import BufferView
@@ -19,7 +20,7 @@ class Cancellation:
         self.deadline_ms = deadline_ms
         self.cancelled = False
         self.reason = ""
-        self._lock = threading.Lock()
+        self._lock: Lock = threading.Lock()
 
     def cancel(self, reason: str = "cancelled") -> None:
         self._lock.acquire()
@@ -95,9 +96,9 @@ class BodyStream:
         self.ended = False
         self.cancelled = False
         self.closed = False
-        self._lock = threading.Lock()
-        self._data_ready = threading.Event()
-        self._space_ready = threading.Event()
+        self._lock: Lock = threading.Lock()
+        self._data_ready: Event = threading.Event()
+        self._space_ready: Event = threading.Event()
         self._space_ready.set()
 
     def feed(self, data) -> bool:

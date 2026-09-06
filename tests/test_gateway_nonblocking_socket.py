@@ -20,8 +20,11 @@ from pcc.py_frontend import pipeline
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
-SOURCE = REPO / "pcc" / "py_runtime" / "py" / "freestanding_platform_socket.py"
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
+SOURCE = PCC_CORE / "pcc" / "py_runtime" / "py" / "freestanding_platform_socket.py"
 
 
 VIRTUAL_THREAD_TCP_ECHO_SOURCE = textwrap.dedent(
@@ -510,7 +513,7 @@ def test_current_pcc1_self_no_libpython_virtual_thread_tcp_echo(
     pcc_py_runtime_archive: Path,
 ) -> None:
     """Compile a real loopback echo with current pcc1/self and run GC0..4."""
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("a source-current pcc1 is required for the TCP echo gate")
 

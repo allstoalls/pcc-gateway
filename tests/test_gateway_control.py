@@ -30,7 +30,10 @@ from pcc.py_frontend.pipeline_freestanding import (
 )
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
 def test_native_wrapper_names_fixed_no_libpython_control_symbols() -> None:
@@ -41,7 +44,7 @@ def test_native_wrapper_names_fixed_no_libpython_control_symbols() -> None:
     assert native.production_ready
     assert "no-libpython" in native.link_boundary
 
-    source = (REPO / "pcc" / "gateway" / "control.py").read_text(
+    source = (REPO / "pcc_gateway" / "control.py").read_text(
         encoding="utf-8"
     )
     assert 'extern("pcc_gateway_control_v1_install"' in source
@@ -55,7 +58,7 @@ def test_native_wrapper_names_fixed_no_libpython_control_symbols() -> None:
 
 def test_freestanding_control_has_no_executable_constant_assignments() -> None:
     source_path = (
-        REPO / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
+        PCC_CORE / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
     )
     tree = ast.parse(source_path.read_text(encoding="utf-8"), filename=str(source_path))
     assignments = [
@@ -92,7 +95,7 @@ def test_freestanding_control_has_no_executable_constant_assignments() -> None:
 
 def test_freestanding_restore_failures_keep_owner_and_pending_flags() -> None:
     source = (
-        REPO / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
+        PCC_CORE / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
     ).read_text(encoding="utf-8")
 
     assert 'define_global_i32("pcc_gateway_control_action_mask", 0)' in source
@@ -127,7 +130,7 @@ def test_freestanding_restore_failures_keep_owner_and_pending_flags() -> None:
 
 def test_partial_install_rollback_is_retryable_and_never_overwrites_saved_actions() -> None:
     source = (
-        REPO / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
+        PCC_CORE / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
     ).read_text(encoding="utf-8")
     install_start = source.index("def pcc_gateway_control_v1_install")
     poll_start = source.index("def pcc_gateway_control_v1_poll")
@@ -159,7 +162,7 @@ def test_partial_install_rollback_is_retryable_and_never_overwrites_saved_action
 
 def test_signal_mask_boundary_is_explicit_and_does_not_overclaim_thread_safety() -> None:
     source = (
-        REPO / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
+        PCC_CORE / "pcc" / "py_runtime" / "py" / "freestanding_gateway_control.py"
     ).read_text(encoding="utf-8")
 
     assert "does not currently admit ``sigprocmask``" in source

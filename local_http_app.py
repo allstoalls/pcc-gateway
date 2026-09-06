@@ -6,6 +6,7 @@ proxy or epoll transport coverage.
 """
 
 from pcc_gateway.lifecycle import GatewayLifecycle
+from pcc_gateway.structured import run_until_complete
 from pcc_gateway.server import GatewayConfig, GatewayConnection
 import pcc.virtual_thread as virtual_thread
 from pcc_gateway.web import App, BodyStream, Request, Response, get, post
@@ -84,8 +85,10 @@ def gateway_probe() -> int:
 
 def main() -> int:
     thread = virtual_thread.spawn(gateway_probe)
-    virtual_thread.run(1, 128)
-    return virtual_thread.result(thread)
+    result = run_until_complete(thread)
+    if result != 0:
+        raise RuntimeError("local HTTP probe failed: " + str(result))
+    return result
 
 
 main()

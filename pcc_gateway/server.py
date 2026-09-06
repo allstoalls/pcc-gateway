@@ -17,6 +17,7 @@ from pcc.extern import c_int64, c_ptr, extern, c_obj, c_rawptr
 from pcc.unsafe import abi_constant, load_i64, null, ptr_add, stack_alloc
 import pcc.virtual_thread as virtual_thread
 import threading
+from threading import Lock
 
 from .buffer import (
     BACKPRESSURE_HIGH,
@@ -523,7 +524,7 @@ class GatewayConnection:
                 if first_error is None:
                     first_error = error
             try:
-                request.body.close()
+                virtual_thread.call(request.body.close)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -605,7 +606,7 @@ class GatewayConnection:
                     first_error = error
         if self.transport is not None and self.fd >= 0:
             try:
-                self.transport.shutdown(self.fd)
+                virtual_thread.call(self.transport.shutdown, self.fd)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -636,7 +637,7 @@ class GatewayConnection:
             if first_error is None:
                 first_error = error
         try:
-            request.body.close()
+            virtual_thread.call(request.body.close)
         except Exception as error:
             if first_error is None:
                 first_error = error
@@ -665,7 +666,7 @@ class GatewayConnection:
         except Exception as error:
             first_error = error
         try:
-            request.body.close()
+            virtual_thread.call(request.body.close)
         except Exception as error:
             if first_error is None:
                 first_error = error
@@ -732,7 +733,7 @@ class GatewayConnection:
         except Exception as error:
             primary_error = error
         try:
-            request.body.close()
+            virtual_thread.call(request.body.close)
         except Exception as error:
             if primary_error is None:
                 primary_error = error
@@ -959,7 +960,7 @@ class GatewayConnection:
                 except Exception as error:
                     cleanup_error = error
                 try:
-                    request.body.close()
+                    virtual_thread.call(request.body.close)
                 except Exception as error:
                     if cleanup_error is None:
                         cleanup_error = error
@@ -1059,7 +1060,7 @@ class GatewayConnection:
             ):
                 self.lifecycle.release_request()
             if self.pending_proxy is None and self.pending_stream_request is None:
-                request.body.close()
+                virtual_thread.call(request.body.close)
 
         if self.pending_proxy is not None or self.pending_stream_request is not None:
             return
@@ -1332,7 +1333,7 @@ class GatewayConnection:
             except Exception as error:
                 first_error = error
             try:
-                request.body.close()
+                virtual_thread.call(request.body.close)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -1377,7 +1378,7 @@ class GatewayConnection:
             if first_error is None:
                 first_error = error
         try:
-            request.body.close()
+            virtual_thread.call(request.body.close)
         except Exception as error:
             if first_error is None:
                 first_error = error
@@ -1570,7 +1571,7 @@ class GatewayConnection:
                 if first_error is None:
                     first_error = error
         try:
-            output.close()
+            virtual_thread.call(output.close)
         except Exception as error:
             if first_error is None:
                 first_error = error
@@ -1588,18 +1589,18 @@ class GatewayConnection:
                     if first_error is None:
                         first_error = error
             try:
-                tls_channel.close()
+                virtual_thread.call(tls_channel.close)
             except Exception as error:
                 if first_error is None:
                     first_error = error
         if transport is not None and fd >= 0:
             try:
-                transport.shutdown(fd)
+                virtual_thread.call(transport.shutdown, fd)
             except Exception as error:
                 if first_error is None:
                     first_error = error
             try:
-                transport.close(fd)
+                virtual_thread.call(transport.close, fd)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -2038,7 +2039,7 @@ def _proxy_exchange_attempt(connection: GatewayConnection, plan, pool, attempt: 
                     outcome = connection.transport.connect_observe(handle)
                 if not failure and outcome == PCC_SOCKET_CONNECTED:
                     break
-                connection.transport.close(handle)
+                virtual_thread.call(connection.transport.close, handle)
                 handle = -1
                 if failure:
                     break
@@ -2300,7 +2301,12 @@ def _run_gateway_proxy(connection: GatewayConnection) -> None:
                 )
             else:
                 connection.close_after_flush = True
-                response = Response(status if status else 502, b"")
+                # Keep each status value on its own branch while the body is
+                # allocated; the native GC verifier then has one root owner.
+                if status:
+                    response = Response(status, b"")
+                else:
+                    response = Response(502, b"")
         else:
             response = Response(status, b"")
 
@@ -2832,8 +2838,8 @@ class GatewayServer:
         # Keep the task handle independently until outcome proves that no
         # queued continuation can survive a carrier-pool stop/restart.
         self.connection_owners = []
-        self.connections_lock = threading.Lock()
-        self.generation_lock = threading.Lock()
+        self.connections_lock: Lock = threading.Lock()
+        self.generation_lock: Lock = threading.Lock()
         self.pool_started = False
         self.app_started = False
         self.drain_started_ms = -1
@@ -2862,7 +2868,7 @@ class GatewayServer:
             if self.listener_fd < 0:
                 raise GatewayTransportError("gateway listen failed")
             self.lifecycle.started()
-            started = self.scheduler.start(self.carrier_count)
+            started = virtual_thread.call(self.scheduler.start, self.carrier_count)
             if started <= 0:
                 raise GatewayError("virtual-thread carrier pool did not start")
             self.pool_started = True
@@ -2902,7 +2908,7 @@ class GatewayServer:
         if outcome != PCC_SOCKET_PROGRESS or fd < 0:
             raise GatewayTransportError("socket accept observation failed")
         if not self.lifecycle.admit_connection():
-            self.transport.close(fd)
+            virtual_thread.call(self.transport.close, fd)
             return -1
         self.generation_lock.acquire()
         generation = None
@@ -2942,7 +2948,7 @@ class GatewayServer:
             # strand the generation, admission counter, or accepted fd.
             if tls_channel is not None:
                 try:
-                    tls_channel.close()
+                    virtual_thread.call(tls_channel.close)
                 except Exception:
                     pass
             if generation is not None:
@@ -2955,7 +2961,7 @@ class GatewayServer:
             except Exception:
                 pass
             try:
-                self.transport.close(fd)
+                virtual_thread.call(self.transport.close, fd)
             except Exception:
                 pass
             raise
@@ -3187,7 +3193,7 @@ class GatewayServer:
         if self.listener_fd >= 0:
             listener_fd = self.listener_fd
             self.listener_fd = -1
-            self.transport.close(listener_fd)
+            virtual_thread.call(self.transport.close, listener_fd)
 
     def _rollback_start(self):
         """Attempt every reverse-order startup cleanup, preserving primary error."""
@@ -3223,7 +3229,7 @@ class GatewayServer:
                 first_error = error
         if self.app_started:
             try:
-                self.app.shutdown()
+                virtual_thread.call(self.app.shutdown)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -3237,7 +3243,7 @@ class GatewayServer:
                     first_error = error
         if self.tls_manager is not None:
             try:
-                self.tls_manager.close()
+                virtual_thread.call(self.tls_manager.close)
             except Exception as error:
                 if first_error is None:
                     first_error = error
@@ -3259,7 +3265,9 @@ class GatewayServer:
         for connection in self._connection_snapshot():
             if not connection.closed:
                 try:
-                    connection._signal_owner_shutdown("gateway drain deadline")
+                    virtual_thread.call(
+                        connection._signal_owner_shutdown, "gateway drain deadline"
+                    )
                 except Exception:
                     pass
                 forced += 1
@@ -3497,14 +3505,14 @@ class GatewayServer:
                     first_error = error
         if self.app_started:
             try:
-                self.app.shutdown()
+                virtual_thread.call(self.app.shutdown)
             except Exception as error:
                 if first_error is None:
                     first_error = error
             self.app_started = False
         if self.tls_manager is not None:
             try:
-                self.tls_manager.close()
+                virtual_thread.call(self.tls_manager.close)
             except Exception as error:
                 if first_error is None:
                     first_error = error

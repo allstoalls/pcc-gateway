@@ -54,11 +54,14 @@ from pcc_gateway.tls import (
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 PCC1_TLS_ABI_SOURCE = (
     REPO / "tests" / "fixtures" / "gateway" / "current_pcc1_tls_provider_abi.py"
 )
-NATIVE_TLS_DIR = REPO / "pcc" / "gateway" / "native"
+NATIVE_TLS_DIR = REPO / "pcc_gateway" / "native"
 
 
 class ScriptedTestProvider:
@@ -239,9 +242,9 @@ def test_production_adapter_is_named_and_fails_closed_before_native_probe() -> N
 
 def test_native_provider_header_and_adapter_freeze_one_capability_checked_abi() -> None:
     header = (
-        REPO / "pcc" / "gateway" / "include" / "pcc_tls_provider_v1.h"
+        REPO / "pcc_gateway" / "include" / "pcc_tls_provider_v1.h"
     ).read_text(encoding="utf-8")
-    source = (REPO / "pcc" / "gateway" / "tls.py").read_text(
+    source = (REPO / "pcc_gateway" / "tls.py").read_text(
         encoding="utf-8"
     )
     assert "pcc_tls_provider_v1_call" in header
@@ -264,16 +267,16 @@ def test_native_provider_header_and_adapter_freeze_one_capability_checked_abi() 
 
 def test_provider_digest_reader_is_pcc_owned_streaming_and_total_bounded() -> None:
     pcc_runtime = (
-        REPO / "pcc" / "py_runtime" / "py" / "py_http_runtime.py"
+        PCC_CORE / "pcc" / "py_runtime" / "py" / "py_http_runtime.py"
     ).read_text(encoding="utf-8")
-    c_oracle = (REPO / "pcc" / "py_runtime" / "src" / "py_http.c").read_text(
+    c_oracle = (PCC_CORE / "pcc" / "py_runtime" / "src" / "py_http.c").read_text(
         encoding="utf-8"
     )
     native_os = (
-        REPO / "pcc" / "py_frontend" / "codegen" / "native_os.py"
+        PCC_CORE / "pcc" / "py_frontend" / "codegen" / "native_os.py"
     ).read_text(encoding="utf-8")
     runtime_abi = (
-        REPO / "pcc" / "py_frontend" / "codegen" / "runtime_abi.py"
+        PCC_CORE / "pcc" / "py_frontend" / "codegen" / "runtime_abi.py"
     ).read_text(encoding="utf-8")
 
     pcc_bounded = pcc_runtime[
@@ -305,9 +308,9 @@ def test_provider_digest_reader_is_pcc_owned_streaming_and_total_bounded() -> No
     assert "pcc_gc_load_ptr" in bounded_lowering
     assert "_release_rooted_pcc_lifetimes" in bounded_lowering
     assert "_emit_post_call_err_check" in bounded_lowering
-    assert 'self.runtime["pcc_gc_pin"]' in bounded_lowering
+    assert "self._gc_pin(result)" in bounded_lowering
     assert "pinned_release_on_error=((result, True),)" in bounded_lowering
-    assert 'self.runtime["pcc_gc_unpin"]' in bounded_lowering
+    assert "self._gc_unpin(result)" in bounded_lowering
     assert '"py_sha256_file_hex_bounded": (_PYOBJ, [_PYOBJ, _I64], False)' in (
         runtime_abi
     )
@@ -315,14 +318,14 @@ def test_provider_digest_reader_is_pcc_owned_streaming_and_total_bounded() -> No
 
 def test_provider_digest_native_result_has_exact_owned_classification() -> None:
     native_modules = (
-        REPO / "pcc" / "py_frontend" / "codegen" / "native_modules.py"
+        PCC_CORE / "pcc" / "py_frontend" / "codegen" / "native_modules.py"
     ).read_text(encoding="utf-8")
     native_classifier = native_modules[
         native_modules.index("    def _native_builtin_value_kind_for_expr(") :
         native_modules.index("    def _emit_native_builtin_value_call(")
     ]
     ownership = (
-        REPO / "pcc" / "py_frontend" / "codegen" / "ownership_lowering.py"
+        PCC_CORE / "pcc" / "py_frontend" / "codegen" / "ownership_lowering.py"
     ).read_text(encoding="utf-8")
     object_classifier = ownership[
         ownership.index("    def _expr_returns_owned_object(") :
@@ -1037,7 +1040,7 @@ def test_current_pcc1_self_no_libpython_tls_provider_abi_fixture(
 ) -> None:
     """Compile/run the ABI state model; this is explicitly not an HTTPS gate."""
 
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the TLS provider ABI gate")
     executable = tmp_path / "current_pcc1_tls_provider_abi"
@@ -1080,7 +1083,7 @@ def test_current_pcc1_self_no_libpython_tls_provider_abi_fixture(
 def test_live_https_canary_is_owned_by_the_product_harness() -> None:
     """The former reserved skip is now a separately gated real-wire test."""
 
-    harness = REPO / "tests" / "python" / "test_gateway_product_canary.py"
+    harness = REPO / "tests" / "test_gateway_product_canary.py"
     source = harness.read_text(encoding="utf-8")
     assert "PCC_RUN_GATEWAY_PRODUCT_CANARY" in source
     assert '"--backend",\n        "self"' in source

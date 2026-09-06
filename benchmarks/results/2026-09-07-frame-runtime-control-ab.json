@@ -1,0 +1,55 @@
+{
+  "archives": {
+    "candidate": {
+      "artifact_sha256": "62e8be659518c26679089528a86fd0f8c657653d8073f9daaf59cc533e910ccc",
+      "command": [
+        "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-frame-runtime-control-ab/candidate"
+      ],
+      "path": "/Users/jiamo/.cache/pcc/test-artifacts/runtime-builds/5d343587556c25411e9d2e30-pcc-py/libpy_runtime_pcc_py.a",
+      "sha256": "ff4334647b59fc57cb07a62b5f40517a39187f8bb61fdd8e2e3a626ebcc7d99c"
+    },
+    "control": {
+      "artifact_sha256": "0c7694449eb0a3881a50f8fd3946692e982b1231e9b6eb1a2aa036c6667e872c",
+      "command": [
+        "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-frame-runtime-control-ab/control"
+      ],
+      "path": "/Users/jiamo/.cache/pcc/test-artifacts/runtime-builds/bd4c8945090189cfeb12b708-pcc-py/libpy_runtime_pcc_py.a",
+      "sha256": "514ed8bf2d4b731e5be980c85f31fdd4a621605974e6629270ba77750102f829"
+    }
+  },
+  "arm_environment": {
+    "candidate": {
+      "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "1"
+    },
+    "control": {
+      "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "1"
+    }
+  },
+  "compiler": "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+  "compiler_sha256": "2f313faf53c6fc468679d7761c2608cf46e95cad4cad096da6fbf5dae21eb549",
+  "complete": false,
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "runs": [],
+  "schema": "pcc-gateway.runtime-ab.v1",
+  "source_identity": "caed895fb2306bb874e4bb0c88f57461234459535a59a3e451e97b454a9a0227",
+  "started_utc": "2026-09-06T17:51:10.653024+00:00",
+  "summary": []
+}

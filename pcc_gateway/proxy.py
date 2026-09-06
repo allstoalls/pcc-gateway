@@ -86,11 +86,11 @@ class UpstreamEndpoint:
         self.weight = weight
         self.active = 0
         self.failures = 0
-        self._state_lock = Lock()
+        self._state_lock: Lock = Lock()
         self.address_cursor = 0
         self.last_address_set = ()
         self.dns_policy = dns_policy or DnsAddressPolicy()
-        self._address_lock = Lock()
+        self._address_lock: Lock = Lock()
 
     def accept_resolved(self, values, qtype: int):
         """Apply endpoint-lived rebinding history across connections."""
@@ -201,7 +201,7 @@ class UpstreamGroup:
         # larger max_idle (including the default when callers deliberately
         # choose a small max_active); it is redundant, not unsafe.
         self.max_idle = max_idle
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.active = 0
         self.cursor = 0
 

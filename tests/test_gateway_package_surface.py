@@ -27,9 +27,12 @@ from pcc.py_frontend import pipeline_dependency_closure as closure
 from pcc_gateway.web.app import App, middleware_next
 
 
-REPO = Path(__file__).resolve().parents[2]
-GATEWAY = REPO / "pcc" / "gateway"
-WEB = REPO / "pcc" / "web"
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
+GATEWAY = REPO / "pcc_gateway"
+WEB = REPO / "pcc_gateway" / "web"
 NATIVE_TLS = GATEWAY / "native"
 
 
@@ -57,7 +60,7 @@ def test_public_facades_are_explicit_unique_and_identity_preserving() -> None:
 def test_wheel_lists_reviewed_tls_provider_inputs_without_build_wildcard() -> None:
     project = tomllib.loads((REPO / "pyproject.toml").read_text(encoding="utf-8"))
     wheel = project["tool"]["hatch"]["build"]["targets"]["wheel"]
-    assert "pcc" in wheel["packages"]
+    assert wheel["packages"] == ["pcc_gateway"]
     included = set(wheel["include"])
     assert {
         "pcc_gateway/include/pcc_tls_provider_v1.h",
@@ -146,7 +149,7 @@ def test_gateway_source_imports_only_compiler_owned_or_native_stdlib_seams() -> 
                 assert root not in forbidden, (source_path.name, module)
                 if root == "pcc":
                     pcc_dependencies.add(module)
-                elif root != "__future__":
+                elif root not in ("__future__", "pcc_gateway"):
                     stdlib_dependencies.add(module)
 
     assert pcc_dependencies <= {
@@ -163,7 +166,7 @@ def test_gateway_source_imports_only_compiler_owned_or_native_stdlib_seams() -> 
     }
     assert stdlib_dependencies <= {"json", "os", "threading"}
     for module_name in stdlib_dependencies:
-        assert (REPO / "pcc" / "py_stdlib" / (module_name + ".py")).is_file()
+        assert (PCC_CORE / "pcc" / "py_stdlib" / (module_name + ".py")).is_file()
 
 
 def test_external_web_application_closes_over_every_gateway_source_module(

@@ -723,7 +723,7 @@ class UpstreamConnectionPool:
     ) -> None:
         if idle_timeout_ms <= 0:
             raise ValueError("upstream idle timeout must be positive")
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.group = group
         self.idle_timeout_ms = idle_timeout_ms
         self.idle = []

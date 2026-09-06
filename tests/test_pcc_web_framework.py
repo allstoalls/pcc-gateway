@@ -1,4 +1,4 @@
-"""Typed declarative pcc.web behavior and current-pcc1 product-shaped gate."""
+"""Typed declarative pcc_gateway.web behavior and current-pcc1 product-shaped gate."""
 
 from __future__ import annotations
 
@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pytest
 
-from pcc.gateway.buffer import BufferSegment
-from pcc.web.models import BodyStream
+from pcc_gateway.buffer import BufferSegment
+from pcc_gateway.web.models import BodyStream
 
-from pcc.gateway.proxy import UpstreamEndpoint, UpstreamGroup
-from pcc.web import (
+from pcc_gateway.proxy import UpstreamEndpoint, UpstreamGroup
+from pcc_gateway.web import (
     App,
     MiddlewareNext,
     Request,
@@ -22,11 +22,14 @@ from pcc.web import (
     post,
     proxy,
 )
-from pcc.web.app import ProxyDispatch
+from pcc_gateway.web.app import ProxyDispatch
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
 def test_body_stream_retains_views_across_park_boundary_and_releases_once() -> None:
@@ -195,13 +198,13 @@ def test_current_pcc1_self_no_libpython_declarative_app(
     tmp_path: Path, pcc_py_runtime_archive: Path
 ) -> None:
     """The emitted pcc1, not host pcc, compiles and runs the framework app."""
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
-        pytest.fail("current pcc1 is required for the pcc.web product gate")
+        pytest.fail("current pcc1 is required for the pcc_gateway.web product gate")
     source = tmp_path / "web_app.py"
     source.write_text(
         '''import pcc.virtual_thread as virtual_thread
-from pcc.web import App, Request, Response, get, middleware_next
+from pcc_gateway.web import App, Request, Response, get, middleware_next
 
 def health(request):
     return Response.text("healthy")

@@ -3,3 +3,10 @@ __pycache__/
 .DS_Store
 pcc_gateway/native/build/
 local_http_app
+.venv/
+.pytest_cache/
+dashboard_app
+benchmark_native
+benchmarks/build/
+build/
+dist/

@@ -1,0 +1,39 @@
+[project]
+name = "pcc-gateway"
+version = "0.1.0"
+description = "A virtual-thread HTTP gateway and declarative web framework for pcc"
+readme = "README.md"
+requires-python = ">=3.15.0rc1,<3.16"
+dependencies = ["python-cc==0.1.7"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pcc_gateway"]
+include = [
+  "pcc_gateway/**/*.py",
+  "pcc_gateway/include/pcc_tls_provider_v1.h",
+  "pcc_gateway/native/Makefile",
+  "pcc_gateway/native/README.md",
+  "pcc_gateway/native/openssl_provider.c",
+  "pcc_gateway/native/provider-manifest.json",
+]
+exclude = ["pcc_gateway/native/build/**"]
+
+[dependency-groups]
+dev = ["pytest==9.0.3"]
+
+[tool.uv.sources]
+python-cc = { path = "../pcc", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-x -m 'not integration'"
+pythonpath = ["../pcc/tests/python"]
+markers = [
+  "integration: native compiler or live transport integration test",
+  "pcc_gate: native compiler capability gate",
+  "xdist_group: related integration cases that share a native runtime",
+]

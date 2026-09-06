@@ -28,7 +28,10 @@ from pcc_gateway.proxy_http1 import (
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 PCC1_PROXY_SOURCE = (
     REPO / "tests" / "fixtures" / "gateway" / "current_pcc1_proxy_exchange.py"
 )
@@ -685,7 +688,7 @@ def test_pool_open_callback_failure_releases_fresh_group_lease() -> None:
 
 
 def test_pool_source_uses_short_native_lock_sections_around_group_state() -> None:
-    source = (REPO / "pcc" / "gateway" / "proxy_http1.py").read_text(
+    source = (REPO / "pcc_gateway" / "proxy_http1.py").read_text(
         encoding="utf-8"
     )
 
@@ -707,7 +710,7 @@ def test_current_pcc1_self_no_libpython_streaming_reverse_proxy(
     threaded_pcc_py_runtime_archive: Path,
 ) -> None:
     """Compile/run proxy core; live outbound socket ownership remains open."""
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the proxy product gate")
     executable = tmp_path / "current_pcc1_proxy_exchange"

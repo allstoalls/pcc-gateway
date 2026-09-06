@@ -48,11 +48,14 @@ from process_timeout import run_process_group_timeout
 from tests.runtime_build_cache import cached_threaded_pcc_python_runtime
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 PRODUCT_TEMPLATE = (
     REPO / "tests" / "fixtures" / "gateway" / "current_pcc1_gateway_product.py"
 )
-NATIVE_TLS_DIR = REPO / "pcc" / "gateway" / "native"
+NATIVE_TLS_DIR = REPO / "pcc_gateway" / "native"
 GATE_ENV = "PCC_RUN_GATEWAY_PRODUCT_CANARY"
 TLS_SERVER_NAME = "gateway.pcc.test"
 DNS_NAME = "backend.pcc.test"
@@ -66,7 +69,7 @@ _PLATFORM_REASON = None
 if sys.platform not in ("darwin", "linux"):
     _PLATFORM_REASON = "gateway product canary supports Darwin and Linux only"
 
-pytestmark = (
+pytestmark = [
     pytest.mark.integration,
     pytest.mark.pcc_gate(
         env=GATE_ENV,
@@ -74,7 +77,7 @@ pytestmark = (
         unavailable=_PLATFORM_REASON,
     ),
     pytest.mark.xdist_group(name="gateway_product_canary"),
-)
+]
 
 
 @dataclass(frozen=True)
@@ -1296,7 +1299,7 @@ def test_current_pcc1_native_https_gateway_product_canary(
 ) -> None:
     """Exercise one separately compiled/live current-pcc1 gateway process."""
 
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         _gate_fail("current pcc1 is required for the selected gateway product gate")
     pcc1 = pcc1.resolve()

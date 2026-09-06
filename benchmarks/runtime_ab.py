@@ -1,0 +1,178 @@
+"""Compare two runtime archives using one compiler and the same native workload.
+
+Run from the uv environment. This reuses the core performance lock and keeps
+compiler construction, program compilation, startup and warmups out of QPS.
+"""
+
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import math
+import os
+from pathlib import Path
+import platform
+import shutil
+import statistics
+import subprocess
+import sys
+
+from compare import ROOT, digest, percentile, process_metrics, save
+
+
+def source_identity(core):
+    paths = [ROOT / "benchmark_native.py", ROOT / "benchmark_asyncio.py",
+             ROOT / "pcc_gateway/structured.py",
+             *sorted((core / "pcc").rglob("*.py"))]
+    state = hashlib.sha256()
+    for path in paths:
+        state.update(str(path).encode())
+        state.update(bytes.fromhex(digest(path)))
+    return state.hexdigest()
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--control-runtime", type=Path, required=True)
+    parser.add_argument("--candidate-runtime", type=Path, required=True)
+    parser.add_argument("--pcc", default=shutil.which("pcc"))
+    parser.add_argument("--compiler-source", type=Path,
+                        help="immutable pcc source tree used by the host compiler")
+    parser.add_argument("--control-env", action="append", default=[], metavar="KEY=VALUE")
+    parser.add_argument("--candidate-env", action="append", default=[], metavar="KEY=VALUE")
+    parser.add_argument("--concurrency", type=int, default=100)
+    parser.add_argument("--delays", default="0,100")
+    parser.add_argument("--repeats", type=int, default=5)
+    parser.add_argument("--requests", type=int, default=5000,
+                        help="minimum zero-delay requests per run")
+    parser.add_argument("--summary", action="store_true",
+                        help="suppress final latency-array formatting; retain min/max checks")
+    parser.add_argument("--asyncio", action="store_true", help="include a same-run asyncio control")
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    arm_env = {}
+    for label, values in (("control", args.control_env), ("candidate", args.candidate_env)):
+        settings = {}
+        for value in values:
+            key, separator, content = value.partition("=")
+            if not key or not separator or key == "PCC_RUNTIME_ARCHIVE":
+                parser.error("arm environment entries must be KEY=VALUE; runtime paths use their dedicated arguments")
+            settings[key] = content
+        arm_env[label] = settings
+    delays = [int(value) for value in args.delays.split(",")]
+    if not args.pcc or args.repeats < 1 or args.concurrency < 1 or args.requests < 1 or min(delays) < 0:
+        parser.error("compiler and positive repeats/concurrency are required")
+    if args.output.exists():
+        parser.error("refusing to overwrite an existing comparison")
+    import pcc
+    core = Path(pcc.__file__).resolve().parents[1]
+    sys.path.insert(0, str(core / "scripts"))
+    from run_pcc_compile_ab import _performance_lock
+
+    build = ROOT / "benchmarks/build" / args.output.stem
+    archives = {"control": args.control_runtime.resolve(),
+                "candidate": args.candidate_runtime.resolve()}
+    env = dict(os.environ)
+    env.pop("LC_ALL", None)
+    env.pop("PCC_PACKAGE_SITE", None)
+    env["PCC_RUNTIME_CC"] = "/usr/bin/false"
+    compiler_source = args.compiler_source.resolve() if args.compiler_source else core
+    if args.compiler_source:
+        env.update(PYTHONPATH=str(compiler_source), PCC_SOURCE_ROOT=str(compiler_source),
+                   PCC_REPO_ROOT=str(compiler_source))
+    report = {"schema": "pcc-gateway.runtime-ab.v1", "complete": False,
+              "started_utc": datetime.now(timezone.utc).isoformat(),
+              "platform": platform.platform(), "compiler": str(Path(args.pcc).resolve()),
+              "compiler_sha256": digest(args.pcc), "compiler_source": str(compiler_source),
+              "archives": {}, "arm_environment": arm_env,
+              "summary_output": args.summary, "python_version": sys.version,
+              "runs": [], "summary": []}
+    with _performance_lock():
+        build.mkdir(parents=True, exist_ok=False)
+        report["source_identity"] = source_identity(compiler_source)
+        save(args.output, report)
+        binaries = {}
+        for label, archive in archives.items():
+            binary = build / label
+            command = [args.pcc, "--backend", "self", "--python-libpython", "off",
+                       "--ir-scaffold", "on", str(ROOT / "benchmark_native.py"),
+                       "-o", str(binary)]
+            compile_env = dict(env, **arm_env[label])
+            compile_env["PCC_RUNTIME_ARCHIVE"] = str(archive)
+            print("Compiling " + label, flush=True)
+            with (build / (label + "-compile.log")).open("w") as stream:
+                ran = subprocess.run(command, env=compile_env, cwd=ROOT, stdout=stream,
+                                     stderr=subprocess.STDOUT, timeout=300)
+            if ran.returncode:
+                raise RuntimeError(label + " compile failed; see " + str(build))
+            report["archives"][label] = {"path": str(archive), "sha256": digest(archive),
+                                          "artifact_sha256": digest(binary), "command": command}
+            binaries[label] = binary
+            save(args.output, report)
+        if args.asyncio:
+            binaries["asyncio"] = ROOT / "benchmark_asyncio.py"
+            arm_env["asyncio"] = {}
+        for delay in delays:
+            rounds = max(10, math.ceil(args.requests / args.concurrency)) if delay == 0 else 10
+            for repeat in range(args.repeats):
+                labels = list(binaries)
+                shift = repeat % len(labels)
+                order = labels[shift:] + labels[:shift]
+                for label in order:
+                    command = [str(binaries[label]), str(args.concurrency), str(delay), str(rounds)]
+                    if label == "asyncio":
+                        command.insert(0, sys.executable)
+                    if args.summary:
+                        command.append("--summary")
+                    if sys.platform == "darwin":
+                        command = ["/usr/bin/time", "-lp", *command]
+                    run_env = dict(env, **arm_env[label])
+                    ran = subprocess.run(command, env=run_env, cwd=ROOT, capture_output=True,
+                                         text=True, timeout=60)
+                    if ran.returncode:
+                        raise RuntimeError(label + ": " + ran.stdout + ran.stderr)
+                    row = json.loads(ran.stdout)
+                    expected = args.concurrency * rounds
+                    if args.summary:
+                        valid_samples = (math.isfinite(row["latency_min_ms"])
+                            and math.isfinite(row["latency_max_ms"])
+                            and row["latency_max_ms"] >= row["latency_min_ms"] >= max(0, delay - 2))
+                    else:
+                        valid_samples = (len(row["latencies_ms"]) == expected
+                            and all(math.isfinite(x) and x >= max(0, delay - 2) for x in row["latencies_ms"]))
+                    if (row["requests"] != expected or not valid_samples
+                            or row["warmup_requests"] != 2 * args.concurrency
+                            or row["concurrency"] != args.concurrency or row["delay_ms"] != delay
+                            or row["rounds"] != rounds or not math.isfinite(row["elapsed_ms"])
+                            or row["elapsed_ms"] <= 0 or row["elapsed_ms"] < rounds * max(0, delay - 2)):
+                        raise RuntimeError("incomplete or invalid " + label + " measurements")
+                    row.update(implementation=label, repetition=repeat, **process_metrics(ran.stderr))
+                    report["runs"].append(row)
+                    save(args.output, report)
+                    print(f"{label} delay={delay} repeat={repeat + 1}: "
+                          f"{expected * 1000 / row['elapsed_ms']:.1f} QPS", flush=True)
+            for label in binaries:
+                rows = [row for row in report["runs"] if row["implementation"] == label and row["delay_ms"] == delay]
+                rates = [row["requests"] * 1000 / row["elapsed_ms"] for row in rows]
+                summary = {"implementation": label, "delay_ms": delay,
+                    "qps_median": statistics.median(rates), "qps_min": min(rates), "qps_max": max(rates)}
+                if not args.summary:
+                    latencies = [value for row in rows for value in row["latencies_ms"]]
+                    summary.update(p50_ms=percentile(latencies, .5), p95_ms=percentile(latencies, .95))
+                for key in ("process_instructions", "process_cycles", "process_user_seconds", "process_sys_seconds"):
+                    values = [row[key] / row["requests"] for row in rows if key in row]
+                    if values:
+                        summary[key + "_per_request_median"] = statistics.median(values)
+                report["summary"].append(summary)
+        if source_identity(compiler_source) != report["source_identity"]:
+            raise RuntimeError("compiler/workload sources changed during comparison")
+        for label, archive in archives.items():
+            if digest(archive) != report["archives"][label]["sha256"]:
+                raise RuntimeError(label + " archive changed during comparison")
+        report["complete"] = True
+        save(args.output, report)
+    print(json.dumps(report["summary"], indent=2), flush=True)
+
+
+if __name__ == "__main__":
+    main()

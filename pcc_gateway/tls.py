@@ -469,7 +469,7 @@ class TlsProviderRegistry:
     ) -> None:
         if close_on_last_manager and not owns_providers:
             raise ValueError("manager-owned TLS registry must own its providers")
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self._owns_providers = bool(owns_providers)
         self._close_on_last_manager = bool(close_on_last_manager)
         self._manager_leases = 0
@@ -706,8 +706,8 @@ class PccNativeTlsProvider:
             or library_max_bytes > 0x7FFFFFFFFFFFFFFF
         ):
             raise TlsProviderError("native TLS provider byte limit is out of range")
-        self._state_lock = Lock()
-        self._activation_lock = Lock()
+        self._state_lock: Lock = Lock()
+        self._activation_lock: Lock = Lock()
         self.library_path = library_path
         self.expected_library_sha256 = expected_library_sha256
         self.verified_library_sha256 = ""
@@ -1299,7 +1299,7 @@ class TlsGeneration:
             raise ValueError("TLS generation id must be positive")
         if not isinstance(config, TlsConfig):
             raise TypeError("TLS generation config must be TlsConfig")
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.generation_id = generation_id
         self.provider = provider
         self.provider_name = provider.name
@@ -1479,8 +1479,8 @@ class TlsGenerationManager:
         config: TlsConfig,
         require_production: bool = True,
     ) -> None:
-        self._lock = Lock()
-        self._reload_lock = Lock()
+        self._lock: Lock = Lock()
+        self._reload_lock: Lock = Lock()
         self.registry = registry
         self.provider_name = provider_name
         self.provider = registry.acquire_manager(provider_name, require_production)
@@ -1619,7 +1619,7 @@ class TlsChannel:
     ) -> None:
         if fd < 0:
             raise ValueError("TLS channel requires a nonnegative socket fd")
-        self._close_lock = Lock()
+        self._close_lock: Lock = Lock()
         if generation_retained:
             self.generation = generation
         else:

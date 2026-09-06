@@ -537,7 +537,7 @@ def test_request_body_canonical_handler_methods_are_effect_visible() -> None:
     )
     from pcc.py_frontend.parser import parse
 
-    path = Path(gateway_server.__file__).parents[1] / "web" / "models.py"
+    path = Path(gateway_server.__file__).parent / "models.py"
     module = parse(path.read_text(encoding="utf-8"), str(path))
     _method_ids, method_keys = compute_vthread_may_park_methods(module, set())
     assert {

@@ -14,7 +14,10 @@ from pcc_gateway.lifecycle import (
 )
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
 def _running(config=None, limits=None):
@@ -287,7 +290,7 @@ def test_generation_resource_callbacks_can_reenter_lifecycle_without_deadlock() 
 
 
 def test_lifecycle_source_uses_native_locks_and_keeps_callbacks_outside() -> None:
-    source = (REPO / "pcc" / "gateway" / "lifecycle.py").read_text(
+    source = (REPO / "pcc_gateway" / "lifecycle.py").read_text(
         encoding="utf-8"
     )
 

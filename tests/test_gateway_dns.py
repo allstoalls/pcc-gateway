@@ -35,7 +35,10 @@ from pcc_gateway.dns_native import LazySystemResolver, NativeDnsTransport
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 PCC1_DNS_SOURCE = (
     REPO / "tests" / "fixtures" / "gateway" / "current_pcc1_async_dns.py"
 )
@@ -248,17 +251,17 @@ def test_system_resolver_config_is_bounded_numeric_and_policy_owned() -> None:
 
 
 def test_live_dns_adapter_source_uses_owned_connected_socket_abi_only() -> None:
-    source = (REPO / "pcc" / "gateway" / "dns_native.py").read_text(
+    source = (REPO / "pcc_gateway" / "dns_native.py").read_text(
         encoding="utf-8"
     )
     runtime = (
-        REPO
+        PCC_CORE
         / "pcc"
         / "py_runtime"
         / "py"
         / "freestanding_platform_socket.py"
     ).read_text(encoding="utf-8")
-    server = (REPO / "pcc" / "gateway" / "server.py").read_text(
+    server = (REPO / "pcc_gateway" / "server.py").read_text(
         encoding="utf-8"
     )
     assert '"pcc_platform_dns_connect_start"' in source
@@ -587,7 +590,7 @@ def test_current_pcc1_self_no_libpython_async_dns_proxy_path(
     pcc_py_runtime_archive: Path,
 ) -> None:
     """Compile/run the pcc-owned driver model below the live adapter gate."""
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the asynchronous DNS gate")
     executable = tmp_path / "current_pcc1_async_dns"

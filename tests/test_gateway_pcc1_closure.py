@@ -5,14 +5,17 @@ from pathlib import Path
 from pcc.py_frontend import pipeline_dependency_closure as closure
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
-def test_gateway_and_web_are_allowlisted_pcc_owned_components() -> None:
+def test_gateway_and_web_are_external_packages_without_core_allowlisting() -> None:
     gateway = closure._locate_pcc_owned_component_source("pcc_gateway")
     web = closure._locate_pcc_owned_component_source("pcc_gateway.web")
-    assert gateway == str(REPO / "pcc" / "gateway" / "__init__.py")
-    assert web == str(REPO / "pcc" / "web" / "__init__.py")
+    assert gateway is None
+    assert web is None
     assert closure._locate_pcc_owned_component_source("pcc.backend") is None
 
 

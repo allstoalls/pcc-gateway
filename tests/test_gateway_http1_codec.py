@@ -20,7 +20,10 @@ from pcc_gateway.http1 import (
 from pcc1_gate import find_current_pcc1
 
 
-REPO = Path(__file__).resolve().parents[2]
+import pcc
+
+REPO = Path(__file__).resolve().parents[1]
+PCC_CORE = Path(pcc.__file__).resolve().parents[1]
 
 
 def _track_body_chunks(monkeypatch):
@@ -68,6 +71,15 @@ def test_fixed_body_streams_without_waiting_for_whole_body() -> None:
     assert isinstance(events[1], RequestEnd)
 
 
+def test_latin1_header_octets_survive_request_and_response_encoding() -> None:
+    events = Http1ServerCodec().feed(
+        b"GET / HTTP/1.1\r\nHost: x\r\nX-Label: \xff\r\n\r\n"
+    )
+    assert ("x-label", "\xff") in events[0].headers
+    wire = Http1ResponseEncoder().head(200, [("x-label", "\xff")], 0)
+    assert b"x-label: \xff\r\n" in wire
+
+
 def test_chunked_body_and_trailers_are_incremental() -> None:
     codec = Http1ServerCodec()
     events = codec.feed(
@@ -75,6 +87,8 @@ def test_chunked_body_and_trailers_are_incremental() -> None:
         b"3\r\nabc\r\n2\r\nde\r\n0\r\nDigest: ok\r\n\r\n"
     )
     chunks = [event.data for event in events if isinstance(event, BodyChunk)]
+    assert events[0].chunked
+    assert events[0].content_length == -1
     assert chunks == [b"abc", b"de"]
     ending = [event for event in events if isinstance(event, RequestEnd)][0]
     assert ending.trailers == [("digest", "ok")]
@@ -323,7 +337,7 @@ def test_response_encoder_owns_framing_and_rejects_injection() -> None:
 def test_current_pcc1_self_no_libpython_http1_origin_and_security_corpus(
     tmp_path: Path, pcc_py_runtime_archive: Path
 ) -> None:
-    pcc1 = find_current_pcc1(REPO)
+    pcc1 = find_current_pcc1(PCC_CORE)
     if pcc1 is None:
         pytest.fail("current pcc1 is required for the HTTP/1 codec gate")
     source = tmp_path / "http1_codec_app.py"

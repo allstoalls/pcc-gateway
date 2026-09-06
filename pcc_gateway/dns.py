@@ -431,7 +431,7 @@ class DnsAddressPolicy:
         self.allow_multicast = allow_multicast
         self.allow_unspecified = allow_unspecified
         self.rebind_mode = rebind_mode
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self._bindings = {}
 
     def accept(self, name: str, values, qtype: int):
@@ -560,7 +560,7 @@ class DnsCache:
         self.negative_ttl_ms = negative_ttl_ms
         self.min_ttl_ms = min_ttl_ms
         self.max_ttl_ms = max_ttl_ms
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.entries = {}
         self.order = []
 
@@ -1230,7 +1230,7 @@ class Resolver:
         self.config = config or DnsResolverConfig()
         self.hosts = hosts or HostsTable()
         self.policy = policy or DnsAddressPolicy()
-        self._lock = Lock()
+        self._lock: Lock = Lock()
         self.next_query_id = query_seed
         self.next_server = 0
 
