@@ -4,8 +4,8 @@ This proves the bounded streaming state machine in a self/no-libpython artifact.
 It intentionally does not claim that the live outbound socket bridge is wired.
 """
 
-from pcc.gateway.proxy import RetryPolicy
-from pcc.gateway.proxy_http1 import ProxyExchange
+from pcc_gateway.proxy import RetryPolicy
+from pcc_gateway.proxy_http1 import ProxyExchange
 
 
 def main() -> int:

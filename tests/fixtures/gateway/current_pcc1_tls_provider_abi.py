@@ -6,7 +6,7 @@ therefore permanently ``production_ready = False``.  Its output marker says
 ``ABI_ONLY`` so it cannot honestly be cited as an HTTPS result.
 """
 
-from pcc.gateway.tls import (
+from pcc_gateway.tls import (
     TLS_CLOSED,
     TLS_OK,
     TLS_PROVIDER_ABI_VERSION,

@@ -5,7 +5,7 @@ then current pcc1 compiles this application with self/no-libpython.  All
 network service behavior remains inside the emitted native process.
 """
 
-from pcc.gateway import (
+from pcc_gateway import (
     DnsResolverConfig,
     DnsServer,
     GatewayConfig,
@@ -16,12 +16,12 @@ from pcc.gateway import (
     UpstreamEndpoint,
     UpstreamGroup,
 )
-from pcc.gateway.dns import Resolver
-from pcc.gateway.dns_native import LazySystemResolver
-from pcc.gateway.proxy import ProxyTimeouts
+from pcc_gateway.dns import Resolver
+from pcc_gateway.dns_native import LazySystemResolver
+from pcc_gateway.proxy import ProxyTimeouts
 from pcc.unsafe import gc_backend_current
 import pcc.virtual_thread as virtual_thread
-from pcc.web import App, Response, get, proxy
+from pcc_gateway.web import App, Response, get, proxy
 
 
 LISTEN_PORT = __PCC_LISTEN_PORT__

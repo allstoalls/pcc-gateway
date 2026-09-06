@@ -5,7 +5,7 @@ a self/no-libpython artifact.  Live UDP/waitset execution is a separate
 hardware/network gate even though the production adapter source now exists.
 """
 
-from pcc.gateway.dns import (
+from pcc_gateway.dns import (
     DNS_A,
     DNS_IO_OK,
     DNS_IO_WOULD_BLOCK,
@@ -14,7 +14,7 @@ from pcc.gateway.dns import (
     DnsServer,
     Resolver,
 )
-from pcc.gateway.dns_native import NativeDnsTransport
+from pcc_gateway.dns_native import NativeDnsTransport
 
 
 def u16(value: int) -> bytes:
