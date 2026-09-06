@@ -1,0 +1,40 @@
+{
+  "arm": "native",
+  "complete": true,
+  "arguments": [
+    "100",
+    "0",
+    "2000",
+    "--summary"
+  ],
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-optimized-three-way/pcc1",
+  "binary_sha256": "efc80cd5d9affc7e46b0f1c5daee9a67b53b5496f64aa99f21f82b500cf65759",
+  "profiler_command": [
+    "/Users/jiamo/my/pcc-gateway/.venv/bin/python3",
+    "/Users/jiamo/my/pcc/scripts/pcc_flamegraph.py",
+    "cpu",
+    "39373",
+    "3",
+    "--exact-pid",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/profile-optimized-pcc1-20260907/native.svg",
+    "--folded",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/profile-optimized-pcc1-20260907/native.folded"
+  ],
+  "workload_summary": {
+    "concurrency": 100,
+    "delay_ms": 0,
+    "elapsed_ms": 10408.601999981329,
+    "latency_max_ms": 0,
+    "latency_min_ms": 0,
+    "requests": 200000,
+    "rounds": 2000,
+    "warmup_requests": 200
+  },
+  "sample_count": 2488,
+  "inclusive_py_gen_next_samples": 2249,
+  "inclusive_request_resume_samples": 610,
+  "granule_object_start_self_samples": 412,
+  "claim": "Application on-CPU caller profile; inclusive counts overlap. Not a compiler-build profile or an unprofiled throughput comparison.",
+  "folded_stacks": "2026-09-07-optimized-pcc1-profile.folded"
+}

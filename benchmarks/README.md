@@ -65,6 +65,19 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
+The [optimized pcc1 application profile](results/2026-09-07-optimized-pcc1-profile.json)
+and [folded stacks](results/2026-09-07-optimized-pcc1-profile.folded) contain
+2,488 on-CPU samples: 2,249 include `py_gen_next`, 610 include request resume,
+and 412 have the granule object-start check as their leaf. Inclusive counts
+overlap. This profiles execution of the compiled benchmark, not compilation
+by pcc1. The remaining investigation targets generated resumable calls and
+their frame/reference work.
+
+The core's historical million-task benchmark is a scheduler-capacity test:
+its C driver creates tasks with `py_None`, polls ready tasks and marks them
+complete. It does not execute generated Python handlers, TaskScope or JSON.
+Its tasks/s and ready-queue `resume` timings are not gateway request QPS.
+
 Two runtime changes have measured gains. Each row below is a separate A/B
 comparison using one host pcc compiler, the same workload, concurrency 100,
 GC 0 and five alternating repeats. Zero-wait runs execute 5,000 requests;
