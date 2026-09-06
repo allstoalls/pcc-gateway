@@ -1,0 +1,210 @@
+# Benchmark methods and experiment history
+
+The repository contains `benchmark_native.py`, `benchmark_asyncio.py` and
+`benchmarks/compare.py`. The runner compiles the native workload with both host
+pcc and pcc1, then compares them with CPython `asyncio.TaskGroup`:
+
+```bash
+uv run python benchmarks/compare.py --output benchmarks/results/latest.json
+# Select a specific qualified native compiler when needed:
+uv run python benchmarks/compare.py --pcc1 /path/to/pcc1 \
+  --output benchmarks/results/candidate.json
+```
+
+All arms perform two child waits, join their results, and validate identical
+sorted JSON bytes. This measures the handler workload, excluding HTTP sockets
+and network transport. It uses one carrier/event loop, concurrency 1/10/100,
+waits of 0/100 ms, two warmup batches and five repeats with rotating arm order.
+Zero-delay runs process at least 5,000 requests each; 100 ms runs use ten
+batches. Compilation, process startup and warmups are outside request timing.
+
+The JSON report retains every latency sample, median/min/max QPS, p50/p95,
+Darwin process peak RSS and CPU totals, source hashes and compiler identities.
+Process memory and CPU include startup and warmups. Incomplete runs are marked
+as such and cannot supply performance conclusions.
+
+## Latest optimized three-way run (2026-09-07)
+
+The [complete table](results/2026-09-07-optimized-three-way.md) and
+[raw report](results/2026-09-07-optimized-three-way.json) contain the latest
+host-pcc/pcc1/asyncio comparison: 90 runs, 241,650 measured requests, all
+validated. Both compilers rebuilt the current workload against the same
+optimized application runtime, SHA-256 `514ed8bf2d4b731e5be980c85f31fdd4a621605974e6629270ba77750102f829`.
+The compiler source is the fixed gateway v5 snapshot; pcc1's binary SHA-256
+starts `c5ae2affdb02`. Its Stage1 build receipt describes the compiler's own
+original runtime; the separate `application_runtime` entry identifies the
+optimized runtime linked into both benchmark programs. Both programs link
+only libSystem on this Mac. Bulk frame initialization is disabled.
+
+At concurrency 100, zero-wait median QPS is 22,092.9 / 22,241.0 / 42,647.1
+(host pcc / pcc1 / asyncio); p50/p95 and CPU/RSS are retained in the reports.
+The pcc1 gap is 1.92× in this run. At 100 ms, medians are 940.7 / 944.0 / 953.0
+QPS. This is a new same-run comparison, not a ratio between separate dates.
+
+The one-minute load average was 17.8 at the start and 19.8 at the end;
+per-run load averages and QPS ranges are recorded. System load was variable,
+so absolute QPS should not be compared with the earlier 38,239-QPS runtime
+A/B as evidence of a regression. The original data is preserved below.
+
+To select a fixed source tree and matching optimized application archive:
+
+```bash
+PCC_HOST_PYTHON="$PWD/.venv/bin/python" PCC_SELF_BACKEND_JOBS=2 \
+uv run python benchmarks/compare.py --pcc1 /path/to/qualified/pcc1 \
+  --compiler-source /path/to/frozen/pcc \
+  --runtime-archive /path/to/libpy_runtime_pcc_py.a \
+  --output benchmarks/results/my-optimized-three-way.json
+```
+
+The selected pcc1 must match the source tree. If it is an environment wrapper,
+ensure it respects the supplied source/runtime variables. Optional
+`--pcc1-binary` and `--pcc1-receipt` record and validate the native compiler's
+Stage1 identity. The runner takes the core performance lock, checks source
+and archive hashes before/after measurement, and rejects existing output names.
+Application binaries and compilation logs go under `benchmarks/build/<output-stem>/`.
+
+## Runtime optimization A/B (2026-09-07)
+
+Two runtime changes have measured gains. Each row below is a separate A/B
+comparison using one host pcc compiler, the same workload, concurrency 100,
+GC 0 and five alternating repeats. Zero-wait runs execute 5,000 requests;
+100 ms runs execute 1,000. The second comparison starts with the first
+optimization already enabled.
+
+| Runtime change | Zero-wait QPS, before → after | Gain | 100 ms QPS, before → after |
+|---|---:|---:|---:|
+| Skip nonblocking I/O polling when there are no I/O waiters | 8,758.9 → 36,556.9 | 4.17× | 909.6 → 965.3 |
+| Skip redundant retain/release for an unchanged GC 0 reference slot | 36,739.3 → 38,239.2 | +4.1% | 963.7 → 965.0 |
+
+With both changes, the second A/B's candidate has a **38,239.2 QPS median**
+(38,033.8–38,993.0 across five runs), with **1.227/1.527 ms p50/p95** at
+zero wait. At 100 ms, its p50/p95 is **101.846/102.446 ms**. These are
+handler timings; this is not an HTTP socket throughput test.
+
+The empty-poll regression test checks the syscall directly: 100 empty polls
+previously caused 101 `kevent` calls, and now cause zero. Native on-CPU
+profiling after this change attributes 63.3% of 2,499 samples to GC/ownership
+work, which guided the reference-store change. The latter preserves the
+reference-consuming `store_root_take` operation and GC 1–4 barriers.
+The 4.17× figure is a wall-time throughput gain, not a measured CPU reduction.
+
+Raw evidence: [empty-poll A/B](results/2026-09-07-empty-io-poll-ab.json),
+[runtime attribution](results/2026-09-07-empty-io-poll-attribution.json),
+and [reference-store A/B](results/2026-09-07-self-store-ab.json).
+The first control includes a 3,931.5 QPS outlier; all runs are retained.
+The core changes are included in
+[pcc checkpoint `77cdf411`](https://github.com/allstoalls/pcc/commit/77cdf4119b6ebca31061ba7457863eed195d6e55).
+
+**A throughput win over asyncio at concurrency 100 has not been established.**
+These earlier runtime A/B measurements use host pcc; the latest three-way run
+above measures both compilers with the optimized runtime. The qualification
+candidate completed Stage1 and Stage2; Stage3/fixed-point and promotion to
+the shared installation are still pending. The installed v84 baseline should
+not be assumed to support all the current gateway examples.
+
+A bulk-frame diagnostic compared experimental bulk generator-frame initialization
+with its disabled control and a same-run asyncio witness. It used frozen
+compiler sources, 20,000 requests per run, concurrency 100, zero wait and five
+rotating repeats. Final latency-array formatting was suppressed in all arms.
+
+| Diagnostic arm | Median QPS | Min–max QPS | Instructions/request | User CPU/request |
+|---|---:|---:|---:|---:|
+| host pcc, bulk frame initialization disabled | 11,770.5 | 10,020.4–13,316.5 | 353,997 | 43 µs |
+| host pcc, bulk frame initialization enabled | 12,458.3 | 10,576.5–13,163.8 | 340,787 | 43 µs |
+| CPython 3.15.0rc1 asyncio | 17,466.9 | 14,835.4–21,169.6 | 177,947 | 30 µs |
+
+The machine was heavily loaded during this diagnostic (observed one-minute
+load average about 114); these absolute QPS values must not be compared with
+the earlier tables. Instructions and CPU are whole-process totals divided by
+measured requests, including startup and warmups. The experiment reduced
+instructions about 3.7%, but did not establish a CPU-time improvement and its
+QPS ranges overlap. **Bulk frame initialization remains disabled by default**;
+it is not counted as an accepted optimization. See the
+[bulk-frame diagnostic](results/2026-09-07-frame-init-frozen-counters.json)
+and [result index](results/README.md), including failed and noisy
+experiments. Remaining work is tracked in
+[pcc issue #188](https://github.com/allstoalls/pcc/issues/188).
+
+### Three-way baseline (2026-09-06, before optimization)
+
+Apple M2 Max, macOS 26.5.1, CPython **3.15.0rc1**. Both native artifacts use
+self backend, libpython off, GC 0 and the same pcc-Python runtime. The pcc1 arm
+uses the freshly built gateway qualification candidate (SHA-256 starts
+`c5ae2affdb02`), not the installed v84 baseline. Its full source/runtime receipt
+identity is retained in the raw report. Both compilers passed the local HTTP
+and dashboard execution gates. The native scope failure/cancellation canary
+also passed under this pcc1.
+
+Median handler QPS across five runs:
+
+| Child wait (ms) | Concurrency | host pcc | pcc1 | CPython asyncio |
+|---:|---:|---:|---:|---:|
+| 0 | 1 | 7,014.1 | 6,956.4 | 8,741.6 |
+| 0 | 10 | 8,587.5 | 8,558.8 | 47,753.5 |
+| 0 | 100 | 8,671.8 | 8,844.1 | 85,873.9 |
+| 100 | 1 | 10.0 | 10.0 | 9.9 |
+| 100 | 10 | 98.6 | 98.7 | 98.7 |
+| 100 | 100 | 909.2 | 908.5 | 973.9 |
+
+At 100 ms / 100 concurrency, p50/p95 latency was **106.119/107.579 ms**
+(host pcc), **106.072/107.438 ms** (pcc1), and **102.148/102.746 ms**
+(asyncio). Median process peak RSS was **13.66 / 13.62 / 27.59 MiB** respectively.
+At zero wait / 100 concurrency, peak RSS was **46.81 / 46.75 / 27.91 MiB**;
+that scenario executes 5,000 requests per run, versus 1,000 in the 100 ms case.
+
+pcc and pcc1 produce similar runtime throughput. Relative to asyncio, pcc1 is
+about **6.7% lower** on the 100 ms / 100 concurrency workload and about
+**9.7× slower** on the zero-wait workload at the same concurrency. These
+measurements establish the baseline for the active
+[throughput optimization](https://github.com/allstoalls/pcc/issues/188).
+The five-repeat ranges expose warmup/system variability; the first host-pcc
+zero-wait/serial run was notably slower than subsequent runs.
+
+All **90 runs / 241,650 measured requests** validated their JSON output and
+sample counts. See the [complete table](results/2026-09-06-macos-arm64.md)
+and [raw samples and provenance](results/2026-09-06-macos-arm64.json)
+for QPS ranges, latency percentiles, process CPU and memory. Native examples
+exercise the HTTP codec separately; these QPS figures exclude HTTP parsing,
+sockets and network I/O.
+
+### Reproduce runtime A/B and profiles
+
+To compare runtime changes, build two archives against a compatible, fixed
+compiler source tree using the core runtime build tools, then run:
+
+```bash
+uv run python benchmarks/runtime_ab.py \
+  --compiler-source /path/to/frozen/pcc \
+  --control-runtime /path/to/control/libpy_runtime_pcc_py.a \
+  --candidate-runtime /path/to/candidate/libpy_runtime_pcc_py.a \
+  --asyncio --output benchmarks/results/my-runtime-ab.json
+```
+
+Use a new output name for each run. The runner records archive, executable and
+source hashes, rejects source/archive changes during the run, and takes the
+core performance lock. Historical absolute paths in reports identify local
+artifacts; they are not installation prerequisites. Compiler and runtime ABI
+must match: mixing an old archive with a newer compiler invalidated one
+recorded attempt before any requests ran.
+
+Add `--summary --requests 20000 --delays 0` for the latest counter-diagnostic
+workload. For bulk-frame A/B, use the same compatible archive in both arms and
+add `--control-env PCC_DISABLE_BULK_GENERATOR_FRAME_INIT=1` and
+`--candidate-env PCC_DISABLE_BULK_GENERATOR_FRAME_INIT=0`.
+
+The profiling wrapper reuses the core native flamegraph and Python 3.15
+`profiling.sampling`/Tachyon tools:
+
+```bash
+uv run python benchmarks/profile.py native \
+  --binary benchmarks/build/latest/host-pcc --rounds 2000 \
+  --output benchmarks/build/my-native-profile
+uv run python benchmarks/profile.py asyncio \
+  --python ../pcc/.venv/bin/python-tachyon --rounds 2000 \
+  --output benchmarks/build/my-asyncio-profile
+```
+
+Native profiling requires macOS; the Tachyon interpreter requires the core's
+debugger-entitled Python setup. Profiles diagnose hotspots and are kept apart
+from unprofiled performance comparisons. pcc1 does not yet implement Python's
+`profiling.sampling` interface.

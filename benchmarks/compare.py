@@ -29,6 +29,14 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
+def source_tree_digest(root):
+    state = hashlib.sha256()
+    for path in sorted((root / "pcc").rglob("*.py")):
+        state.update(str(path.relative_to(root)).encode())
+        state.update(bytes.fromhex(digest(path)))
+    return state.hexdigest()
+
+
 def git(*args, cwd=ROOT):
     result = subprocess.run(["git", *args], cwd=cwd, capture_output=True,
                             text=True, timeout=15)
@@ -98,6 +106,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pcc", default=shutil.which("pcc"))
     parser.add_argument("--pcc1", default=shutil.which("pcc1"))
+    parser.add_argument("--compiler-source", type=Path,
+                        help="fixed compiler source tree shared by host pcc and pcc1")
+    parser.add_argument("--runtime-archive", type=Path,
+                        help="application runtime archive shared by both native arms")
     parser.add_argument("--pcc1-binary", type=Path,
                         help="native executable behind a pcc1 environment wrapper")
     parser.add_argument("--pcc1-receipt", type=Path,
@@ -113,6 +125,8 @@ def main():
     args = parser.parse_args()
     if not args.pcc or not args.pcc1:
         parser.error("both pcc and pcc1 are required; specify their paths")
+    if args.output.exists():
+        parser.error("refusing to overwrite an existing comparison")
     concurrencies = [int(item) for item in args.concurrency.split(",")]
     delays = [int(item) for item in args.delays.split(",")]
     if (args.rounds <= 0 or args.repeats <= 0 or args.zero_delay_requests <= 0
@@ -129,11 +143,20 @@ def main():
 
 
 def compare(args, core, concurrencies, delays, parser):
-    build = ROOT / "benchmarks/build"
-    build.mkdir(parents=True, exist_ok=True)
+    build = ROOT / "benchmarks/build" / args.output.stem
+    build.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ)
     env.pop("LC_ALL", None)
     env.pop("PCC_PACKAGE_SITE", None)
+    compiler_source = args.compiler_source.resolve() if args.compiler_source else core
+    if args.compiler_source:
+        env.update(PYTHONPATH=str(compiler_source), PCC_SOURCE_ROOT=str(compiler_source),
+                   PCC_REPO_ROOT=str(compiler_source))
+    env.update(PCC_GC_BACKEND="0", PCC_WITH_THREADS="0", PCC_RUNTIME_HIGH="py",
+               PCC_DISABLE_BULK_GENERATOR_FRAME_INIT="1")
+    if args.runtime_archive:
+        env.update(PCC_RUNTIME_ARCHIVE=str(args.runtime_archive.resolve()),
+                   PCC_RUNTIME_CC="/usr/bin/false")
     cpu_model = platform.processor()
     if sys.platform == "darwin":
         cpu_model = subprocess.check_output(
@@ -149,6 +172,9 @@ def compare(args, core, concurrencies, delays, parser):
         "cpu_count": os.cpu_count(),
         "python_version": sys.version,
         "python_executable": sys.executable,
+        "compiler_source": str(compiler_source),
+        "compiler_source_sha256": source_tree_digest(compiler_source),
+        "load_average_start": os.getloadavg() if hasattr(os, "getloadavg") else None,
         "gateway_commit": git("rev-parse", "HEAD"),
         "gateway_dirty": bool(git("status", "--porcelain")),
         "core_commit": git("rev-parse", "HEAD", cwd=core),
@@ -168,6 +194,10 @@ def compare(args, core, concurrencies, delays, parser):
         "repeats": args.repeats,
         "compilers": {}, "runs": [], "summary": [],
     }
+    if args.runtime_archive:
+        report["application_runtime"] = {
+            "path": str(args.runtime_archive.resolve()), "sha256": digest(args.runtime_archive)
+        }
     if args.pcc1_binary:
         report["pcc1_binary"] = {
             "path": str(args.pcc1_binary.resolve()), "sha256": digest(args.pcc1_binary)
@@ -206,6 +236,11 @@ def compare(args, core, concurrencies, delays, parser):
         if compiled.returncode:
             raise RuntimeError(f"{label} compilation failed: {log}")
         report["compilers"][label]["artifact_sha256"] = digest(output)
+        if sys.platform == "darwin":
+            linkage = subprocess.check_output(["otool", "-L", str(output)], text=True, timeout=10)
+            if "libpython" in linkage.lower():
+                raise RuntimeError(label + " unexpectedly links libpython")
+            report["compilers"][label]["dynamic_dependencies"] = linkage.splitlines()[1:]
         commands[label] = [str(output)]
 
     labels = list(commands)
@@ -238,6 +273,7 @@ def compare(args, core, concurrencies, delays, parser):
                             or measured["elapsed_ms"] < rounds * max(0, delay - 2)):
                         raise RuntimeError(f"invalid/incomplete {label} measurements: {measured}")
                     measured.update(implementation=label, repetition=repetition)
+                    measured["load_average"] = os.getloadavg() if hasattr(os, "getloadavg") else None
                     measured.update(process_metrics(ran.stderr))
                     report["runs"].append(measured)
                     save(args.output, report)
@@ -259,6 +295,14 @@ def compare(args, core, concurrencies, delays, parser):
                 if rss:
                     summary["process_peak_rss_bytes_median"] = statistics.median(rss)
                 report["summary"].append(summary)
+    if source_tree_digest(compiler_source) != report["compiler_source_sha256"]:
+        raise RuntimeError("compiler source changed during comparison")
+    for path, identity in report["sources"].items():
+        if digest(ROOT / path) != identity:
+            raise RuntimeError("workload or runner source changed during comparison: " + path)
+    if args.runtime_archive and digest(args.runtime_archive) != report["application_runtime"]["sha256"]:
+        raise RuntimeError("application runtime changed during comparison")
+    report["load_average_end"] = os.getloadavg() if hasattr(os, "getloadavg") else None
     report["complete"] = True
     save(args.output, report)
     write_markdown(args.output, report)
