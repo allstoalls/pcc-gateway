@@ -48,29 +48,22 @@ PCC_PACKAGE_SITE=/path/to/pcc-gateway \
 can also be copied into pcc's default site
 (`~/.local/share/pcc/environments/<tag>/site-packages`).
 
-## Status: does not compile out of tree yet
+## Status: not compiling yet (was already red in the core)
 
-The same sources compiled inside the core as `pcc.gateway` / `pcc.web`; as an
-external package the current frontend stops with three gaps, recorded here so
-they are fixed in the compiler rather than worked around in this repository:
+The pcc1 path of the gateway was already failing inside the core at HEAD
+(same errors as `pcc.gateway`), so this is not an extraction gap. Fixed on
+2026-09-06 (gateway sources here + compiler fixes in the core working tree):
+may_park resolution (`virtual_thread.call` around duck-typed transport reads,
+typed `connection` helpers, a hoisted nested park), `stack_alloc` module
+constants, builtin-typed receivers, except-handler delegation slots, finally
+and handler dominance in may_park state machines, cross-module int globals.
 
-1. `codegen[pcc_gateway.server]: pcc.virtual_thread.spawn cannot prove a
-   resumable parking boundary for _gateway_connection_entry: calls unresolved
-   may_park wrapper: _run_gateway_connection`
-2. `codegen[pcc_gateway.web.app]: may_park method boundary is not statically
-   resumable: App.dispatch: unresolved user-method may park: .join`
-3. `codegen[pcc_gateway]: cross-module global representation mismatch for
-   pcc_gateway.tls.PCC_TLS_REQUIRED_CAPABILITIES` (the importing module does
-   not use the raw-int scaffold that `tls.py` uses, so the same module-level
-   int is an object on one side and an `i64` on the other)
-
-Two related gaps were already fixed in the core while extracting this package:
-`stack_alloc(SIZE)` now folds a module-scope integer constant and constant
-arithmetic over such constants, and runtime-port modules imported as closure
-siblings keep their pointer-lane lowering. The remaining three are tracked as a
-GitHub issue on the core ("out-of-tree package parity with pcc-owned modules").
-Until it is closed, this repository is the authoritative home of the sources
-but cannot be built.
+Remaining compile error: a boxed negative literal passed into a sibling
+class `__init__` whose ABI slot is `i64` (`GatewayConnection(app, -1, ...)`
+→ `'%int.obj.neg' defined with type 'ptr' but expected 'i64'`). The fix
+belongs in the core's `class_gen.emit_instantiate` (unbox with
+`py_int_value_i64` when the caller module keeps ints as objects); see the
+core's `docs/knowledge/2026-09-06-session-handoff.md`.
 
 ## Tests
 

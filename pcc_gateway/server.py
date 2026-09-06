@@ -324,7 +324,7 @@ def _gateway_connection_entry(server, connection) -> None:
         virtual_thread.call(server._connection_finished, connection)
 
 
-def _gateway_local_handler_entry(connection, request):
+def _gateway_local_handler_entry(connection: GatewayConnection, request):
     """Closed spawn target for one open-world pcc_gateway.web dispatch callback."""
     return virtual_thread.call(connection.app.dispatch, request)
 
@@ -1483,7 +1483,9 @@ class GatewayConnection:
     def _read_transport(self, limit: int):
         if self.tls_channel is None:
             self.io_wait_interest = PCC_IO_READ
-            return self.transport.read(self.fd, limit)
+            # Dynamic transport: the explicit park boundary keeps the
+            # may_park analysis provable for duck-typed transports.
+            return virtual_thread.call(self.transport.read, self.fd, limit)
         output = bytearray(limit)
         now = self.now_ms()
         deadline = self.read_deadline_ms
@@ -1493,7 +1495,7 @@ class GatewayConnection:
             )
         elif self.header_deadline_ms >= 0:
             deadline = _minimum_deadline(deadline, self.header_deadline_ms)
-        result = self.tls_channel.read(output, limit, now, deadline)
+        result = virtual_thread.call(self.tls_channel.read, output, limit, now, deadline)
         if result.status == TLS_OK:
             self.io_wait_interest = PCC_IO_READ
             return PCC_SOCKET_PROGRESS, bytes(output[: result.count])
@@ -1611,7 +1613,7 @@ class GatewayConnection:
             raise first_error
 
 
-def _wait_connection_fd(connection, events: int, timeout_ms: int) -> None:
+def _wait_connection_fd(connection: GatewayConnection, events: int, timeout_ms: int) -> None:
     """Top-level effect edge required by current pcc1 may-park analysis."""
     if connection.transport.native_virtual_threads:
         _park_native_fd(connection.fd, events, timeout_ms)
@@ -1619,7 +1621,7 @@ def _wait_connection_fd(connection, events: int, timeout_ms: int) -> None:
         connection.transport.wait(connection.fd, events, timeout_ms)
 
 
-def _wait_proxy_fd(connection, fd: int, events: int, timeout_ms: int) -> None:
+def _wait_proxy_fd(connection: GatewayConnection, fd: int, events: int, timeout_ms: int) -> None:
     """Top-level effect edge for an upstream descriptor."""
     if connection.transport.native_virtual_threads:
         _park_native_fd(fd, events, timeout_ms)
@@ -1627,7 +1629,7 @@ def _wait_proxy_fd(connection, fd: int, events: int, timeout_ms: int) -> None:
         connection.transport.wait(fd, events, timeout_ms)
 
 
-def _wait_dns_fd(connection, fd: int, events: int, timeout_ms: int) -> None:
+def _wait_dns_fd(connection: GatewayConnection, fd: int, events: int, timeout_ms: int) -> None:
     """Top-level DNS readiness edge with the request's remaining budget."""
     if connection.transport.native_virtual_threads:
         _park_native_fd(fd, events, timeout_ms)
@@ -1635,7 +1637,7 @@ def _wait_dns_fd(connection, fd: int, events: int, timeout_ms: int) -> None:
         connection.transport.wait(fd, events, timeout_ms)
 
 
-def _proxy_observe_downstream(connection, request) -> str:
+def _proxy_observe_downstream(connection: GatewayConnection, request) -> str:
     """Consume one nonblocking client observation while an upstream owns it.
 
     A proxy continuation is also the sole downstream connection owner.  Bytes
@@ -1690,7 +1692,7 @@ def _proxy_wait_upstream(
     return _proxy_observe_downstream(connection, request)
 
 
-def _proxy_read_downstream_body(connection, request, timeout_ms: int) -> str:
+def _proxy_read_downstream_body(connection: GatewayConnection, request, timeout_ms: int) -> str:
     """Wait for and parse another bounded request-body fragment."""
     virtual_thread.call(connection._consume_pending_proxy_body_events, request)
     if request.body.is_ended():
@@ -1710,7 +1712,7 @@ def _proxy_read_downstream_body(connection, request, timeout_ms: int) -> str:
     return ""
 
 
-def _resolve_upstream_address(connection, pool, endpoint, limit: int, request):
+def _resolve_upstream_address(connection: GatewayConnection, pool, endpoint, limit: int, request):
     """Resolve one endpoint without borrowing a host resolver or carrier."""
     numeric = normalize_numeric_address(endpoint.host)
     if numeric is not None:
@@ -1895,7 +1897,7 @@ def _proxy_authority(endpoint) -> str:
     return endpoint.host + ":" + str(endpoint.port)
 
 
-def _proxy_remaining_ms(connection, deadline, request) -> int:
+def _proxy_remaining_ms(connection: GatewayConnection, deadline, request) -> int:
     now = connection.now_ms()
     limit = deadline.deadline_ms
     request_limit = request.cancellation.deadline_ms
@@ -1906,7 +1908,7 @@ def _proxy_remaining_ms(connection, deadline, request) -> int:
     return limit - now
 
 
-def _proxy_deadline_failure(connection, deadline, request) -> str:
+def _proxy_deadline_failure(connection: GatewayConnection, deadline, request) -> str:
     if virtual_thread.call(request.cancellation.is_cancelled):
         return "cancelled"
     if _proxy_remaining_ms(connection, deadline, request) <= 0:
@@ -1918,7 +1920,7 @@ def _proxy_deadline_failure(connection, deadline, request) -> str:
     return ""
 
 
-def _proxy_write_queued(connection, fd: int, exchange, deadline, request) -> str:
+def _proxy_write_queued(connection: GatewayConnection, fd: int, exchange, deadline, request) -> str:
     """Drain bounded exchange output with partial-write preservation."""
     while len(exchange.to_upstream) > 0:
         data, _resumed = exchange.take_upstream(
@@ -1952,7 +1954,7 @@ def _proxy_write_queued(connection, fd: int, exchange, deadline, request) -> str
     return ""
 
 
-def _proxy_flush_downstream(connection, exchange) -> str:
+def _proxy_flush_downstream(connection: GatewayConnection, exchange) -> str:
     """Apply client-side watermarks while the upstream response is live."""
     while len(exchange.to_downstream) > 0:
         data, _resumed = exchange.take_downstream(
@@ -1972,7 +1974,7 @@ def _proxy_flush_downstream(connection, exchange) -> str:
     return ""
 
 
-def _proxy_exchange_attempt(connection, plan, pool, attempt: int):
+def _proxy_exchange_attempt(connection: GatewayConnection, plan, pool, attempt: int):
     """Run one HTTP/1 upstream attempt; every park is a top-level call edge."""
     request = plan.request
     spec = plan.spec
@@ -2159,8 +2161,10 @@ def _proxy_exchange_attempt(connection, plan, pool, attempt: int):
             )
             if failure:
                 return exchange.response_status, failure, exchange.response_committed
-            outcome, data = connection.transport.read(
-                pooled.handle, connection.config.buffers.segment_bytes
+            outcome, data = virtual_thread.call(
+                connection.transport.read,
+                pooled.handle,
+                connection.config.buffers.segment_bytes,
             )
             if outcome == PCC_SOCKET_PROGRESS:
                 if not data:
@@ -2232,7 +2236,7 @@ def _proxy_exchange_attempt(connection, plan, pool, attempt: int):
             raise cleanup_error
 
 
-def _run_gateway_proxy(connection) -> None:
+def _run_gateway_proxy(connection: GatewayConnection) -> None:
     """Drive a pending proxy plan and translate pre-commit failures."""
     from pcc_gateway.models import Response
 
@@ -2260,12 +2264,15 @@ def _run_gateway_proxy(connection) -> None:
                 retry_failure = failure
                 if failure == "header-timeout":
                     retry_failure = "timeout-before-head"
+                # Every park is a top-level call edge: evaluate the body probe
+                # before the retry decision instead of inside its argument list.
+                body_unconsumed = virtual_thread.call(request.body.consumed_size) == 0
                 if not plan.spec.retry.allows(
                     request.method,
                     attempt,
                     committed,
                     retry_failure,
-                    virtual_thread.call(request.body.consumed_size) == 0,
+                    body_unconsumed,
                 ):
                     break
                 virtual_thread.call(
@@ -2380,7 +2387,7 @@ def _run_gateway_proxy(connection) -> None:
                 raise cleanup_error
 
 
-def _run_tls_handshake(connection) -> bool:
+def _run_tls_handshake(connection: GatewayConnection) -> bool:
     """Drive one server handshake; only this top-level edge may park."""
 
     channel = connection.tls_channel
@@ -2451,7 +2458,7 @@ def _run_tls_handshake(connection) -> bool:
         return False
 
 
-def _run_tls_close_notify(connection) -> None:
+def _run_tls_close_notify(connection: GatewayConnection) -> None:
     """Best-effort bounded TLS shutdown before the socket is released."""
 
     channel = connection.tls_channel
@@ -2496,7 +2503,7 @@ def _run_tls_close_notify(connection) -> None:
         return
 
 
-def _run_gateway_connection(connection) -> None:
+def _run_gateway_connection(connection: GatewayConnection) -> None:
     """Resumable top-level connection loop used by the native spawn site."""
     reason = "closed"
     primary_error = None
