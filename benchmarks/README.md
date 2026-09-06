@@ -65,6 +65,22 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
+The [first-entry compiler A/B](results/2026-09-07-first-entry-idle-ab.json)
+completed after other CPU-heavy programs were stopped: 42 runs / 441,000
+requests, seven rotating repeats and the same fixed compiler/runtime in both
+native arms. Skipping known-None frame reads on first entry raises zero-wait
+C100 QPS from **37,943.8 to 39,368.2 (+3.8%)**; same-run asyncio is **86,549.5**.
+At 100 ms, the medians are **966.2 / 966.4 / 973.8**. This remains a host-pcc
+application result; fresh pcc1 qualification is pending and activation is
+currently opt-in via `PCC_GENERATOR_FIRST_ENTRY_INIT=1`.
+
+Raw latency samples validated every request. Process CPU/instructions include
+final array formatting, which is expensive in the native JSON implementation;
+they are not request-only CPU counters. The earlier summary-mode attempt
+failed validation because compiled min/max returned zero for a dynamic float
+list. It is retained as incomplete evidence, alongside the first attempt's
+missing source-root marker. These attempts do not supply accepted results.
+
 The [optimized pcc1 application profile](results/2026-09-07-optimized-pcc1-profile.json)
 and [folded stacks](results/2026-09-07-optimized-pcc1-profile.folded) contain
 2,488 on-CPU samples: 2,249 include `py_gen_next`, 610 include request resume,

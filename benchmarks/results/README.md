@@ -7,6 +7,9 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
+| [2026-09-07-first-entry-idle-ab.json](2026-09-07-first-entry-idle-ab.json) | Complete host-pcc compiler A/B after other CPU-intensive programs stopped; 42 runs / 441,000 requests. Zero-wait C100 median 37,943.8 → 39,368.2 QPS (+3.8%); same-run asyncio 86,549.5. Native pcc1 qualification pending. |
+| [2026-09-07-first-entry-ab-v2.json](2026-09-07-first-entry-ab-v2.json) | Incomplete: 21 zero-wait runs recorded, then native min/max summary incorrectly returned zero for the 100 ms latency array. No accepted result. |
+| [2026-09-07-first-entry-ab.json](2026-09-07-first-entry-ab.json) | Incomplete: compiler rejected the copied source root before any requests because its AGENTS.md root marker was absent. |
 | [2026-09-07-optimized-three-way.json](2026-09-07-optimized-three-way.json) / [table](2026-09-07-optimized-three-way.md) | **Latest three-way comparison**, both native arms use the optimized runtime; 90 valid runs. Zero-wait/concurrency 100: 22,092.9 / 22,241.0 / 42,647.1 QPS (host pcc / pcc1 / asyncio). |
 | [2026-09-06-macos-arm64.json](2026-09-06-macos-arm64.json) / [table](2026-09-06-macos-arm64.md) | Complete original host-pcc/pcc1/CPython 3.15.0rc1 asyncio baseline, before runtime optimization; 90 runs. |
 | [2026-09-07-empty-io-poll-ab.json](2026-09-07-empty-io-poll-ab.json) | Complete, accepted: zero-wait median 8,758.9 → 36,556.9 QPS. All 20 runs retained, including a slow control outlier. |
