@@ -77,6 +77,14 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
+The [completed-result handoff A/B](results/2026-09-07-completed-handoff-ab.json)
+measures the next compiler/runtime slice: seven-repeat zero-wait/C100 QPS
+improves **45,764.6 → 50,280.9 (+9.9%)**, process instructions/request fall
+**6.9%**, and same-run asyncio is **91,584.1 QPS**. All 42 runs validate counts
+and latency bounds; the 100 ms row is essentially unchanged. The
+`PCC_FAST_COMPLETED_CONTINUATIONS=1` path preserves ordinary generator and
+pending-exception behavior, and is opt-in pending fresh pcc1 qualification.
+
 The [continuation-factory A/B](results/2026-09-07-continuation-factory-ab.json)
 keeps the public TaskScope API and the complete handler workload. A fixed
 compiler/runtime compiles frozen control and candidate package trees. Across

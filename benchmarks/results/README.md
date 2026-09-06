@@ -7,6 +7,7 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
+| [2026-09-07-completed-handoff-ab.json](2026-09-07-completed-handoff-ab.json) | Complete host compiler/runtime A/B, 42 runs. Completed-value handoff: 45,764.6 → 50,280.9 QPS (+9.9%), instructions/request -6.9%; same-run asyncio 91,584.1. Fresh pcc1 qualification pending. |
 | [2026-09-07-factory-three-way.json](2026-09-07-factory-three-way.json) / [table](2026-09-07-factory-three-way.md) | **Current three-way comparison**, new pcc1 53978d6bf7db, scope factories and first-entry optimization; 90 valid runs. Zero-wait/C100: 48,665.6 / 48,532.9 / 90,630.4 QPS. |
 | [2026-09-07-continuation-factory-ab.json](2026-09-07-continuation-factory-ab.json) | Complete full-workload host-pcc source A/B, 42 runs. Normal fork/close avoid full frames: 42,473.8 → 47,228.3 QPS (+11.2%), instructions/request -10.9%; same-run asyncio 91,354.7. Native pcc1 application qualification subsequently passed; see the current three-way report. |
 | [2026-09-07-handler-layers.json](2026-09-07-handler-layers.json) | Complete diagnostic ablations, 20 runs. TaskScope 39,266.7 / explicit joins and cleanup 62,125.3 / asyncio 86,322.4 QPS. JSON-only 141,280.9 removes child tasks/waits and is not a valid replacement application comparison. |
