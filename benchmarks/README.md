@@ -25,15 +25,25 @@ as such and cannot supply performance conclusions.
 
 ## Current pcc/pcc1/asyncio result (2026-09-07)
 
-The [latest table](results/2026-09-07-factory-three-way.md) and
-[raw samples](results/2026-09-07-factory-three-way.json) use newly built pcc1
-`53978d6bf7db` and the same source/runtime for host pcc. At zero wait/C100,
-medians are **48,665.6 / 48,532.9 / 90,630.4 QPS**. All 90 runs / 241,650
-requests passed. The first-entry flag was enabled in both native arms;
-TaskScope's fork/close factory paths are included. Both compilers passed the
-application execution boundary; native pcc1 passed HTTP, dashboard and the
-failure/cancellation/rejected-fork canary. Shared-installation promotion and
+The [latest table](results/2026-09-07-field-owners-three-way.md) and
+[raw samples](results/2026-09-07-field-owners-three-way.json) use newly built
+pcc1 `0ff76d8bf139` and the same source/runtime for host pcc. Zero-wait/C100
+medians are **49,087.9 / 48,457.6 / 86,611.5 QPS**, with peak RSS
+**7.88 / 7.98 / 27.62 MiB**. All 90 runs / 241,650 requests passed.
+The first-entry, completed-result and direct-generator flags are enabled in
+both native arms; field/iterator ownership repairs are included. Stage1 and
+startup/compile/run smoke checks passed. Shared-installation promotion and
 new-source Stage2/Stage3 fixed-point qualification remain pending.
+
+This pcc1 also passed all three native HTTP/dashboard/failure-cleanup
+examples (292.32 s) and the eight new field-owner/suspended-iterator regression
+sources under GC0–4 (40 executions, 83.39 s). The shared PATH installation is
+still the historical toolchain; these results identify the private candidate
+explicitly and do not promote it.
+
+The preceding [factory comparison](results/2026-09-07-factory-three-way.md)
+used pcc1 `53978d6bf7db` before the latest task/ownership changes; its raw
+samples remain available as historical evidence.
 
 ## Earlier optimized three-way run (2026-09-07)
 
@@ -76,6 +86,50 @@ and archive hashes before/after measurement, and rejects existing output names.
 Application binaries and compilation logs go under `benchmarks/build/<output-stem>/`.
 
 ## Runtime optimization A/B (2026-09-07)
+
+The [field-owner repair A/B](results/2026-09-07-field-owners-ab.json) measures
+the complete workload after fixing retained field/iterator references.
+Zero-wait/C100 QPS changes **53,489.8 → 50,870.8 (-4.9%)**; peak RSS drops
+**141.31 → 17.48 MiB**, versus asyncio **88,804.3 QPS / 27.95 MiB**.
+All 42 runs passed. This is a correctness repair with a measured throughput
+cost; it does not close the asyncio gap. The new native
+[profile](results/2026-09-07-field-owners-profile.json) and
+[folded stacks](results/2026-09-07-field-owners-profile.folded) contain 2,303
+on-CPU samples, with 403 passing through `py_list_set` and 2,098 through
+`py_gen_next`. These inclusive counts overlap and are diagnostic, not QPS.
+
+The checked-in `benchmarks/lifetime.py` derives its probe from the unchanged
+handler functions and repeats them in one process. The unsafe live-object
+counter is isolated in `benchmarks/heap_observer.py` so it does not change
+the workload module's compilation mode. With three invocations of 5,000
+measured requests plus warmups, retained counts are
+**28 → 78,084 → 156,140 → 234,196**
+[before](results/2026-09-07-field-owners-lifetime-control.json), and
+**28 → 32 → 36 → 40**
+[after](results/2026-09-07-field-owners-lifetime.json).
+The small residual remains under investigation; this is not a zero-leak claim.
+
+```bash
+PCC_GENERATOR_FIRST_ENTRY_INIT=1 PCC_FAST_COMPLETED_CONTINUATIONS=1 \
+PCC_DIRECT_GENERATOR_TASKS=1 uv run python benchmarks/lifetime.py \
+  --compiler-source /path/to/frozen/pcc \
+  --runtime-archive /path/to/libpy_runtime_pcc_py.a \
+  --output benchmarks/results/my-lifetime.json
+```
+
+`runtime_ab.py` accepts `--control-compiler-source` and
+`--candidate-compiler-source` for compiler ownership repairs, alongside the
+existing runtime and workload controls. Both source trees are hashed before
+and after measurement. Per-arm environment switches are retained in reports.
+
+The [direct generator A/B](results/2026-09-07-direct-generator-ab.json)
+removes the extra typed continuation object, stack descriptor and slot array
+around each generator task. Seven-repeat zero-wait/C100 QPS improves
+**50,862.8 → 52,908.8 (+4.0%)**, instructions/request fall **3.5%**, and peak
+RSS falls **171.20 → 141.31 MiB**. Same-run asyncio is **88,979.1 QPS**.
+This is opt-in via `PCC_DIRECT_GENERATOR_TASKS=1`. Both arms predate the
+subsequently discovered field-iteration retention bug; these are historical
+allocation measurements, not evidence of stable service memory usage.
 
 The [completed-result handoff A/B](results/2026-09-07-completed-handoff-ab.json)
 measures the next compiler/runtime slice: seven-repeat zero-wait/C100 QPS

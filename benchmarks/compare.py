@@ -187,6 +187,10 @@ def compare(args, core, concurrencies, delays, parser):
                         ROOT / "benchmark_native.py", ROOT / "benchmark_asyncio.py", Path(__file__).resolve(),
                         *ROOT.glob("pcc_gateway/**/*.py")])},
         "workload": "Two child waits, TaskScope/TaskGroup barrier, identical sorted JSON bytes; no HTTP/socket I/O",
+        "optimization_environment": {key: env.get(key) for key in (
+            "PCC_GC_BACKEND", "PCC_WITH_THREADS", "PCC_RUNTIME_HIGH",
+            "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT", "PCC_GENERATOR_FIRST_ENTRY_INIT",
+            "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS")},
         "warmup_batches": 2,
         "memory_scope": "Darwin /usr/bin/time per-process peak RSS, including startup and warmups",
         "rounds": args.rounds,

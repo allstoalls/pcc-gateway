@@ -41,6 +41,13 @@ def main():
     parser.add_argument("--pcc", default=shutil.which("pcc"))
     parser.add_argument("--compiler-source", type=Path,
                         help="immutable pcc source tree used by the host compiler")
+    parser.add_argument("--control-compiler-source", type=Path,
+                        help="override the control arm's immutable compiler source")
+    parser.add_argument("--candidate-compiler-source", type=Path,
+                        help="override the candidate arm's immutable compiler source")
+    parser.add_argument("--control-backend", choices=("self", "llvm"), default="self")
+    parser.add_argument("--candidate-backend", choices=("self", "llvm"), default="self",
+                        help="diagnose emitted-code costs with an explicit LLVM oracle arm")
     parser.add_argument("--control-program", type=Path, default=ROOT / "benchmark_native.py",
                         help="control workload; sibling pcc_gateway sources may be frozen with it")
     parser.add_argument("--candidate-program", type=Path, default=ROOT / "benchmark_native.py")
@@ -85,6 +92,11 @@ def main():
     env.pop("PCC_PACKAGE_SITE", None)
     env["PCC_RUNTIME_CC"] = "/usr/bin/false"
     compiler_source = args.compiler_source.resolve() if args.compiler_source else core
+    compiler_sources = {
+        "control": (args.control_compiler_source or compiler_source).resolve(),
+        "candidate": (args.candidate_compiler_source or compiler_source).resolve(),
+    }
+    backends = {"control": args.control_backend, "candidate": args.candidate_backend}
     if args.compiler_source:
         env.update(PYTHONPATH=str(compiler_source), PCC_SOURCE_ROOT=str(compiler_source),
                    PCC_REPO_ROOT=str(compiler_source))
@@ -92,21 +104,34 @@ def main():
               "started_utc": datetime.now(timezone.utc).isoformat(),
               "platform": platform.platform(), "compiler": str(Path(args.pcc).resolve()),
               "compiler_sha256": digest(args.pcc), "compiler_source": str(compiler_source),
+              "compiler_sources": {key: str(path) for key, path in compiler_sources.items()},
+              "backends": backends,
               "archives": {}, "arm_environment": arm_env,
               "summary_output": args.summary, "python_version": sys.version,
               "programs": {key: str(path) for key, path in programs.items()},
+              "base_optimization_environment": {key: env.get(key) for key in (
+                  "PCC_GC_BACKEND", "PCC_WITH_THREADS", "PCC_RUNTIME_HIGH",
+                  "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT", "PCC_GENERATOR_FIRST_ENTRY_INIT",
+                  "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS")},
               "runs": [], "summary": []}
     with _performance_lock():
         build.mkdir(parents=True, exist_ok=False)
         report["source_identity"] = source_identity(compiler_source, programs.values())
+        report["arm_source_identities"] = {
+            key: source_identity(path, programs.values())
+            for key, path in compiler_sources.items()
+        }
         save(args.output, report)
         binaries = {}
         for label, archive in archives.items():
             binary = build / label
-            command = [args.pcc, "--backend", "self", "--python-libpython", "off",
+            command = [args.pcc, "--backend", backends[label], "--python-libpython", "off",
                        "--ir-scaffold", "on", str(programs[label]),
                        "-o", str(binary)]
             compile_env = dict(env, **arm_env[label])
+            compile_env.update(PYTHONPATH=str(compiler_sources[label]),
+                PCC_SOURCE_ROOT=str(compiler_sources[label]),
+                PCC_REPO_ROOT=str(compiler_sources[label]))
             compile_env["PCC_RUNTIME_ARCHIVE"] = str(archive)
             print("Compiling " + label, flush=True)
             with (build / (label + "-compile.log")).open("w") as stream:
@@ -175,9 +200,15 @@ def main():
                     values = [row[key] / row["requests"] for row in rows if key in row]
                     if values:
                         summary[key + "_per_request_median"] = statistics.median(values)
+                rss = [row["process_peak_rss_bytes"] for row in rows if "process_peak_rss_bytes" in row]
+                if rss:
+                    summary["process_peak_rss_bytes_median"] = statistics.median(rss)
                 report["summary"].append(summary)
         if source_identity(compiler_source, programs.values()) != report["source_identity"]:
             raise RuntimeError("compiler/workload sources changed during comparison")
+        for label, path in compiler_sources.items():
+            if source_identity(path, programs.values()) != report["arm_source_identities"][label]:
+                raise RuntimeError(label + " compiler sources changed during comparison")
         for label, archive in archives.items():
             if digest(archive) != report["archives"][label]["sha256"]:
                 raise RuntimeError(label + " archive changed during comparison")

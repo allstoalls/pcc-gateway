@@ -1,0 +1,38 @@
+{
+  "archive_sha256": "9814efd78e4c6a62ddc07fc54c53573cc28f5dfbe7cf022703d1258bfd70ea2f",
+  "artifact_sha256": "1854deca0818f928fc8030e70b037bdc490449c4ecf069f7ef8a173d1a037e83",
+  "command": [
+    "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+    "--backend",
+    "self",
+    "--python-libpython",
+    "off",
+    "--ir-scaffold",
+    "on",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-field-owners-lifetime-control/lifetime_probe.py",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-field-owners-lifetime-control/lifetime_probe"
+  ],
+  "compiler_source": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/direct-generator/compiler",
+  "complete": true,
+  "gc_backend": 0,
+  "live_counts": [
+    28,
+    78084,
+    156140,
+    234196
+  ],
+  "observer_sha256": "a7c56492a0df55596c8d8f82dced062edb4dd3d2e817f6f4a63afb0bdfac934b",
+  "optimization_environment": {
+    "PCC_DIRECT_GENERATOR_TASKS": "1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS": "1",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT": "1"
+  },
+  "probe_sha256": "f04e9a027fc2c8111c8f8dd2f5e5f1c94a8686fa28a0c130a3d4b90be08d0d3f",
+  "returncode": 0,
+  "schema": "pcc-gateway.lifetime.v1",
+  "source_identity": "a1654397f69ce27107ff0cdcdbe3254fffa2b40e6e8faab0af150a2102ec9b57",
+  "started_utc": "2026-09-07T00:23:00.846692+00:00",
+  "stderr": "",
+  "stdout": "before 28\nrequests 5000\nafter 78084\ncollected 0\nremaining 78084\nrequests 5000\nafter 156140\ncollected 0\nremaining 156140\nrequests 5000\nafter 234196\ncollected 0\nremaining 234196\n"
+}

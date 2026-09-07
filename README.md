@@ -48,34 +48,36 @@ The default suite passes **290 tests**. Native integration tests run separately;
 ## Performance (2026-09-07)
 
 Apple M2 Max, macOS 26.5.1, Python **3.15.0rc1**. Both native arms use the
-same compiler source and runtime, including the scope factory optimization.
+same compiler source and runtime, including the latest task and ownership fixes.
 Each request runs two child waits and validates the joined JSON result;
 one carrier/event loop, five repeats. Figures are median handler QPS,
 excluding HTTP sockets, compilation and startup.
 
 | Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | asyncio QPS |
 |---:|---:|---:|---:|---:|
-| 0 | 1 | 31,185.3 | 31,771.9 | 9,398.3 |
-| 0 | 10 | 46,043.5 | 46,597.5 | 51,590.1 |
-| 0 | 100 | 48,665.6 | 48,532.9 | 90,630.4 |
-| 100 | 1 | 9.9 | 9.9 | 9.8 |
-| 100 | 10 | 98.7 | 98.9 | 97.7 |
-| 100 | 100 | 931.2 | 930.9 | 938.4 |
+| 0 | 1 | 32,569.7 | 31,741.6 | 9,255.1 |
+| 0 | 10 | 47,676.3 | 46,705.4 | 49,385.8 |
+| 0 | 100 | 49,087.9 | 48,457.6 | 86,611.5 |
+| 100 | 1 | 10.0 | 10.0 | 9.9 |
+| 100 | 10 | 99.2 | 98.9 | 98.4 |
+| 100 | 100 | 942.5 | 941.6 | 945.7 |
 
-At zero wait / concurrency 100, pcc1 is still **1.87× slower than asyncio**.
+At zero wait / concurrency 100, pcc1 is still **1.79× slower than asyncio**;
+peak RSS is **7.98 MiB**, versus asyncio's **27.62 MiB**.
 All **90 runs / 241,650 requests** passed output and sample-count checks.
 System load varied during the run; use the recorded ranges when comparing results.
 
 Reproduce with the checked-in scripts:
 
 ```bash
-PCC_GENERATOR_FIRST_ENTRY_INIT=1 uv run python benchmarks/compare.py \
+PCC_GENERATOR_FIRST_ENTRY_INIT=1 PCC_FAST_COMPLETED_CONTINUATIONS=1 \
+PCC_DIRECT_GENERATOR_TASKS=1 uv run python benchmarks/compare.py \
   --pcc1 /path/to/qualified/pcc1 \
   --output benchmarks/results/my-comparison.json
 ```
 
-See the [full results](benchmarks/results/2026-09-07-factory-three-way.md),
-[raw samples](benchmarks/results/2026-09-07-factory-three-way.json) and
+See the [full results](benchmarks/results/2026-09-07-field-owners-three-way.md),
+[raw samples](benchmarks/results/2026-09-07-field-owners-three-way.json) and
 [benchmark notes](benchmarks/README.md) for latency, CPU/RSS, compiler/runtime
 selection, profiling and earlier experiments. Optimization is tracked in
 [pcc #188](https://github.com/allstoalls/pcc/issues/188).
