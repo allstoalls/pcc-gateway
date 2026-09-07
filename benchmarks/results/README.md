@@ -7,6 +7,7 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
+| [Owned runtime emission pilot](2026-09-07-owned-runtime-emission-pilot.json) / [notes and reproduction](2026-09-07-owned-runtime-emission-pilot.md) | Complete 28-run diagnostic, same application objects. Self-control 19,763.3 → owned passes 22,185.0 QPS (+12.3%); historical LLVM-runtime reference 57,777.4, same-run asyncio 86,080.5. Partial runtime emission experiment, not whole-runtime independence or a new pcc/pcc1 frontend comparison. |
 | [Optimized-runtime pcc1 profile](2026-09-07-runtime-o2-profile.json) / [stacks](2026-09-07-runtime-o2-profile.folded) | Completed 1M-request diagnostic, 2,302 CPU samples. Object-start validation remains the largest leaf (368 samples); profiled QPS is not comparative throughput evidence. |
 | [2026-09-07-runtime-o2-three-way.json](2026-09-07-runtime-o2-three-way.json) / [table](2026-09-07-runtime-o2-three-way.md) | **Current three-way comparison**, normal optimized runtime and pcc1 2b08f3a7aac1; 90 valid runs. Zero-wait/C100: 57,469.9 / 57,662.8 / 85,437.0 QPS; pcc1 gap 1.48×. |
 | [Three-module runtime O2](2026-09-07-runtime-ir-o2-ab.json) / [build receipt](2026-09-07-runtime-ir-o2-build.json) | Complete, 42 runs. Same runtime source, only py_obj/py_list/py_gen IR optimized: 49,193.0 → 55,135.9 QPS (+12.1%), instructions/request -7.1%. |

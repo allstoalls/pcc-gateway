@@ -1,0 +1,18 @@
+{
+  "pcc_root": "/Users/jiamo/my/pcc",
+  "pcc1": "/Users/jiamo/my/pcc/build/owned-optimizer-stage1-20260907/pcc1",
+  "optimizer": "/tmp/pcc_owned_optimizer_build11_20260907/pcc-opt",
+  "runtime_archive": "/Users/jiamo/my/pcc/build/owned-optimizer-stage1-20260907/runtime-bundle/libpy_runtime_pcc_py.a",
+  "app_ir": [
+    "/tmp/pcc_owned_runtime_ab_v2/app-ir/self_backend_input_0.ll",
+    "/tmp/pcc_owned_runtime_ab_v2/app-ir/self_backend_input_1.ll"
+  ],
+  "runtime_ir": {
+    "py_obj": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-v2/build_py/py_obj.input.ll",
+    "py_list": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-v2/build_py/py_list.input.ll",
+    "py_gen": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-v2/build_py/py_gen.input.ll",
+    "py_gc_backend": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-five/build_py/py_gc_backend.input.ll",
+    "freestanding_gc_index_table": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-five/build_py/freestanding_gc_index_table.input.ll"
+  },
+  "reference_provenance": "retained historical LLVM O2 runtime archive; not a product dependency or native runtime build proof"
+}
