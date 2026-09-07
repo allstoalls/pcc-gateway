@@ -1,0 +1,34 @@
+{
+  "arm": "native",
+  "complete": true,
+  "arguments": [
+    "100",
+    "0",
+    "10000",
+    "--summary"
+  ],
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-07-runtime-o2-three-way/pcc1",
+  "binary_sha256": "c17ab4929cb35d1dedf1ded204596113bf04aa1f4ab14c7b62990914ade86ae2",
+  "profiler_command": [
+    "/Users/jiamo/my/pcc-gateway/.venv/bin/python3",
+    "/Users/jiamo/my/pcc/scripts/pcc_flamegraph.py",
+    "cpu",
+    "3429",
+    "3",
+    "--exact-pid",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/profile-runtime-o2-pcc1-20260907/native.svg",
+    "--folded",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/profile-runtime-o2-pcc1-20260907/native.folded"
+  ],
+  "workload_summary": {
+    "concurrency": 100,
+    "delay_ms": 0,
+    "elapsed_ms": 17086.73700003419,
+    "latency_max_ms": 4.641999956220388,
+    "latency_min_ms": 0.6020000437274575,
+    "requests": 1000000,
+    "rounds": 10000,
+    "warmup_requests": 200
+  }
+}

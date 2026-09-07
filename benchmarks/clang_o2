@@ -1,0 +1,3 @@
+#!/bin/sh
+# Explicit application-code optimizer oracle; runtime archive is unchanged.
+exec /usr/bin/clang -O2 "$@"

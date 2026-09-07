@@ -121,6 +121,14 @@ def main():
             key: source_identity(path, programs.values())
             for key, path in compiler_sources.items()
         }
+        report["tool_overrides"] = {}
+        for label, settings in arm_env.items():
+            if "CC" in settings:
+                cc = Path(shutil.which(settings["CC"]) or settings["CC"]).resolve()
+                report["tool_overrides"][label] = {
+                    "CC": str(cc), "sha256": digest(cc),
+                    "version": subprocess.check_output([str(cc), "--version"], text=True, timeout=15),
+                }
         save(args.output, report)
         binaries = {}
         for label, archive in archives.items():
@@ -212,6 +220,9 @@ def main():
         for label, archive in archives.items():
             if digest(archive) != report["archives"][label]["sha256"]:
                 raise RuntimeError(label + " archive changed during comparison")
+        for label, override in report["tool_overrides"].items():
+            if digest(override["CC"]) != override["sha256"]:
+                raise RuntimeError(label + " compiler wrapper changed during comparison")
         report["complete"] = True
         save(args.output, report)
     print(json.dumps(report["summary"], indent=2), flush=True)

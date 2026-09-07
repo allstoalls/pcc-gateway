@@ -1,0 +1,59 @@
+{
+  "schema": "pcc.runtime-ir-optimizer-experiment.v1",
+  "complete": true,
+  "started_utc": "2026-09-07T05:06:53.433812+00:00",
+  "script_sha256": "0a8d142bf7f764bc25b7cd514bd24c25cc5ec1aae292f35902f4b4f0c13f3b1e",
+  "llvm_version": [
+    20,
+    1,
+    8
+  ],
+  "baseline_archive": "/Users/jiamo/.cache/pcc/test-artifacts/runtime-builds/a8feaa180e6fc84f76c70b33-pcc-py/libpy_runtime_pcc_py.a",
+  "baseline_sha256": "9814efd78e4c6a62ddc07fc54c53573cc28f5dfbe7cf022703d1258bfd70ea2f",
+  "optimization_level": 2,
+  "selected_modules": [
+    "py_obj",
+    "py_list",
+    "py_gen"
+  ],
+  "claim": "LLVM IR optimizer diagnostic on unchanged pcc-Python runtime sources",
+  "modules": [
+    {
+      "module": "py_obj",
+      "source_sha256": "44b46342a44cae5087892eca954cf3bc9a1b9fd522e4b28b036f1778dea6b5cf",
+      "input_ir_sha256": "1f122afe856a982e5bd64150ecfd3d0ffc3c88d7c9b553ccf832842d66884d37",
+      "optimized_ir_sha256": "8231882445d7165840ee0e8e24f67943ed0738929f192791d8a2ee1520e74c83",
+      "input_object_sha256": "b749b3275d0d39134ff5f1a04153a42a2ac3980682e88580af566cbf6a9ec979",
+      "optimized_object_sha256": "d23e24158efef5318519cb0079b52816b4701a7dd5a15fcb8e48ec631219195c",
+      "input_ir_bytes": 462999,
+      "optimized_ir_bytes": 383785
+    },
+    {
+      "module": "py_list",
+      "source_sha256": "9cf5140111c8784fc76863a862dea27062c7b76dd11fee6f6e21eeffce853df9",
+      "input_ir_sha256": "4b7d29cac5b74dcaed411cdef41084e6e29840deff33b75b1afd9ef7044634bc",
+      "optimized_ir_sha256": "67b7922fe0a7c6ce896fae4121cfdb99d35d5c4d968b85087c84e2aff764ee73",
+      "input_object_sha256": "aa0aeeaef79e967b1b6d81180fffda625751ae0bb8bff214843dbc10ffea61ba",
+      "optimized_object_sha256": "b7eccbb1581d2a2891d1923d72a2649ac4f01e89d829b258575bb2322373a62e",
+      "input_ir_bytes": 641235,
+      "optimized_ir_bytes": 664311
+    },
+    {
+      "module": "py_gen",
+      "source_sha256": "c566df5f1b2ea04326a567af2b77cc1a12e0abab6b7ea1d8fcc42b884f5dab02",
+      "input_ir_sha256": "d5070716d103ad386e984d42a95bda7d6e6b73560def73f71ccc6396e1d0f525",
+      "optimized_ir_sha256": "8914ea5372e2f5fe813a7ba9a7e5918f6059ecd19f7db1d130451ba66b64a450",
+      "input_object_sha256": "bbc63daa372f82bb09a2e2c87eb69132468e1ccfcc69cab93cd87c77a6a99414",
+      "optimized_object_sha256": "ddeabf80b8dcb96bb98b0776a0e83cfbdd5464d491ec68e3a551e3e85579f745",
+      "input_ir_bytes": 165312,
+      "optimized_ir_bytes": 115104
+    }
+  ],
+  "candidate_archive": "/Users/jiamo/.cache/pcc/gateway-optimization-20260907/runtime-ir-o2-v2/libpy_runtime_pcc_py.a",
+  "candidate_sha256": "2c88d040d49ac4a28b6733ba93627c38705575fdbe1f8038d5546d536b3b8a91",
+  "changed_members": [
+    "py_obj.o",
+    "py_list.o",
+    "py_gen.o"
+  ]
+}

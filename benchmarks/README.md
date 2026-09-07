@@ -64,21 +64,26 @@ work, rather than interpreting the C1 win as a cheaper complete task lifecycle.
 
 ## Current pcc/pcc1/asyncio result (2026-09-07)
 
-The [latest table](results/2026-09-07-field-owners-three-way.md) and
-[raw samples](results/2026-09-07-field-owners-three-way.json) use newly built
-pcc1 `0ff76d8bf139` and the same source/runtime for host pcc. Zero-wait/C100
-medians are **49,087.9 / 48,457.6 / 86,611.5 QPS**, with peak RSS
-**7.88 / 7.98 / 27.62 MiB**. All 90 runs / 241,650 requests passed.
+The [latest table](results/2026-09-07-runtime-o2-three-way.md) and
+[raw samples](results/2026-09-07-runtime-o2-three-way.json) use newly built
+pcc1 `2b08f3a7aac1` and the same source/runtime for host pcc. Zero-wait/C100
+medians are **57,469.9 / 57,662.8 / 85,437.0 QPS**, with peak RSS
+**7.97 / 7.95 / 27.83 MiB**. All 90 runs / 241,650 requests passed.
 The first-entry, completed-result and direct-generator flags are enabled in
-both native arms; field/iterator ownership repairs are included. Stage1 and
-startup/compile/run smoke checks passed. Shared-installation promotion and
-new-source Stage2/Stage3 fixed-point qualification remain pending.
+both native arms. The normal runtime build now optimizes exactly five
+profiled modules, while withdrawn frame experiments do not affect generated
+applications. Stage1 and startup/compile/run smoke checks passed.
+Shared-installation promotion and new-source Stage2/Stage3 qualification
+remain pending; the shared PATH installation is still the historical toolchain.
 
-This pcc1 also passed all three native HTTP/dashboard/failure-cleanup
-examples (292.32 s) and the eight new field-owner/suspended-iterator regression
-sources under GC0–4 (40 executions, 83.39 s). The shared PATH installation is
-still the historical toolchain; these results identify the private candidate
-explicitly and do not promote it.
+The new pcc1 passed eight field/suspended-iterator sources across GC0–4
+(40 executions, 77.43 s) and all three native HTTP/dashboard/failure-cleanup
+examples (261.24 s). Normal runtime native checks pass, along with 76
+optimizer/provenance/cache checks and the 290-test gateway default suite.
+
+The preceding [field-owner comparison](results/2026-09-07-field-owners-three-way.md)
+used pcc1 `0ff76d8bf139`, before runtime module optimization, and remains
+available with its own source/runtime identity and application gates.
 
 The preceding [factory comparison](results/2026-09-07-factory-three-way.md)
 used pcc1 `53978d6bf7db` before the latest task/ownership changes; its raw
@@ -125,6 +130,52 @@ and archive hashes before/after measurement, and rejects existing output names.
 Application binaries and compilation logs go under `benchmarks/build/<output-stem>/`.
 
 ## Runtime optimization A/B (2026-09-07)
+
+The runtime's object emitter previously used target-machine emission after
+bounded IR cleanup, without LLVM's full module optimization. Optimizing only
+`py_obj`, `py_list`, and `py_gen`, with identical source and all other archive
+members unchanged, improves **49,193.0 → 55,135.9 QPS (+12.1%)**;
+instructions/request fall **7.1%**. Adding `py_gc_backend` and
+`freestanding_gc_index_table` improves **55,401.7 → 59,032.4 (+6.6%)** in a
+separate A/B. Both reports have 42 valid runs. The latter's same-run asyncio
+is **88,549.8 QPS**. Do not combine percentages from separate runs into a new
+measured result. [Three-module report](results/2026-09-07-runtime-ir-o2-ab.json)
+and [five-module report](results/2026-09-07-runtime-ir-o2-five-ab.json).
+
+The core's `scripts/reoptimize_runtime_ir.py` retains input/output hashes,
+LLVM version and verifies exactly which archive members changed. It emits
+objects through llvmlite and preserves Python-source provenance. Libc and
+allocator implementations are excluded pending libcall-recursion checks.
+Normal-build and native-pcc1 qualification are separate from these host-pcc
+application A/B results.
+
+An explicit [application-only Clang -O2 control](results/2026-09-07-llvm-o2-application-ab.json)
+is flat: **51,647.0 / 51,338.8 QPS**. The earlier self/LLVM comparison used
+default application emission, so its 0.45% difference does not bound runtime
+optimization potential. `benchmarks/clang_o2` supplies the explicit optimizer
+oracle; `runtime_ab.py` records and verifies compiler-wrapper identities.
+
+The [bidirectional frame-owner trial](results/2026-09-07-frame-owner-roundtrip-ab.json)
+also has no accepted throughput gain: **50,166.3 → 50,270.1 (+0.21%)**, with
+overlapping ranges and unchanged user CPU. Its application flag/path was
+withdrawn. Runtime contracts and exact experimental sources remain available
+for diagnosis; current application code retains the established frame path.
+
+The [save-only ownership-transfer experiment](results/2026-09-07-frame-owner-transfer-ab.json)
+also establishes **no throughput gain**: 48,508.0 → 47,949.2 QPS with
+overlapping ranges, instructions/request -0.91%, and unchanged user CPU.
+All 42 runs passed. Restoration still retained every frame value, leaving
+the duplicate frame/local lifetime largely intact. This is diagnostic
+evidence for completing transfer in both directions, not an accepted result.
+
+The [bulk frame-save experiment](results/2026-09-07-bulk-frame-save-ab.json)
+is **rejected**: batching existing slot stores reduces zero-wait/C100 QPS
+from **48,279.4 to 46,711.8 (-3.25%)**, with instructions/request increasing
+**1.08%**. All 42 runs passed workload checks, but the added address-array and
+dispatch work did not reduce the reference protocol. Application activation
+was withdrawn. Reproduction requires the experimental compiler source at core
+`34c3d139`, its matching runtime, and the recorded per-arm environment; current
+code ignores the old `PCC_BULK_GENERATOR_FRAME_SAVE` switch.
 
 The [self/LLVM application diagnostic](results/2026-09-07-self-llvm-application-ab.json)
 holds the fixed source, runtime, workload and flags constant. Seven repeats
