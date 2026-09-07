@@ -62,7 +62,7 @@ in flight is still needed before generalizing to steady service throughput.
 The current evidence points to reducing pcc's per-request frame/task/ownership
 work, rather than interpreting the C1 win as a cheaper complete task lifecycle.
 
-## Current pcc/pcc1/asyncio result (2026-09-07)
+## Latest diagnostic pcc/pcc1/asyncio result (2026-09-07)
 
 The [latest table](results/2026-09-07-runtime-o2-three-way.md) and
 [raw samples](results/2026-09-07-runtime-o2-three-way.json) use newly built
@@ -70,9 +70,11 @@ pcc1 `2b08f3a7aac1` and the same source/runtime for host pcc. Zero-wait/C100
 medians are **57,469.9 / 57,662.8 / 85,437.0 QPS**, with peak RSS
 **7.97 / 7.95 / 27.83 MiB**. All 90 runs / 241,650 requests passed.
 The first-entry, completed-result and direct-generator flags are enabled in
-both native arms. The normal runtime build now optimizes exactly five
-profiled modules, while withdrawn frame experiments do not affect generated
-applications. Stage1 and startup/compile/run smoke checks passed.
+both native arms. These artifacts used LLVM O2 on five runtime modules.
+The automatic O2 build policy has since been withdrawn: the numbers describe
+this diagnostic, not the current default or a fully LLVM-free runtime build.
+Withdrawn frame experiments do not affect generated applications.
+Stage1 and startup/compile/run smoke checks passed for the recorded artifacts.
 Shared-installation promotion and new-source Stage2/Stage3 qualification
 remain pending; the shared PATH installation is still the historical toolchain.
 
@@ -131,7 +133,9 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
-The runtime's object emitter previously used target-machine emission after
+Both runtime A/B arms use the same LLVM target-machine object emitter; this
+compares additional optimization, not self versus LLVM object generation.
+The control uses target-machine emission after
 bounded IR cleanup, without LLVM's full module optimization. Optimizing only
 `py_obj`, `py_list`, and `py_gen`, with identical source and all other archive
 members unchanged, improves **49,193.0 → 55,135.9 QPS (+12.1%)**;
@@ -146,8 +150,27 @@ The core's `scripts/reoptimize_runtime_ir.py` retains input/output hashes,
 LLVM version and verifies exactly which archive members changed. It emits
 objects through llvmlite and preserves Python-source provenance. Libc and
 allocator implementations are excluded pending libcall-recursion checks.
-Normal-build and native-pcc1 qualification are separate from these host-pcc
-application A/B results.
+These are explicit LLVM oracle results. The automatic default-build O2 policy
+was withdrawn; self-path improvements must reproduce the useful transformations
+through pcc's own selected passes and pass separate native-pcc1 qualification.
+
+The self frontend's default tier selects only `mem2reg,sroa`; having more
+translated passes in the repository does not mean this path runs them.
+The optimized application's [profile](results/2026-09-07-runtime-o2-profile.folded)
+still spends 852/2302 leaf samples (37.0%) in the five leading object-validation
+and reference-count helpers. This does not establish how much is caused by
+code generation versus operation counts. Per-request task/object/frame/ownership
+counts and uninstrumented A/B timing are the next attribution boundary.
+
+The [self capability probe](results/2026-09-07-self-runtime-capability.json)
+confirms native pcc1 can lower all five sources and emit their ARM64/PCO code
+without host Python or cc. A generator linked with those PCOs returns 42;
+the remaining runtime members are prebuilt and pcc's linker still runs on
+CPython. Explicit `simplifycfg` and `inline` currently attempt llvmlite imports
+and fail the dependency guard. This is an emission capability check, not O2
+parity or the completed dependency contract in `AGENTS.md`. Reproduce with
+core's `scripts/probe_pcc1_self_runtime.py --pcc1 NATIVE_BINARY --source-root
+PCC_SOURCE --runtime-archive RUNTIME_ARCHIVE --output-dir NEW_DIRECTORY`.
 
 An explicit [application-only Clang -O2 control](results/2026-09-07-llvm-o2-application-ab.json)
 is flat: **51,647.0 / 51,338.8 QPS**. The earlier self/LLVM comparison used

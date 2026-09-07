@@ -1,5 +1,9 @@
 # Structured-concurrency comparison
 
+This retained diagnostic uses LLVM O2 on five runtime modules. The automatic
+build policy was subsequently withdrawn; these results do not describe the
+current default toolchain or prove an LLVM-free runtime build.
+
 Run: 2026-09-07T05:49:35.038449+00:00; macOS-26.5.1-arm64-arm-64bit-Mach-O; Apple M2 Max.
 
 Two concurrent child waits and validated JSON per request; one carrier/event loop.

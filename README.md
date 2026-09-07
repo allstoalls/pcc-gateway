@@ -45,10 +45,12 @@ uv run pytest -q -x -m integration tests/test_native_examples.py
 The default suite passes **290 tests**. Native integration tests run separately;
 `PCC_TEST_PCC1=/path/to/pcc1` selects a candidate compiler.
 
-## Performance (2026-09-07)
+## Performance (2026-09-07, LLVM runtime diagnostic)
 
 Apple M2 Max, macOS 26.5.1, Python **3.15.0rc1**. Both native arms use the
-same compiler source and runtime, including optimization of five runtime modules.
+same compiler source and runtime, with five runtime modules optimized by LLVM O2.
+That default-build change has been withdrawn; these retained measurements
+describe the diagnostic artifacts, not the current default toolchain.
 Each request runs two child waits and validates the joined JSON result;
 one carrier/event loop, five repeats. Figures are median handler QPS,
 excluding HTTP sockets, compilation and startup.
@@ -64,7 +66,7 @@ finishes before the next begins.
 | 100 | 10 | 99.3 | 99.4 | 98.4 |
 | 100 | 100 | 947.7 | 948.6 | 956.5 |
 
-At zero wait / concurrency 100, pcc1 is still **1.48× slower than asyncio**;
+In this diagnostic, at zero wait / concurrency 100, pcc1 is **1.48× slower than asyncio**;
 peak RSS is **7.95 MiB**, versus asyncio's **27.83 MiB**.
 All **90 runs / 241,650 requests** passed output and sample-count checks.
 System load varied during the run; use the recorded ranges when comparing results.

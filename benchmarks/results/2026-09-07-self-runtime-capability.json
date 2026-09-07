@@ -1,0 +1,347 @@
+{
+  "schema": "pcc.self-runtime-capability.v1",
+  "complete": true,
+  "compiler": "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+  "compiler_sha256": "2b08f3a7aac1c6a69a13ba7ee0014856d9e83fac2f48b5b9a0946909f25a4d7b",
+  "source_root": "/Users/jiamo/my/pcc",
+  "script_sha256": "74ec716d6f9d07c6d66b2f2b5a5b961247712a01084d514b4b4142e7ec62bb5e",
+  "claim": "native runtime IR/ASM/PCO emission; no full runtime or O2 parity claim",
+  "environment": {
+    "PCC_SOURCE_ROOT": "/Users/jiamo/my/pcc",
+    "PCC_REPO_ROOT": "/Users/jiamo/my/pcc",
+    "PCC_HOST_PYTHON": "/usr/bin/false",
+    "PCC_RUNTIME_CC": "/usr/bin/false",
+    "CC": "/usr/bin/false",
+    "PCC_PY_FRONTEND_IR_CACHE": "0",
+    "PCC_SELF_BACKEND_OBJECT_CACHE": "0"
+  },
+  "steps": [
+    {
+      "name": "py_obj-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.ll",
+        "/Users/jiamo/my/pcc/pcc/py_runtime/py/py_obj.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_obj-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_obj-pco",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-indexed-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.pidx",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.pco",
+        "PCO"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_list-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.ll",
+        "/Users/jiamo/my/pcc/pcc/py_runtime/py/py_list.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_list-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_list-pco",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-indexed-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.pidx",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.pco",
+        "PCO"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gen-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.ll",
+        "/Users/jiamo/my/pcc/pcc/py_runtime/py/py_gen.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gen-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gen-pco",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-indexed-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.pidx",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.pco",
+        "PCO"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gc_backend-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.ll",
+        "/Users/jiamo/my/pcc/pcc/py_runtime/py/py_gc_backend.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gc_backend-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "py_gc_backend-pco",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-indexed-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.pidx",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.pco",
+        "PCO"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "freestanding_gc_index_table-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.ll",
+        "/Users/jiamo/my/pcc/pcc/py_runtime/py/freestanding_gc_index_table.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "freestanding_gc_index_table-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "freestanding_gc_index_table-pco",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-indexed-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.pidx",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.pco",
+        "PCO"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "pass-simplifycfg",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/simplifycfg.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/pass_probe.py"
+      ],
+      "extra_environment": {
+        "PCC_HOST_PYTHON": "/private/tmp/pcc_self_runtime_capability_verified_20260907/host-python",
+        "PCC_PYTHON_IR_PASSES": "simplifycfg"
+      },
+      "returncode": 1,
+      "llvm_dependency_blocked": true,
+      "pass_available_without_llvm": false
+    },
+    {
+      "name": "pass-inline",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--python-library",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/inline.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/pass_probe.py"
+      ],
+      "extra_environment": {
+        "PCC_HOST_PYTHON": "/private/tmp/pcc_self_runtime_capability_verified_20260907/host-python",
+        "PCC_PYTHON_IR_PASSES": "inline"
+      },
+      "returncode": 1,
+      "llvm_dependency_blocked": true,
+      "pass_available_without_llvm": false
+    },
+    {
+      "name": "execute-frontend",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--backend",
+        "self",
+        "--emit-llvm=/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.py"
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    },
+    {
+      "name": "execute-asm",
+      "command": [
+        "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/pcc1",
+        "--pcc-self-backend-emit-worker",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.ll",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.result",
+        "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.s",
+        ""
+      ],
+      "extra_environment": {},
+      "returncode": 0
+    }
+  ],
+  "modules": [
+    {
+      "module": "py_obj",
+      "source_sha256": "3719fe6ebb1adf1ad625f9b96100a104145767cb627a47f5a787fa0e0644c45b",
+      "ir_sha256": "f3bebe4019698db5695983eb8e3ee5248756b0af95aeb3944d0ef05a89152f74",
+      "asm_sha256": "a391f702f1fa86a27c70d6f91795c72cd9ed196bb6aebb87e2a831f8a95bf04a",
+      "pco_sha256": "14c552de98533e63084ebed7c4fc5c914b0e96fe6897753291475fa3c1af59bb",
+      "pco_bytes": 259342,
+      "functions": 73
+    },
+    {
+      "module": "py_list",
+      "source_sha256": "253c3d29beeaf0a8e053710cd5c68eeeccae50ade062383813467da44784e787",
+      "ir_sha256": "07a78b03da4ca031e70ea48060dd6c690de38fc70be47af3a7b6d0385d910a74",
+      "asm_sha256": "c29fb94c8044f2eb2778e68d47d6ab37dfc813548766762e1c8e15c33226d7db",
+      "pco_sha256": "c57d1d02d7cd119938ad0251190b8b7e1fd7ec350e4a5d22ff1e79043025c4f6",
+      "pco_bytes": 378437,
+      "functions": 78
+    },
+    {
+      "module": "py_gen",
+      "source_sha256": "df0b1bf4fa44cbaa17ec5e54915622b7cf14dc5203ea6f8edf33494869df1d85",
+      "ir_sha256": "888f325c5a85f9097c71c36d9b1896be48e484b7f587b7dc1bf034f2d25222dd",
+      "asm_sha256": "d62e74b80132975258edb6f8b8a03ec29a25646133680dc9c569916084de1491",
+      "pco_sha256": "6aa31e696e138f3f2e9d7e9742c644b3f3b3f771866a4b0b7a0ed2404899a750",
+      "pco_bytes": 90864,
+      "functions": 29
+    },
+    {
+      "module": "py_gc_backend",
+      "source_sha256": "568b1c8b330615a46b72d51c1d58378a9083a31392fad5eae0ffdf2083fc4517",
+      "ir_sha256": "564e556472113ece54449e814d56e5d9d0f7f2d5bb5a31cfdcb9a41523404151",
+      "asm_sha256": "d202d8b31ce497e8f9504e7be88f2c8f7d048b643a63da14c59ca6b3028c4e9f",
+      "pco_sha256": "0c16087b4881a989cc18dab73b2a556b934afffc446ba25627c6ff01c5eb9c8f",
+      "pco_bytes": 1061342,
+      "functions": 399
+    },
+    {
+      "module": "freestanding_gc_index_table",
+      "source_sha256": "742717e6c640411c180b2aa730354964db249c447c302c12ddb3a85b9400be6d",
+      "ir_sha256": "8c03ffacaa8e21ffd428c3440d242f51fb75ad3a7e33a28cc90733c3640d90e5",
+      "asm_sha256": "a1012152e21fe3fb9a1c58c234cec1a2e53706cc241b0d78cf9853eaadcafd5f",
+      "pco_sha256": "43327de9976c8e00c8380c67b9a87a4c87c996fda324760b3537c9721e91de98",
+      "pco_bytes": 84165,
+      "functions": 64
+    }
+  ],
+  "execution": {
+    "link_command": [
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/host-python",
+      "/Users/jiamo/my/pcc/scripts/pcc_link_macho.py",
+      "--out",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe",
+      "--asm",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/execute_probe.s",
+      "--archive",
+      "/Users/jiamo/my/pcc/build/gateway-stage1-runtime-o2-20260907/runtime-bundle/libpy_runtime_pcc_py.a",
+      "--native-object",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_obj.pco",
+      "--native-object",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_list.pco",
+      "--native-object",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gen.pco",
+      "--native-object",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/py_gc_backend.pco",
+      "--native-object",
+      "/private/tmp/pcc_self_runtime_capability_verified_20260907/freestanding_gc_index_table.pco"
+    ],
+    "stdout": "42\n",
+    "stderr": "",
+    "returncode": 0,
+    "binary_sha256": "8bbba5cf5a5ffffc7c4ff14d82907345868c7ef65806383e362709f9365a78c9",
+    "archive_sha256": "1092c06a9c3bc55ed7ba7dd589113414710b42834449563f25b85e8f3dbeffdd",
+    "claim": "selected PCOs linked with remaining prebuilt runtime members; not a full rebuild"
+  },
+  "compiler_unchanged": true
+}
