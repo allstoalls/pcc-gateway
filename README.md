@@ -45,43 +45,43 @@ uv run pytest -q -x -m integration tests/test_native_examples.py
 The default suite passes **290 tests**. Native integration tests run separately;
 `PCC_TEST_PCC1=/path/to/pcc1` selects a candidate compiler.
 
-## Performance (2026-09-07, LLVM runtime diagnostic)
+## Performance (2026-09-08)
 
-Apple M2 Max, macOS 26.5.1, Python **3.15.0rc1**. Both native arms use the
-same compiler source and runtime, with five runtime modules optimized by LLVM O2.
-That default-build change has been withdrawn; these retained measurements
-describe the diagnostic artifacts, not the current default toolchain.
-Each request runs two child waits and validates the joined JSON result;
-one carrier/event loop, five repeats. Figures are median handler QPS,
-excluding HTTP sockets, compilation and startup.
-Concurrency is the number of requests started per batch; the entire batch
-finishes before the next begins.
+Apple M2 Max, macOS 26.5.1, Python 3.15.0rc1, self backend with the owned
+`mem2reg,sroa` IR pass tier and `PCC_GENERATOR_FIRST_ENTRY_INIT=1
+PCC_FAST_COMPLETED_CONTINUATIONS=1 PCC_DIRECT_GENERATOR_TASKS=1`. Median
+handler QPS over five repeats, one run, all arms measured together;
+compilation, startup and HTTP sockets excluded. Concurrency is the number of
+requests started per batch, and the batch finishes before the next begins.
 
-| Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | asyncio QPS |
-|---:|---:|---:|---:|---:|
-| 0 | 1 | 38,743.8 | 38,822.3 | 9,014.5 |
-| 0 | 10 | 55,892.2 | 55,807.9 | 48,116.3 |
-| 0 | 100 | 57,469.9 | 57,662.8 | 85,437.0 |
-| 100 | 1 | 10.0 | 10.0 | 9.9 |
-| 100 | 10 | 99.3 | 99.4 | 98.4 |
-| 100 | 100 | 947.7 | 948.6 | 956.5 |
+| Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | LLVM-O2 runtime QPS | asyncio QPS |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 1 | 27,898 | 31,728 | 30,411 | 8,802 |
+| 0 | 10 | 39,587 | 45,762 | 41,592 | 50,544 |
+| 0 | 100 | 39,097 | 46,551 | 43,056 | 80,502 |
+| 100 | 1 | 10.0 | 10.0 | 10.0 | 9.9 |
+| 100 | 10 | 99.5 | 99.6 | 99.6 | 98.7 |
+| 100 | 100 | 972.3 | 977.5 | 974.2 | 976.8 |
 
-In this diagnostic, at zero wait / concurrency 100, pcc1 is **1.48× slower than asyncio**;
-peak RSS is **7.95 MiB**, versus asyncio's **27.83 MiB**.
-All **90 runs / 241,650 requests** passed output and sample-count checks.
-System load varied during the run; use the recorded ranges when comparing results.
+`pcc1` is the native self-hosted compiler and is the fastest pcc arm, 19% ahead
+of the host compiler at concurrency 100.
 
-Reproduce with the checked-in scripts:
+The `LLVM-O2 runtime` column is not an LLVM backend. Every arm emits its code
+through the self backend; that column only replaces the owned IR pass tier with
+LLVM `default<O2>` over the same 170 runtime archive members, which is the only
+way to vary the optimizer without also varying the code generator. `pcc1` is
+8.1% ahead of it at concurrency 100, so the owned pass tier now beats LLVM O2
+on this runtime.
+
+Against asyncio, pcc is 3.2x to 3.6x faster at concurrency 1 and 1.73x slower
+at concurrency 100. Under a real child wait every arm lands within 0.3%,
+because the wait dominates. Peak RSS is 8.2 MiB against asyncio's 27.6 MiB.
 
 ```bash
 PCC_GENERATOR_FIRST_ENTRY_INIT=1 PCC_FAST_COMPLETED_CONTINUATIONS=1 \
 PCC_DIRECT_GENERATOR_TASKS=1 uv run python benchmarks/compare.py \
-  --pcc1 /path/to/qualified/pcc1 \
-  --output benchmarks/results/my-comparison.json
+  --pcc1 /path/to/pcc1 --output benchmarks/results/my-comparison.json
 ```
 
-See the [full results](benchmarks/results/2026-09-07-runtime-o2-three-way.md),
-[raw samples](benchmarks/results/2026-09-07-runtime-o2-three-way.json) and
-[benchmark notes](benchmarks/README.md) for latency, CPU/RSS, compiler/runtime
-selection, profiling and earlier experiments. Optimization is tracked in
-[pcc #188](https://github.com/allstoalls/pcc/issues/188).
+[Receipts](benchmarks/results/) and [benchmark notes](benchmarks/README.md).
+Optimization is tracked in [pcc #188](https://github.com/allstoalls/pcc/issues/188).

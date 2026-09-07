@@ -219,7 +219,16 @@ def compare(args, core, concurrencies, delays, parser):
     save(args.output, report)
     args.output.with_suffix(".md").write_text("Comparison in progress; no complete results yet.\n")
     commands = {"asyncio": [sys.executable, str(ROOT / "benchmark_asyncio.py")]}
-    for label, compiler in (("host-pcc", args.pcc), ("pcc1", args.pcc1)):
+    # `--pcc1 none` drops that arm.  An installed pcc1 older than the sources
+    # it is asked to compile cannot build this package at all, and refusing to
+    # produce the host-pcc/asyncio sweep because of it loses the measurement
+    # that is available.  The omission is recorded in the report.
+    arms = [("host-pcc", args.pcc)]
+    if str(args.pcc1 or "").strip().lower() not in ("", "none", "skip"):
+        arms.append(("pcc1", args.pcc1))
+    else:
+        report["skipped_arms"] = ["pcc1"]
+    for label, compiler in arms:
         compiler = str(Path(compiler).resolve())
         output = build / label
         command = [compiler, "--backend", "self", "--python-libpython", "off",
