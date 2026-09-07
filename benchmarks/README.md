@@ -87,6 +87,22 @@ Application binaries and compilation logs go under `benchmarks/build/<output-ste
 
 ## Runtime optimization A/B (2026-09-07)
 
+The [self/LLVM application diagnostic](results/2026-09-07-self-llvm-application-ab.json)
+holds the fixed source, runtime, workload and flags constant. Seven repeats
+give **51,056.2 / 51,288.2 / 89,852.4 QPS** (self / LLVM / asyncio), just
+**0.45%** between the native backends. Both use 19.5 us process user CPU per
+measured request. All 42 runs passed. This does not establish a meaningful
+speed improvement: the generated continuation/frame/ownership workload
+remains the measured target. The runtime itself is unchanged; its Python
+members were already emitted with llvmlite's target machine.
+
+Reproduce this diagnostic with `runtime_ab.py --control-backend self
+--candidate-backend llvm`, one `--compiler-source`, the same archive in
+`--control-runtime` and `--candidate-runtime`, `--summary --asyncio
+--requests 20000 --repeats 7`, and the three flags in the main reproduction
+command. The LLVM arm is an explicit oracle and is separate from the default
+self-backend pcc/pcc1 comparison.
+
 The [field-owner repair A/B](results/2026-09-07-field-owners-ab.json) measures
 the complete workload after fixing retained field/iterator references.
 Zero-wait/C100 QPS changes **53,489.8 → 50,870.8 (-4.9%)**; peak RSS drops

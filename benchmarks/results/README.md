@@ -7,6 +7,7 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
+| [2026-09-07-self-llvm-application-ab.json](2026-09-07-self-llvm-application-ab.json) | Complete application-backend diagnostic, 42 runs: self 51,056.2 / LLVM 51,288.2 / asyncio 89,852.4 QPS. Same compiler source, runtime and workload; +0.45% does not establish a meaningful speed fix. |
 | [2026-09-07-field-owners-three-way.json](2026-09-07-field-owners-three-way.json) / [table](2026-09-07-field-owners-three-way.md) | **Current three-way comparison**, pcc1 0ff76d8bf139; 90 valid runs. Zero-wait/C100: 49,087.9 / 48,457.6 / 86,611.5 QPS, peak RSS 7.88 / 7.98 / 27.62 MiB. |
 | [2026-09-07-field-owners-ab.json](2026-09-07-field-owners-ab.json) | Complete host A/B, 42 runs. Ownership repair: 53,489.8 → 50,870.8 QPS (-4.9%), peak RSS 141.31 → 17.48 MiB; asyncio 88,804.3 QPS / 27.95 MiB. Correctness gain with a throughput cost; new pcc1 qualification pending. |
 | [Lifetime control](2026-09-07-field-owners-lifetime-control.json) / [candidate](2026-09-07-field-owners-lifetime.json) | Three same-process 5,000-request invocations. Tracked objects grow by 78,056 per invocation before and 4 after. The residual remains open. Produced by `benchmarks/lifetime.py`. |
