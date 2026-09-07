@@ -23,6 +23,45 @@ Darwin process peak RSS and CPU totals, source hashes and compiler identities.
 Process memory and CPU include startup and warmups. Incomplete runs are marked
 as such and cannot supply performance conclusions.
 
+## Interpreting concurrency and batch overhead
+
+Concurrency is the batch width: start C request tasks, wait for all of them,
+then start the next batch. Every request creates two child tasks, even at C1.
+Both implementations use one execution thread; these are not CPU-thread or
+HTTP-connection counts. The runner varies batch size and maximum in-flight
+requests together, so it does not isolate continuous-load concurrency scaling.
+
+The [batch-cost diagnostic](results/2026-09-07-batch-costs.json) fits
+`batch time = fixed cost + C × incremental request cost` to the C10/C100
+zero-wait measurements. Approximate fitted values are:
+
+| Implementation | Fixed cost per batch (µs) | Incremental cost per request (µs) |
+|---|---:|---:|
+| pcc | 6.7 | 20.3 |
+| pcc1 | 8.6 | 20.6 |
+| asyncio | 96.7 | 10.6 |
+
+These are two-point fits, not separately timed phases. A counting-only probe
+of the unchanged asyncio workload observes **7 selector.select(0) calls per
+batch** at C1, C10 and C100: respectively 7, 0.7 and 0.07 calls per request.
+The local Python 3.15 event loop polls the selector before each ready-callback
+batch. This supports fixed loop/polling cost amortization, but does not assign
+all fitted fixed time to I/O. No throughput result comes from the instrumented
+runs. Reproduce the analysis and counts with:
+
+```bash
+uv run python benchmarks/batch_costs.py \
+  --comparison benchmarks/results/2026-09-07-field-owners-three-way.json \
+  --output benchmarks/results/my-batch-costs.json
+```
+
+pcc1 throughput rises from 31,741.6 to 48,457.6 QPS as C increases; its
+relative advantage disappears because asyncio amortizes much more fixed work.
+A comparison that replenishes completed requests to maintain a fixed number
+in flight is still needed before generalizing to steady service throughput.
+The current evidence points to reducing pcc's per-request frame/task/ownership
+work, rather than interpreting the C1 win as a cheaper complete task lifecycle.
+
 ## Current pcc/pcc1/asyncio result (2026-09-07)
 
 The [latest table](results/2026-09-07-field-owners-three-way.md) and

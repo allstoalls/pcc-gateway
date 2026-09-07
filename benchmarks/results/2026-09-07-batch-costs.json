@@ -1,0 +1,116 @@
+{
+  "comparison": "benchmarks/results/2026-09-07-field-owners-three-way.json",
+  "comparison_sha256": "de8b8ccd3a297ed795a6b251628190f01988db4ad31829c9bb2e11d7516da9ea",
+  "complete": true,
+  "created_utc": "2026-09-07T02:53:16.918049+00:00",
+  "fit_anchors": [
+    10,
+    100
+  ],
+  "fits": [
+    {
+      "fitted_fixed_batch_us": 6.702222033507297,
+      "fitted_incremental_request_us": 20.304577787303263,
+      "implementation": "host-pcc",
+      "measurements": [
+        {
+          "batch_us": 30.703400005586445,
+          "concurrency": 1,
+          "qps_median": 32569.682830502526
+        },
+        {
+          "batch_us": 209.74799990653992,
+          "concurrency": 10,
+          "qps_median": 47676.25915124734
+        },
+        {
+          "batch_us": 2037.1600007638335,
+          "concurrency": 100,
+          "qps_median": 49087.945945583546
+        }
+      ],
+      "predicted_c1_batch_us": 27.00679982081056
+    },
+    {
+      "fitted_fixed_batch_us": 8.602222272505344,
+      "fitted_incremental_request_us": 20.550577777127426,
+      "implementation": "pcc1",
+      "measurements": [
+        {
+          "batch_us": 31.50440000463277,
+          "concurrency": 1,
+          "qps_median": 31741.59799434201
+        },
+        {
+          "batch_us": 214.1080000437796,
+          "concurrency": 10,
+          "qps_median": 46705.401003023035
+        },
+        {
+          "batch_us": 2063.659999985248,
+          "concurrency": 100,
+          "qps_median": 48457.59475917295
+        }
+      ],
+      "predicted_c1_batch_us": 29.15280004963277
+    },
+    {
+      "fitted_fixed_batch_us": 96.69898000235358,
+      "fitted_incremental_request_us": 10.578818603729209,
+      "implementation": "asyncio",
+      "measurements": [
+        {
+          "batch_us": 108.04864182136951,
+          "concurrency": 1,
+          "qps_median": 9255.090884467028
+        },
+        {
+          "batch_us": 202.48716603964567,
+          "concurrency": 10,
+          "qps_median": 49385.84600488737
+        },
+        {
+          "batch_us": 1154.5808403752744,
+          "concurrency": 100,
+          "qps_median": 86611.51865944434
+        }
+      ],
+      "predicted_c1_batch_us": 107.27779860608278
+    }
+  ],
+  "limitation": "Two-point fit, not independently timed phases; selector counts do not attribute all fitted fixed cost to I/O",
+  "model": "batch_us = fixed_batch_us + concurrency * incremental_request_us",
+  "python_version": "3.15.0rc1 (main, Aug 25 2026, 13:50:37) [Clang 22.1.3 ]",
+  "schema": "pcc-gateway.batch-costs.v1",
+  "script_sha256": "191d0795bc46ac801f6f14d8c7af6b1fc45a4b318b5e9556d39f240777afa09d",
+  "selector_counts": [
+    {
+      "batches": 100,
+      "calls_per_batch": 7.0,
+      "calls_per_request": 7.0,
+      "concurrency": 1,
+      "selector_calls": 700,
+      "selector_type": "KqueueSelector",
+      "zero_timeout_calls": 700
+    },
+    {
+      "batches": 100,
+      "calls_per_batch": 7.0,
+      "calls_per_request": 0.7,
+      "concurrency": 10,
+      "selector_calls": 700,
+      "selector_type": "KqueueSelector",
+      "zero_timeout_calls": 700
+    },
+    {
+      "batches": 100,
+      "calls_per_batch": 7.0,
+      "calls_per_request": 0.07,
+      "concurrency": 100,
+      "selector_calls": 700,
+      "selector_type": "KqueueSelector",
+      "zero_timeout_calls": 700
+    }
+  ],
+  "workload_sha256": "18f69e6ce478e976e3dee8c67c99ad774fffa70d39e0e4fcd2ecf563b2368383"
+}

@@ -52,6 +52,8 @@ same compiler source and runtime, including the latest task and ownership fixes.
 Each request runs two child waits and validates the joined JSON result;
 one carrier/event loop, five repeats. Figures are median handler QPS,
 excluding HTTP sockets, compilation and startup.
+Concurrency is the number of requests started per batch; the entire batch
+finishes before the next begins.
 
 | Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | asyncio QPS |
 |---:|---:|---:|---:|---:|
