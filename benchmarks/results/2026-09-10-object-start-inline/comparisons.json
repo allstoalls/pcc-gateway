@@ -1,0 +1,470 @@
+{
+  "schema": "pcc-gateway.object-start-inline.v1",
+  "scope": "Continuation of the 2026-09-10 refcount follow-up. The predecessor session ran out of budget mid-experiment; its object-start split failed to build because a freestanding module requires @c_abi_export on every function. That decorator was the only change made to its candidate, then the experiment was finished and extended. GC0-4, structured failure-cleanup and the core weakref/resurrection/refcount regression were run on the promoted candidate; they were NOT waived here.",
+  "retained_control_binary_sha256": "943514743b49cf244624ff403afe8045ae5bd8a38d0faa9679ff96e96ecbfcb2",
+  "core_commit_before": "23dec4e97e23dc6d8004059637586e22bee1b262",
+  "gateway_commit": "8e0e72f718dc9540da0236d59b3aab4713a436f3",
+  "promoted": {
+    "owner": "pcc/py_runtime/py/freestanding_allocator.py (core)",
+    "changes": [
+      "Split pcc_gc_granule_is_object_start: the exact-cache hit stays inlinable, the descriptor/radix validation moves to _granule_object_start_uncached.",
+      "Seed the exact positive cache in pcc_gc_granule_object_publish, where _granule_object_slot has just proved the cell.",
+      "Grow the exact object cache from 256 to 8192 entries (64 KiB) and widen both slot masks."
+    ],
+    "patch": "runtime.patch",
+    "committed": false
+  },
+  "ir_effect": {
+    "control_predicate_call_sites": 130,
+    "candidate_predicate_call_sites": 84,
+    "candidate_outlined_miss_call_sites": 47,
+    "exact_cache_global_references_control": 3,
+    "exact_cache_global_references_split": 49,
+    "note": "Counted in the final owned-pass IR (owned_round2 dce) of each arm."
+  },
+  "profiles": {
+    "retained": {
+      "samples": 2516,
+      "py_decref": 10.53,
+      "py_incref": 7.35,
+      "granule_is_object_start": 9.7,
+      "file": "../2026-09-10-refcount-followup/native.folded"
+    },
+    "split": {
+      "samples": 2521,
+      "py_decref": 9.0,
+      "py_incref": 8.73,
+      "granule_is_object_start": 0.0,
+      "granule_object_start_uncached": 5.0,
+      "file": "split-profile.folded"
+    },
+    "seed": {
+      "samples": 2530,
+      "py_decref": 9.57,
+      "py_incref": 8.66,
+      "granule_object_start_uncached": 5.77,
+      "file": "seed-profile.folded"
+    },
+    "note": "The fused predicate disappears from the split profile because inline-defined placed the hit path in its callers. The seed did not lower the miss share: the miss callers are steady-state store/dealloc/field paths, so 256 entries were thrashing, which is what the capacity sweep then measured."
+  },
+  "experiments": [
+    {
+      "experiment": "object-start-split",
+      "raw_result": "benchmarks/results/2026-09-10-object-start-split-runtime.json",
+      "workload": {
+        "requests": 100000,
+        "repeats": 5,
+        "concurrency": 100,
+        "child_wait_ms": 0
+      },
+      "paired_qps_vs_retained": {
+        "median": 1.049152325743942,
+        "min": 1.039224196343319,
+        "max": 1.07141113933949,
+        "wins": 5,
+        "n": 5,
+        "ratios": [
+          1.0543560875199138,
+          1.0393247585020589,
+          1.039224196343319,
+          1.049152325743942,
+          1.07141113933949
+        ]
+      },
+      "paired_qps_vs_asyncio": {
+        "median": 1.0266655483304938,
+        "min": 1.0139233218180106,
+        "max": 1.1035781951597707,
+        "wins": 5,
+        "n": 5,
+        "ratios": [
+          1.0266655483304938,
+          1.0139233218180106,
+          1.0638610967231161,
+          1.1035781951597707,
+          1.0146600573901592
+        ]
+      },
+      "summary": {
+        "retained": {
+          "qps_median": 81362.6618632844,
+          "instructions_median": 19389139445,
+          "cycles_median": 4160798289,
+          "peak_rss_bytes_median": 56213504
+        },
+        "object_start_split": {
+          "qps_median": 85034.51976035045,
+          "instructions_median": 19353087944,
+          "cycles_median": 3954850237,
+          "peak_rss_bytes_median": 56246272
+        },
+        "asyncio": {
+          "qps_median": 83479.86658603282,
+          "instructions_median": 16160582889,
+          "cycles_median": 3768929689,
+          "peak_rss_bytes_median": 32718848
+        }
+      },
+      "accepted": true,
+      "decision": "Promoted. Every repeat positive against both retained and asyncio; -5.0% process cycles with only -0.19% instructions, matching the removed call/frame cost."
+    },
+    {
+      "experiment": "publish-seed",
+      "raw_result": "benchmarks/results/2026-09-10-publish-seed-runtime.json",
+      "workload": {
+        "requests": 100000,
+        "repeats": 5,
+        "concurrency": 100,
+        "child_wait_ms": 0
+      },
+      "paired_qps_vs_split": {
+        "median": 1.016800456661998,
+        "min": 0.9732147136754514,
+        "max": 1.0240126499850266,
+        "wins": 3,
+        "n": 5,
+        "ratios": [
+          0.9732147136754514,
+          0.9819097799691989,
+          1.0183837196223309,
+          1.0240126499850266,
+          1.016800456661998
+        ]
+      },
+      "paired_qps_vs_retained": {
+        "median": 1.0447942646498358,
+        "min": 1.011240032540262,
+        "max": 1.061337731208934,
+        "wins": 5,
+        "n": 5,
+        "ratios": [
+          1.011240032540262,
+          1.0287849218465148,
+          1.0447942646498358,
+          1.061337731208934,
+          1.0538666498665707
+        ]
+      },
+      "paired_instructions_vs_split": {
+        "median": 0.9959152472908824,
+        "min": 0.9954589266859145,
+        "max": 0.995953106554917,
+        "wins": 0,
+        "n": 5,
+        "ratios": [
+          0.9959520528017006,
+          0.995953106554917,
+          0.9957493575846459,
+          0.9954589266859145,
+          0.9959152472908824
+        ]
+      },
+      "summary": {
+        "retained": {
+          "qps_median": 80493.45709101125,
+          "instructions_median": 19394938448,
+          "cycles_median": 4175425082,
+          "peak_rss_bytes_median": 56229888
+        },
+        "split": {
+          "qps_median": 83427.74573406919,
+          "instructions_median": 19357783264,
+          "cycles_median": 3990484260,
+          "peak_rss_bytes_median": 56295424
+        },
+        "publish_seed": {
+          "qps_median": 84484.00549164026,
+          "instructions_median": 19273909961,
+          "cycles_median": 3992011365,
+          "peak_rss_bytes_median": 56246272
+        },
+        "asyncio": {
+          "qps_median": 82526.92778684876,
+          "instructions_median": 16171774898,
+          "cycles_median": 3809736090,
+          "peak_rss_bytes_median": 32243712
+        }
+      },
+      "accepted": true,
+      "decision": "Promoted on the instruction reduction, which was -0.41% in every repeat. Its paired QPS increment over the split alone was +1.68% but only 3/5, so QPS alone would not have carried it."
+    },
+    {
+      "experiment": "exact-cache-capacity-sweep",
+      "raw_result": "benchmarks/results/2026-09-10-cache-sweep-runtime.json",
+      "workload": {
+        "requests": 100000,
+        "repeats": 5,
+        "concurrency": 100,
+        "child_wait_ms": 0
+      },
+      "paired_instructions_8k_vs_seed": {
+        "median": 0.9850961877763219,
+        "min": 0.9797988784164645,
+        "max": 0.9856102284506923,
+        "wins": 0,
+        "n": 5,
+        "ratios": [
+          0.98556134793926,
+          0.9850961877763219,
+          0.9797988784164645,
+          0.984867022173057,
+          0.9856102284506923
+        ]
+      },
+      "paired_instructions_64k_vs_seed": {
+        "median": 0.9799515910068333,
+        "min": 0.9777943776770229,
+        "max": 0.9805509528369507,
+        "wins": 0,
+        "n": 5,
+        "ratios": [
+          0.9804099160820801,
+          0.979675313683134,
+          0.9805509528369507,
+          0.9777943776770229,
+          0.9799515910068333
+        ]
+      },
+      "paired_qps_8k_vs_retained": {
+        "median": 1.0422611972427034,
+        "min": 1.0261423302445931,
+        "max": 1.135542555275252,
+        "wins": 5,
+        "n": 5,
+        "ratios": [
+          1.0290804367717246,
+          1.135542555275252,
+          1.0898290297602484,
+          1.0422611972427034,
+          1.0261423302445931
+        ]
+      },
+      "paired_qps_64k_vs_retained": {
+        "median": 1.0557100542127398,
+        "min": 1.0037765161463978,
+        "max": 1.1411670738120967,
+        "wins": 5,
+        "n": 5,
+        "ratios": [
+          1.0308604947012874,
+          1.1411670738120967,
+          1.0557100542127398,
+          1.0037765161463978,
+          1.0565497133690447
+        ]
+      },
+      "summary": {
+        "retained": {
+          "qps_median": 79479.37828374188,
+          "instructions_median": 19394682916,
+          "cycles_median": 4191059875,
+          "peak_rss_bytes_median": 56229888
+        },
+        "seed": {
+          "qps_median": 83934.23249541345,
+          "instructions_median": 19281399493,
+          "cycles_median": 4015439842,
+          "peak_rss_bytes_median": 56229888
+        },
+        "seed_cache8k": {
+          "qps_median": 84365.47460777235,
+          "instructions_median": 18994357080,
+          "cycles_median": 3959010159,
+          "peak_rss_bytes_median": 56279040
+        },
+        "seed_cache64k": {
+          "qps_median": 83973.91434443736,
+          "instructions_median": 18892982240,
+          "cycles_median": 4008438401,
+          "peak_rss_bytes_median": 56754176
+        },
+        "asyncio": {
+          "qps_median": 80289.27158317686,
+          "instructions_median": 16184867264,
+          "cycles_median": 3827700399,
+          "peak_rss_bytes_median": 32571392
+        }
+      },
+      "accepted": "8192 entries",
+      "decision": "8192 entries removed 1.49% of instructions in every repeat and had the best process cycles of the sweep. 65536 entries removed 2.01% of instructions but regressed cycles against 8192 (4.008e9 vs 3.959e9) and is DENIED: a 512 KiB table stops being data-cache resident, so its extra instruction saving does not convert."
+    },
+    {
+      "experiment": "confirmation-cache8k",
+      "raw_result": "benchmarks/results/2026-09-10-cache8k-confirm.json",
+      "workload": {
+        "requests": 200000,
+        "repeats": 7,
+        "concurrency": 100,
+        "child_wait_ms": 0,
+        "note": "the public README protocol"
+      },
+      "paired_qps_vs_retained": {
+        "median": 1.05615898795813,
+        "min": 1.048039638255954,
+        "max": 1.071266743844986,
+        "wins": 7,
+        "n": 7,
+        "ratios": [
+          1.0494958286325278,
+          1.0537120200610903,
+          1.0669652233860465,
+          1.048039638255954,
+          1.05615898795813,
+          1.0643328842561972,
+          1.071266743844986
+        ]
+      },
+      "paired_qps_vs_asyncio": {
+        "median": 1.0400984344583604,
+        "min": 1.016787709046128,
+        "max": 1.0591741156286094,
+        "wins": 7,
+        "n": 7,
+        "ratios": [
+          1.0271306044136044,
+          1.0423813776547266,
+          1.0400984344583604,
+          1.016787709046128,
+          1.0227197473732066,
+          1.0591741156286094,
+          1.0530886032637106
+        ]
+      },
+      "paired_instructions_vs_retained": {
+        "median": 0.9791863674325229,
+        "min": 0.9788248194192831,
+        "max": 0.9802465180370943,
+        "wins": 0,
+        "n": 7,
+        "ratios": [
+          0.9788248194192831,
+          0.9792157601736822,
+          0.9791863674325229,
+          0.9795743330421313,
+          0.9802465180370943,
+          0.978834979545519,
+          0.9790460343993141
+        ]
+      },
+      "summary": {
+        "retained": {
+          "qps_median": 81569.09575563001,
+          "instructions_median": 38771492933,
+          "cycles_median": 8270610638,
+          "peak_rss_bytes_median": 107839488
+        },
+        "seed_cache8k": {
+          "qps_median": 86264.23251702709,
+          "instructions_median": 37962090491,
+          "cycles_median": 7829868997,
+          "peak_rss_bytes_median": 107905024
+        },
+        "asyncio": {
+          "qps_median": 83944.49148326021,
+          "instructions_median": 32019062793,
+          "cycles_median": 7343665616,
+          "peak_rss_bytes_median": 36618240
+        }
+      },
+      "accepted": true,
+      "decision": "Claim-grade. +5.62% paired QPS against retained and +4.01% against asyncio, every one of seven repeats positive against both."
+    },
+    {
+      "experiment": "confirmation-seed-only",
+      "raw_result": "benchmarks/results/2026-09-10-publish-seed-confirm.json",
+      "workload": {
+        "requests": 200000,
+        "repeats": 7,
+        "concurrency": 100,
+        "child_wait_ms": 0
+      },
+      "paired_qps_vs_retained": {
+        "median": 1.0546880963503344,
+        "min": 1.0346108219524857,
+        "max": 1.2402289438260778,
+        "wins": 7,
+        "n": 7,
+        "ratios": [
+          1.0546880963503344,
+          1.066525110011169,
+          1.0563120747025203,
+          1.2402289438260778,
+          1.0384344432747497,
+          1.0346108219524857,
+          1.0514815397228643
+        ]
+      },
+      "paired_qps_vs_asyncio": {
+        "median": 1.007253855921076,
+        "min": 0.9968799736598803,
+        "max": 1.085948917100617,
+        "wins": 6,
+        "n": 7,
+        "ratios": [
+          1.007253855921076,
+          0.9968799736598803,
+          1.085948917100617,
+          1.0194362245547273,
+          1.0049913827842132,
+          1.0027190035474844,
+          1.0271541534308528
+        ]
+      },
+      "summary": {
+        "retained": {
+          "qps_median": 79902.04010078788,
+          "instructions_median": 38775562913,
+          "cycles_median": 8346227985,
+          "peak_rss_bytes_median": 107839488
+        },
+        "publish_seed": {
+          "qps_median": 84349.00073858231,
+          "instructions_median": 38534812096,
+          "cycles_median": 7950573009,
+          "peak_rss_bytes_median": 107839488
+        },
+        "asyncio": {
+          "qps_median": 82443.3516188385,
+          "instructions_median": 32029140640,
+          "cycles_median": 7460257602,
+          "peak_rss_bytes_median": 36454400
+        }
+      },
+      "accepted": true,
+      "decision": "Superseded by cache8k; kept because it is the same-protocol evidence that the seed alone reached only +0.73% paired against asyncio (6/7)."
+    }
+  ],
+  "correctness_gates": {
+    "tool": "benchmarks/combined_runtime.py --extra-module freestanding_allocator",
+    "programs": [
+      "benchmark_native.py",
+      "tests/fixtures/gateway/structured_scope_app.py (structured failure cleanup)",
+      "core tests/python/test_known_object_refcounts.py template with VERIFY_CHECKS=1 (weakref/resurrection/refcount)"
+    ],
+    "arms": [
+      "baseline",
+      "merged_o0",
+      "owned_round1",
+      "owned_round2"
+    ],
+    "backends": "PCC_GC_BACKEND=0..4",
+    "runs_per_candidate": 60,
+    "split": {
+      "report": "gates-split.json",
+      "result": "all passed"
+    },
+    "cache8k": {
+      "report": "gates-cache8k.json",
+      "result": "all passed"
+    }
+  },
+  "unresolved": {
+    "memory": "Peak RSS is unchanged by this work and remains the open front: 102.9 MiB against 34.9 MiB for asyncio on the 200k/7 protocol (2.95x). Throughput now leads, memory does not, so GC0 is not yet a comprehensive win.",
+    "work_gap": "The promoted runtime still executes 18.6% more instructions and 6.6% more cycles than asyncio on the same workload and leads on QPS through concurrency, not through less work. py_decref and py_incref remain the largest owners at about 18% of leaf samples combined.",
+    "freestanding_mem_str": "PRE-EXISTING and independent of this change: py/freestanding_mem_str.py fails to compile from unmodified core 23dec4e9 -- \"freestanding module emitted managed-runtime reference in define external void @bzero: call void @pcc_gc_release\". This blocks any from-scratch runtime rebuild, so the focused pytest granule gates (which rebuild the shared runtime through their fixture) cannot run; the GC0-4 evidence above goes through the incremental archive instead. Reproduce with: pcc --python-library --emit-llvm=/tmp/x.ll py/freestanding_mem_str.py from pcc/py_runtime.",
+    "carried_over": [
+      "full compiler peak memory",
+      "native-direct worker Bus error"
+    ]
+  }
+}

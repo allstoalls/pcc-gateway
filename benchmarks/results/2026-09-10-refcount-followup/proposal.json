@@ -1,0 +1,6 @@
+{
+  "scope": "private value-passing terminal refcount prototype; retain existing cleanup order and GC1\u20134 record ABI",
+  "source": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/py_runtime_rc_values/py/py_obj.py",
+  "sha256": "7649a39f5643e3fda63e442061340764747cc7c74420b118f30d96e11be1095b",
+  "measured_owner": "py_decref 10.53% of current native leaf CPU samples"
+}

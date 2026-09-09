@@ -1,0 +1,86 @@
+{
+  "validation_scope": "User requested no further quota polling or correctness suites. Intrinsic benchmark work checks remained enabled.",
+  "workload": {
+    "concurrency": 100,
+    "child_wait_ms": 0,
+    "requests_per_run": 100000,
+    "repeats": 5
+  },
+  "experiments": [
+    {
+      "experiment": "direct-release",
+      "raw_result": "benchmarks/results/2026-09-10-direct-release-runtime.json",
+      "control_qps_median": 80092.77948105274,
+      "candidate_qps_median": 80568.36144725075,
+      "asyncio_qps_median": 79255.80385144528,
+      "paired_qps_ratio_median": 1.001377585042151,
+      "instruction_ratio": 0.998073164956048,
+      "candidate_peak_rss_bytes_median": 56246272,
+      "paired_ratios": [
+        1.001377585042151,
+        0.991282251269776,
+        1.005937888150211,
+        0.9603485597062623,
+        1.0199960201079614
+      ],
+      "accepted": false,
+      "decision": "Small instruction reduction; no substantial throughput gain. Preserved as isolated experiment."
+    },
+    {
+      "experiment": "immortal-order",
+      "raw_result": "benchmarks/results/2026-09-10-immortal-order-runtime.json",
+      "control_qps_median": 81438.39755353991,
+      "candidate_qps_median": 82039.23279636292,
+      "asyncio_qps_median": 85148.07836206829,
+      "paired_qps_ratio_median": 1.0073777881303227,
+      "instruction_ratio": 0.9946206343119407,
+      "candidate_peak_rss_bytes_median": 56229888,
+      "paired_ratios": [
+        1.0142272021590915,
+        1.0329928547769736,
+        0.999458109196871,
+        0.9982691073089971,
+        1.0073777881303227
+      ],
+      "accepted": false,
+      "decision": "Small instruction reduction; no substantial throughput gain. Preserved as isolated experiment."
+    },
+    {
+      "experiment": "cache1024",
+      "raw_result": "benchmarks/results/2026-09-10-cache1024-runtime.json",
+      "control_qps_median": 80349.94005955465,
+      "candidate_qps_median": 80828.85136895927,
+      "asyncio_qps_median": 83729.70921603977,
+      "paired_qps_ratio_median": 1.0059603194358284,
+      "instruction_ratio": 0.9927067648154146,
+      "candidate_peak_rss_bytes_median": 56229888,
+      "paired_ratios": [
+        1.075618501925881,
+        0.9739257775572909,
+        1.0728705566576076,
+        0.9846414217242326,
+        1.0059603194358284
+      ],
+      "accepted": false,
+      "decision": "Small instruction reduction; no substantial throughput gain. Preserved as isolated experiment."
+    }
+  ],
+  "post_inline_cleanup": {
+    "build_report": "post-inline-cleanup/build-report.json",
+    "no_op_passes": [
+      "mem2reg",
+      "sroa",
+      "instsimplify"
+    ],
+    "additional_simplifycfg_effect": {
+      "loads_removed": 54,
+      "stores_removed": 18,
+      "calls_removed": 6,
+      "branches_removed": 58
+    },
+    "throughput_run": false
+  },
+  "accepted_implementation_changes": [],
+  "retained_core_commit": "23dec4e97e23dc6d8004059637586e22bee1b262",
+  "retained_gateway_commit": "8e0e72f718dc9540da0236d59b3aab4713a436f3"
+}

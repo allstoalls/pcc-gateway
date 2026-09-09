@@ -1,0 +1,30 @@
+{
+  "scope": "checkpoint, not accepted speed improvement",
+  "quota_remaining_percent": 5,
+  "quota_timestamp": "2026-09-09T16:06:53.402Z",
+  "core_commit": "23dec4e97e23dc6d8004059637586e22bee1b262",
+  "gateway_commit": "8e0e72f718dc9540da0236d59b3aab4713a436f3",
+  "profile_requests": 1000000,
+  "profile_samples": 2516,
+  "leaf_shares_percent": {
+    "py_decref": 10.53,
+    "py_incref": 7.35,
+    "object_start": 9.7
+  },
+  "candidate_archive": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/py_runtime_rc_values/libpy_runtime_pcc_py.a",
+  "candidate_sha256": "8d681591651029796d4be9b51f044621c26fcb3fc9eb1bde3a90273f39550784",
+  "changed_runtime_members": [
+    "py_obj.o"
+  ],
+  "codegen_checksums": [
+    "a92b2af96ce95efe8ded06c440b8f8349f0ba8cab8f3ec814a858fcfe4db594c"
+  ],
+  "remaining": [
+    "GC0\u20134 weakref/resurrection/underflow/failure gates",
+    "same-app same-run throughput and instruction comparison",
+    "non-HTTP regression comparison",
+    "accept/reject prototype based on evidence"
+  ],
+  "accepted_core_changes": false,
+  "task_processes": []
+}

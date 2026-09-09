@@ -1,0 +1,94 @@
+{
+  "complete": true,
+  "scope": "performance-only follow-up: existing owned memory/scalar cleanup passes on retained optimized runtime, external LLVM O0 emission; no new correctness suite",
+  "runtime_sha256": "c4a3223df7810680ec4628455f2d02bc505fd8c387937931740a4ddc2058a128",
+  "inputs": {},
+  "passes": [
+    {
+      "name": "mem2reg",
+      "changed": false,
+      "seconds": 0.3770787090761587,
+      "counts": {
+        "alloca": 291,
+        "load": 21903,
+        "store": 4835,
+        "phi": 10458,
+        "call": 24059,
+        "br": 24733
+      }
+    },
+    {
+      "name": "sroa",
+      "changed": false,
+      "seconds": 0.07693758304230869,
+      "counts": {
+        "alloca": 291,
+        "load": 21903,
+        "store": 4835,
+        "phi": 10458,
+        "call": 24059,
+        "br": 24733
+      }
+    },
+    {
+      "name": "instsimplify",
+      "changed": false,
+      "seconds": 0.2254638330778107,
+      "counts": {
+        "alloca": 291,
+        "load": 21903,
+        "store": 4835,
+        "phi": 10458,
+        "call": 24059,
+        "br": 24733
+      }
+    },
+    {
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 0.8251528330147266,
+      "counts": {
+        "alloca": 291,
+        "load": 21849,
+        "store": 4817,
+        "phi": 10455,
+        "call": 24053,
+        "br": 24675
+      }
+    },
+    {
+      "name": "dce",
+      "changed": false,
+      "seconds": 0.25084687501657754,
+      "counts": {
+        "alloca": 291,
+        "load": 21849,
+        "store": 4817,
+        "phi": 10455,
+        "call": 24053,
+        "br": 24675
+      }
+    }
+  ],
+  "input_sha256": "250ff41e597963578f5dc7884d5221c551eb103c67ba97f6e71b193c3b2e8f0d",
+  "counts_before": {
+    "alloca": 291,
+    "load": 21903,
+    "store": 4835,
+    "phi": 10458,
+    "call": 24059,
+    "br": 24733
+  },
+  "counts_after": {
+    "alloca": 291,
+    "load": 21849,
+    "store": 4817,
+    "phi": 10455,
+    "call": 24053,
+    "br": 24675
+  },
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/cleanup-ab/candidate",
+  "binary_sha256": "3a33f855c83cd257010145c76f8bde752e0365c2f4d62d74e950783590ac3877",
+  "triple": "arm64-apple-darwin25.5.0",
+  "correctness_qualification": "NOT RUN"
+}

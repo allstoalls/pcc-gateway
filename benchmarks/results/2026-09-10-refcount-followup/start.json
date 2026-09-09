@@ -1,0 +1,9 @@
+{
+  "pcc_commit": "23dec4e97e23dc6d8004059637586e22bee1b262",
+  "gateway_commit": "8e0e72f718dc9540da0236d59b3aab4713a436f3",
+  "quota_remaining": 6,
+  "stop_at": 5,
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2",
+  "binary_sha256": "943514743b49cf244624ff403afe8045ae5bd8a38d0faa9679ff96e96ecbfcb2",
+  "scope": "Profile retained optimized runtime; no rollback or new dependency/default switch"
+}

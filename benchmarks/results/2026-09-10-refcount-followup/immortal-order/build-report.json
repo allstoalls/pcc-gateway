@@ -1,0 +1,74 @@
+{
+  "complete": true,
+  "scope": "performance-only experiment requested by user; no new GC/correctness suite; same application objects, owned passes and external LLVM O0 emission",
+  "runtime_sha256": "cf9d013ee42afe67b03d797801c1e92b91f33986dd66e70944a8d345fe233094",
+  "inputs": {
+    "py_obj": "98a37fdab74e8ed729e32ab747029ab999a7b7e14af2be6dcc95b8ad4dd6425d",
+    "py_gen": "5e8df55f90dff9def7d7dfa7cdf08f2a5bddc3504316ae84b1731eebba8c53cd",
+    "py_coroutine": "47a4ead7383cc6831543a31e14987ab105e01c44fffbafe5355a40833b680867",
+    "py_virtual_thread_runtime": "0605436e5092cb5ae94f8f4895e130461d9b1390d3090b55d1693c2d4e083417",
+    "py_gc_backend": "6d3061f6d2f8932c6e917b6f83a94e4e6c21af6725c3718da6088474b33e6938",
+    "py_list": "5007bc188d1f4c3c2e00a4812d43ecec3ea2519a43de6b5b2ee77c0db5f23838",
+    "py_dict": "e0ea28b8ff213d5428876399a6d8caad4d1ed0c9f5467b6a3d40fda7b68518ec",
+    "py_class": "9751a7fe04c66fd9e0939cf337ca40ad5ed4e86347c5b7797c6f70f66b0913bd",
+    "py_obj_dealloc": "10636eacb9c0685a6688d7f0f576a5ff717866c3340553c7474e61d7efe8a68d",
+    "freestanding_gc_index_table": "e591e7429a7102677716c4343ae5aadd102e94264df9bad370a3ba04deb1dc62",
+    "freestanding_runtime_high_substrate": "3cab5768b450b8e8070b9e3fdd9fa7c4b113c9a0e76a8bc89322d6b7b4324888",
+    "freestanding_thread_kernel": "c0688faa03be00e9754123245f9b575ed764c7b6160fb1086300730d6a6ed77d",
+    "freestanding_allocator": "7468148d602a83f157b8d4d7365617fefaf68205c2bdec83a7e17657c6cf2a7c"
+  },
+  "passes": [
+    {
+      "round": 1,
+      "name": "inline-defined",
+      "changed": true,
+      "seconds": 2.4929687920957804
+    },
+    {
+      "round": 1,
+      "name": "instcombine",
+      "changed": true,
+      "seconds": 0.7039000419899821
+    },
+    {
+      "round": 1,
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 1.930861874949187
+    },
+    {
+      "round": 1,
+      "name": "dce",
+      "changed": true,
+      "seconds": 0.6491584579925984
+    },
+    {
+      "round": 2,
+      "name": "inline-defined",
+      "changed": true,
+      "seconds": 2.1735791669925675
+    },
+    {
+      "round": 2,
+      "name": "instcombine",
+      "changed": false,
+      "seconds": 0.2951460420154035
+    },
+    {
+      "round": 2,
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 1.3727104580029845
+    },
+    {
+      "round": 2,
+      "name": "dce",
+      "changed": true,
+      "seconds": 0.520442167064175
+    }
+  ],
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/immortal-ab/candidate",
+  "binary_sha256": "f1cec35c47d2651af3771d4b133997ff8563175b6170dc5813069c546476bd00",
+  "triple": "arm64-apple-darwin25.5.0",
+  "correctness_qualification": "NOT RUN"
+}

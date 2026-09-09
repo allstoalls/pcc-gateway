@@ -1,0 +1,198 @@
+{
+  "schema": "pcc-gateway.ownership-leaks.v1",
+  "scope": "Per-request memory growth in the gateway handler workload, traced to compiler new-reference ownership defects and fixed in core. Diagnosis used the allocator's own live-byte accounting, not RSS, so reachable retention is separated from mapped memory.",
+  "method": {
+    "tools": [
+      "probes/memory_probe.py (real benchmark_native workload, in-process repeats)",
+      "probes/leak_bisect.py + probes/leak_app.py (layer bisect)"
+    ],
+    "counters": [
+      "pcc_allocator_live_requested",
+      "pcc_allocator_live_usable",
+      "pcc_allocator_mapped",
+      "py_gc_tracked_count"
+    ],
+    "note": "Each probe reads the counters after dropping its result and after gc.collect(). collect() freed nothing in every leaking case, so the retention is live refcounted objects (a missing release), not uncollected cycles."
+  },
+  "rss_scaling_MiB": {
+    "protocol": "/usr/bin/time -l, concurrency 100, child wait 0 ms, --summary",
+    "columns": [
+      "requests",
+      "leaky",
+      "json_fix_only",
+      "both_fixes",
+      "asyncio"
+    ],
+    "rows": [
+      [
+        10000,
+        9.4,
+        7.7,
+        6.9,
+        27.9
+      ],
+      [
+        50000,
+        29.1,
+        20.7,
+        16.6,
+        29.0
+      ],
+      [
+        100000,
+        53.7,
+        36.3,
+        28.7,
+        31.0
+      ],
+      [
+        200000,
+        102.9,
+        68.2,
+        52.9,
+        35.0
+      ]
+    ],
+    "per_request_growth_bytes": {
+      "leaky": 516,
+      "json_fix_only": 334,
+      "both_fixes": 242,
+      "asyncio": 38
+    },
+    "note": "Native baseline memory was always BETTER than asyncio (6.9 MiB against 27.9 at 10k requests). The whole gap was per-request growth. With both fixes native now also wins at 100k requests (28.7 against 31.0) and the crossover moved from ~50k to ~120k."
+  },
+  "defects": [
+    {
+      "id": "json-new-reference",
+      "owner": "pcc/py_frontend/codegen/native_text_modules.py",
+      "fixed": true,
+      "patch": "frontend-json.patch",
+      "symptom": "json.dumps leaked its whole result string on every call, measured at exactly len + 41 bytes (86-char output leaked 127 B, 971-char output leaked 1012 B -- 885 more characters, 885 more bytes). json.loads leaked the whole parsed document: 907 bytes and two GC-tracked containers per call on a small object.",
+      "cause": "py_json_dumps/_ex/loads all return a NEW reference, but the ownership shape classifier sees only a DynType Call on a module-level function and answers \"not owned\", so no release was ever emitted. Identical class to the defect _native_re_call_returns_owned_object already documents for the re lowerings, where the same mistake leaked 1.76 GB in a 300k-iteration match loop.",
+      "fix": "Record the owner at emission with _note_owned_object_value, the mechanism the same file already uses for re.compile and re.sub. json.load additionally releases the intermediate string py_file_read_all returns, pinned across the release for moving backends.",
+      "verified": "json.dumps 127 -> 0 B/call, json.loads 907 -> 0 B/call and 2 -> 0 tracked objects, full gateway request 127 -> 0 B."
+    },
+    {
+      "id": "clock-new-reference",
+      "owner": "pcc/py_frontend/codegen/native_modules.py",
+      "fixed": true,
+      "patch": "frontend-clocks.patch",
+      "symptom": "Every time.perf_counter/monotonic/time call leaked its float; the handler calls it twice per request.",
+      "cause": "Same as above. native_modules.py contained no _note_owned_object_value call at all, so every module-level native function it lowers that builds a new object leaked it. time.strftime and os.urandom are the same shape and were fixed with it.",
+      "fix": "Record the owner at emission for the three clock reads, strftime and urandom.",
+      "verified": "time.perf_counter() 24 -> 0 B/call; real-workload retention 73.6 -> 49.1 B/request."
+    },
+    {
+      "id": "float-literal-box",
+      "owner": "pcc/py_frontend/codegen/marshal.py",
+      "fixed": false,
+      "symptom": "Every evaluation of a float literal as an operand of a DynType operation leaks 24 bytes: `y = x - 0.5` leaks one float per iteration, `(x - 0.5) * 1000.0` leaks two. Confirmed in the emitted IR: py_float_from_f64 for the literal is emitted INSIDE the loop body (block while.body.8, value %m.flt_box) and never released.",
+      "cause": "marshal_to_object returns either the incoming pointer unchanged (borrowed, must not be released) or a fresh py_int_from_i64/py_float_from_f64/py_bool_from_bit box (owned, must be released), and the caller cannot tell which. It has 262 call sites. The BinOp rule in _expr_returns_owned_object covers the RESULT of the operation, not the operand boxes.",
+      "directions": [
+        "Emit each distinct float literal as a module-level immortal box created once: kills the leak and removes an allocation from every dynamic float op.",
+        "Or return an owned flag from marshal_to_object and release at the sites that created a box, starting with binary_op_lowering."
+      ],
+      "not_attempted_because": "A shared-codegen ownership change across 262 call sites needs its own design pass and gate run; core AGENTS.md forbids stacking speculative shared-codegen edits.",
+      "repro": "probes/leak_app.py phases float_sub (24 B/iter) and float_chain (48 B/iter); IR with pcc --backend self --python-libpython off --ir-scaffold on --emit-llvm=OUT.ll FILE.py"
+    },
+    {
+      "id": "scope-children-collect",
+      "owner": "unattributed",
+      "fixed": false,
+      "symptom": "`for kid in scope.children: samples.append(scope.result(kid))` leaks about 1226 bytes and 6 GC-tracked objects per loop execution. benchmark_native.batch() uses exactly this shape once per batch.",
+      "repro": "probes/leak_app.py phase list_collect against phase child_float, which isolates the loop from the float it collects.",
+      "not_attempted_because": "Found after the two fixed defects; not yet bisected to a single owner."
+    },
+    {
+      "id": "container-literal-argument",
+      "owner": "unattributed",
+      "fixed": false,
+      "symptom": "A container literal passed DIRECTLY as a call argument leaks it: json.dumps({\"a\": 1}) leaks about 430 bytes and one tracked object per call beyond the json defect, while binding the same dict to a name first leaks nothing.",
+      "repro": "probes/leak_app.py phase dumps_small against phase dict_results.",
+      "not_attempted_because": "Not on the gateway path, which binds its dict to a name."
+    }
+  ],
+  "throughput_after_fixes": {
+    "raw_result": "benchmarks/results/2026-09-10-leakfix-confirm.json",
+    "workload": {
+      "requests": 200000,
+      "repeats": 7,
+      "concurrency": 100,
+      "child_wait_ms": 0
+    },
+    "paired_qps_vs_retained": {
+      "median": 1.0654231982406477,
+      "min": 0.9921648125316185,
+      "max": 1.0852980272821995,
+      "wins": 6,
+      "n": 7,
+      "ratios": [
+        1.0704432819735976,
+        1.0654231982406477,
+        0.9921648125316185,
+        1.0724431138675952,
+        1.0852980272821995,
+        1.0445232779770903,
+        1.0589749783986449
+      ]
+    },
+    "paired_qps_vs_asyncio": {
+      "median": 1.0384486796921988,
+      "min": 0.9742690791588617,
+      "max": 1.0832119467053516,
+      "wins": 6,
+      "n": 7,
+      "ratios": [
+        1.0242462312516334,
+        1.0384486796921988,
+        0.9742690791588617,
+        1.0724742584880989,
+        1.0832119467053516,
+        1.053931508265535,
+        1.0298359585228043
+      ]
+    },
+    "summary": {
+      "retained": {
+        "qps_median": 80633.81403307445,
+        "instructions_median": 38760285796,
+        "cycles_median": 8347251094,
+        "peak_rss_bytes_median": 107839488
+      },
+      "leakfix": {
+        "qps_median": 85821.10847101801,
+        "instructions_median": 38392094697,
+        "cycles_median": 7844167243,
+        "peak_rss_bytes_median": 55443456
+      },
+      "asyncio": {
+        "qps_median": 80947.64461932637,
+        "instructions_median": 32041662583,
+        "cycles_median": 7516781874,
+        "peak_rss_bytes_median": 36454400
+      }
+    },
+    "note": "The added releases did not cost throughput. This is the best arm measured: fewer live objects means less allocator pressure and better locality, which more than paid for the extra release calls."
+  },
+  "correctness_gates": {
+    "tool": "benchmarks/combined_runtime.py --extra-module freestanding_allocator",
+    "report": "gates-leakfix.json",
+    "runs": 60,
+    "result": "all passed",
+    "note": "Run on the final state, both frontend fixes plus the promoted runtime. The ownership program is core tests/python/test_known_object_refcounts.py with VERIFY_CHECKS=1, which is the gate that would catch an over-release introduced by adding a release."
+  },
+  "raw_results": [
+    "benchmarks/results/2026-09-10-memory-accounting.json",
+    "benchmarks/results/2026-09-10-leak-bisect.json",
+    "benchmarks/results/2026-09-10-leak-bisect2.json",
+    "benchmarks/results/2026-09-10-leak-bisect3.json",
+    "benchmarks/results/2026-09-10-leak-family.json",
+    "benchmarks/results/2026-09-10-leak-live-before.json",
+    "benchmarks/results/2026-09-10-leak-live-after.json",
+    "benchmarks/results/2026-09-10-leak-float.json",
+    "benchmarks/results/2026-09-10-leak-fmath.json",
+    "benchmarks/results/2026-09-10-memacct-jsonfix.json",
+    "benchmarks/results/2026-09-10-memacct-timefix.json",
+    "benchmarks/results/2026-09-10-leakfix-confirm.json"
+  ]
+}

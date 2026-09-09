@@ -1,0 +1,26 @@
+--- a/pcc/py_runtime/py/py_obj.py
++++ b/pcc/py_runtime/py/py_obj.py
+@@ -1253,9 +1253,9 @@
+     if tag < PY_TYPE_NONE or (tag > PY_TYPE_CPY_HANDLE and tag < PY_TYPE_USER) or (tag > 500 and pcc_capi_is_cext_type_tag(tag) == 0):
+         return
+     flags: int = load_i32(o, PYOBJECTHEADER_FLAGS_OFFSET)
++    if (flags & PY_FLAG_IMMORTAL) != 0:
++        return
+     if (tag == PY_TYPE_CONTINUATION or tag == PY_TYPE_VIRTUAL_THREAD or tag == PY_TYPE_VTHREAD_CHANNEL) and (flags & PY_FLAG_GC_TRACKED) == 0 and pcc_gc_object_is_known(o) == 0:
+-        return
+-    if (flags & PY_FLAG_IMMORTAL) != 0:
+         return
+     if load_i64(o, PYOBJECTHEADER_REFCOUNT_OFFSET) < 0:
+         return
+@@ -1404,9 +1404,9 @@
+     if tag < PY_TYPE_NONE or (tag > PY_TYPE_CPY_HANDLE and tag < PY_TYPE_USER) or (tag > 500 and pcc_capi_is_cext_type_tag(tag) == 0):
+         return
+     flags: int = load_i32(o, PYOBJECTHEADER_FLAGS_OFFSET)
++    if (flags & PY_FLAG_IMMORTAL) != 0:
++        return
+     if (tag == PY_TYPE_CONTINUATION or tag == PY_TYPE_VIRTUAL_THREAD or tag == PY_TYPE_VTHREAD_CHANNEL) and (flags & PY_FLAG_GC_TRACKED) == 0 and pcc_gc_object_is_known(o) == 0:
+-        return
+-    if (flags & PY_FLAG_IMMORTAL) != 0:
+         return
+     if load_i64(o, PYOBJECTHEADER_REFCOUNT_OFFSET) <= 0:
+         prepared = stack_alloc(56)

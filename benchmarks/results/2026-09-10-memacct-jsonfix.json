@@ -1,0 +1,129 @@
+{
+  "schema": "pcc-gateway.memory-accounting.v1",
+  "complete": true,
+  "started_utc": "2026-09-09T17:48:12.284256+00:00",
+  "compiler_source": "/Users/jiamo/my/pcc",
+  "archive_sha256": "813d22aa5d52f04d79ac26f018e8d67c0b2708e25fc76b4b31c4fac5090dec04",
+  "probe_sha256": "ccefe2c12f1f1978cfdda05bfea7cd4bbd49b98a1853cd01d41a6a3a3809daa4",
+  "gc_backend": 0,
+  "rounds": 100,
+  "repeats": 4,
+  "columns": [
+    "label",
+    "tracked",
+    "live_requested",
+    "live_usable",
+    "mapped",
+    "metadata_mapped",
+    "fully_free_slabs",
+    "granule_count"
+  ],
+  "command": [
+    "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+    "--backend",
+    "self",
+    "--python-libpython",
+    "off",
+    "--ir-scaffold",
+    "on",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-10-memacct-jsonfix/memory_probe_app.py",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-10-memacct-jsonfix/memory_probe_app"
+  ],
+  "artifact_sha256": "bef2b5b7d9ec1936fc26d198fe7dc521fbf20f10d7758ad4b9894f0319645faa",
+  "returncode": 0,
+  "stdout": "before 35 42666 53056 1179648 327680 0 208\nrequests 10000\nafter 39 1264534 1576208 5738496 622592 1 1152\ncollected 39 1264534 1576208 5738496 622592 1 1152\nrequests 10000\nafter 43 2000690 2558320 8228864 622592 1 1760\ncollected 43 2000690 2558320 8228864 622592 1 1760\nrequests 10000\nafter 47 2736846 3540432 10850304 819200 1 2352\ncollected 47 2736846 3540432 10850304 819200 1 2352\nrequests 10000\nafter 51 3473002 4522544 13340672 819200 1 2960\ncollected 51 3473002 4522544 13340672 819200 1 2960\n",
+  "stderr": "",
+  "rows": [
+    [
+      "before",
+      35,
+      42666,
+      53056,
+      1179648,
+      327680,
+      0,
+      208
+    ],
+    [
+      "after",
+      39,
+      1264534,
+      1576208,
+      5738496,
+      622592,
+      1,
+      1152
+    ],
+    [
+      "collected",
+      39,
+      1264534,
+      1576208,
+      5738496,
+      622592,
+      1,
+      1152
+    ],
+    [
+      "after",
+      43,
+      2000690,
+      2558320,
+      8228864,
+      622592,
+      1,
+      1760
+    ],
+    [
+      "collected",
+      43,
+      2000690,
+      2558320,
+      8228864,
+      622592,
+      1,
+      1760
+    ],
+    [
+      "after",
+      47,
+      2736846,
+      3540432,
+      10850304,
+      819200,
+      1,
+      2352
+    ],
+    [
+      "collected",
+      47,
+      2736846,
+      3540432,
+      10850304,
+      819200,
+      1,
+      2352
+    ],
+    [
+      "after",
+      51,
+      3473002,
+      4522544,
+      13340672,
+      819200,
+      1,
+      2960
+    ],
+    [
+      "collected",
+      51,
+      3473002,
+      4522544,
+      13340672,
+      819200,
+      1,
+      2960
+    ]
+  ]
+}

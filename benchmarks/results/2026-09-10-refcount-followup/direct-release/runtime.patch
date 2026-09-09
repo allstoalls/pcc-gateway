@@ -1,0 +1,62 @@
+--- a/pcc/py_runtime/py/py_obj.py
++++ b/pcc/py_runtime/py/py_obj.py
+@@ -1343,16 +1343,20 @@
+ 
+ 
+ def _py_decref_finish(prepared) -> None:
+-    if load_i64(prepared, 48) != 0:
+-        _pcc_debug_bad_incref(load_ptr(prepared, 0), load_i64(prepared, 8))
+-        return
+-    if load_i64(prepared, 40) == 0:
+-        return
+-    o = load_ptr(prepared, 0)
+-    tag_dbg: int = load_i64(prepared, 8)
+-    flags: int = load_i64(prepared, 16)
+-    backend: int = load_i64(prepared, 24)
+-    new_rc: int = load_i64(prepared, 32)
++    _py_decref_finish_values(
++        load_ptr(prepared, 0), load_i64(prepared, 8),
++        load_i64(prepared, 16), load_i64(prepared, 24),
++        load_i64(prepared, 32), load_i64(prepared, 40),
++        load_i64(prepared, 48),
++    )
++
++
++def _py_decref_finish_values(o, tag_dbg: int, flags: int, backend: int, new_rc: int, active: int, underflow: int) -> None:
++    if underflow != 0:
++        _pcc_debug_bad_incref(o, tag_dbg)
++        return
++    if active == 0:
++        return
+     if new_rc < 0:
+         _pcc_debug_bad_incref(o, tag_dbg)
+         return
+@@ -1420,14 +1424,7 @@
+         return
+     if new_rc == 0:
+         store_i32(o, PYOBJECTHEADER_FLAGS_OFFSET, flags | 524288)
+-    prepared = stack_alloc(56)
+-    _py_refcount_prepared_reset(prepared, o)
+-    store_i64(prepared, 8, tag)
+-    store_i64(prepared, 16, flags)
+-    store_i64(prepared, 24, 0)
+-    store_i64(prepared, 32, new_rc)
+-    store_i64(prepared, 40, 1)
+-    _py_decref_finish(prepared)
++    _py_decref_finish_values(o, tag, flags, 0, new_rc, 1, 0)
+ 
+ 
+ # Verification is a diagnostic control, set before exercising a workload.
+@@ -1486,11 +1483,4 @@
+         store_i32(o, PYOBJECTHEADER_FLAGS_OFFSET, flags | 524288)
+     # Weakrefs, resurrection, reentrant deallocation and the trash stack remain
+     # owned by the same finish routine as the checked API.
+-    prepared = stack_alloc(56)
+-    _py_refcount_prepared_reset(prepared, o)
+-    store_i64(prepared, 8, load_i32(o, PYOBJECTHEADER_TYPE_TAG_OFFSET))
+-    store_i64(prepared, 16, flags)
+-    store_i64(prepared, 24, 0)
+-    store_i64(prepared, 32, new_rc)
+-    store_i64(prepared, 40, 1)
+-    _py_decref_finish(prepared)
++    _py_decref_finish_values(o, load_i32(o, PYOBJECTHEADER_TYPE_TAG_OFFSET), flags, 0, new_rc, 1, 0)
