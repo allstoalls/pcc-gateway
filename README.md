@@ -46,20 +46,31 @@ Native integration tests run separately;
 
 ## Performance
 
-On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the latest optimized native
-runtime reaches **79,801 requests/s**, versus **76,504 for asyncio** — a
-**4.3% higher median in this run**.
+On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the optimized native
+runtime reaches **85,821 requests/s**, versus **80,948 for asyncio** — a
+**6.0% higher median in this run**, and higher in six of the seven paired
+repeats.
 
 | Implementation | Median requests/s | Median peak RSS |
 |---|---:|---:|
-| pcc optimized native runtime | **79,801** | 102.8 MiB |
-| CPython asyncio | 76,504 | 34.9 MiB |
+| pcc optimized native runtime | **85,821** | 52.9 MiB |
+| CPython asyncio | 80,948 | 34.8 MiB |
 
 Measured at concurrency 100, zero child wait, 200,000 requests per repeat and
 seven rotating repeats. Each request runs two child tasks, joins them and
 validates its JSON result. This measures handler throughput on one carrier /
 event loop; HTTP sockets, compilation and startup are excluded.
 Peak RSS includes warmups and storage of the 200,000 latency measurements.
+
+Memory depends on how much a run retains. This runtime starts far smaller than
+asyncio and grows faster, so it uses **less** memory up to about 120,000
+requests and more beyond it:
+
+| Requests | pcc native | CPython asyncio |
+|---:|---:|---:|
+| 10,000 | **6.9 MiB** | 27.9 MiB |
+| 100,000 | **28.7 MiB** | 31.0 MiB |
+| 200,000 | 52.9 MiB | **34.8 MiB** |
 
 To reproduce, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
 
@@ -74,8 +85,10 @@ Use a fresh output directory for each run. The runner builds the runtime
 variants, checks GC0–4 behavior, and compares the optimized executable with
 asyncio under time, memory and process-lifetime limits.
 
-The optimized runtime configuration and detailed results are recorded in the
-[benchmark report](benchmarks/results/2026-09-09-owned-runtime-exact-cache-long.json).
+The runtime configuration, per-repeat results and correctness gates behind
+these numbers are recorded in the
+[throughput receipt](benchmarks/results/2026-09-10-object-start-inline/README.md)
+and the [memory receipt](benchmarks/results/2026-09-10-ownership-leaks/README.md).
 See [benchmark methods](benchmarks/README.md) for reproduction and
 [non-HTTP comparisons](benchmarks/results/2026-09-09-runtime-progress/non-http.json)
 for object, container and string workloads.
