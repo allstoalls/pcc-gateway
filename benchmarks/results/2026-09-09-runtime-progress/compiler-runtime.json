@@ -1,0 +1,114 @@
+{
+  "complete": true,
+  "scope": "Actual standalone native compiler optimizer, identical application objects and real py_obj runtime IR; LLVM O0 runtime emission, not HTTP",
+  "input": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/build_py/py_obj.ll",
+  "input_sha256": "a211824d006052e9d158ecac68a8dfc3d98adf756b0d694626e32a24e0787823",
+  "output_sha256": "e1e448e5eba203dbe12513fe34b1c4aff833d8e81a71f144a627553ee39a39ae",
+  "passes": "inline-defined,instcombine,simplifycfg,dce",
+  "programs": {
+    "baseline": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/compiler-runtime-ab/baseline",
+      "sha256": "0ed5dbeada22e888e7c6b59e69e9a2d17d9a3e39bb93ef338f9c8d6026af7e61"
+    },
+    "owned": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/compiler-runtime-ab/owned",
+      "sha256": "54626ad1f7797c766deae82836cd0287932330d0eafac05bf0e252d54e5443ae"
+    },
+    "cache": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/compiler-runtime-ab/cache",
+      "sha256": "2e8360ec46f37ab929273c70ff3ca2d1109bfe170e6cb4d874a0480243606a46"
+    }
+  },
+  "runs": [
+    {
+      "arm": "baseline",
+      "repetition": 0,
+      "seconds": 1.839655,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.5851259999908507\ninstcombine changed=True seconds=0.18477900000289083\nsimplifycfg changed=True seconds=0.687281999969855\ndce changed=True seconds=0.3621739998925477\nreal 1.82\nuser 1.79\nsys 0.02\n            66748416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5135  page reclaims\n                  18  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 658  involuntary context switches\n         24084728419  instructions retired\n          6087192100  cycles elapsed\n            61653424  peak memory footprint\n",
+      "process_real_seconds": 1.82,
+      "process_user_seconds": 1.79,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66748416,
+      "process_instructions": 24084728419,
+      "process_cycles": 6087192100,
+      "process_involuntary_context_switches": 658
+    },
+    {
+      "arm": "owned",
+      "repetition": 0,
+      "seconds": 1.500602458,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.4629009999334812\ninstcombine changed=True seconds=0.16145400004461408\nsimplifycfg changed=True seconds=0.5542399999685585\ndce changed=True seconds=0.3055250000907108\nreal 1.49\nuser 1.46\nsys 0.02\n            66781184  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5136  page reclaims\n                  19  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 490  involuntary context switches\n         20599463349  instructions retired\n          4970848619  cycles elapsed\n            61702624  peak memory footprint\n",
+      "process_real_seconds": 1.49,
+      "process_user_seconds": 1.46,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66781184,
+      "process_instructions": 20599463349,
+      "process_cycles": 4970848619,
+      "process_involuntary_context_switches": 490
+    },
+    {
+      "arm": "cache",
+      "repetition": 0,
+      "seconds": 1.433277584,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.4361700000008568\ninstcombine changed=True seconds=0.15828199998941272\nsimplifycfg changed=True seconds=0.5325220000231639\ndce changed=True seconds=0.2896469999104738\nreal 1.42\nuser 1.39\nsys 0.02\n            66764800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5135  page reclaims\n                  19  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 529  involuntary context switches\n         18738103813  instructions retired\n          4733873281  cycles elapsed\n            61669808  peak memory footprint\n",
+      "process_real_seconds": 1.42,
+      "process_user_seconds": 1.39,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66764800,
+      "process_instructions": 18738103813,
+      "process_cycles": 4733873281,
+      "process_involuntary_context_switches": 529
+    },
+    {
+      "arm": "cache",
+      "repetition": 1,
+      "seconds": 1.425238042,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.43645099992863834\ninstcombine changed=True seconds=0.15209700004197657\nsimplifycfg changed=True seconds=0.5320659999269992\ndce changed=True seconds=0.2896259999834001\nreal 1.41\nuser 1.38\nsys 0.02\n            66764800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5120  page reclaims\n                  19  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 469  involuntary context switches\n         18719419807  instructions retired\n          4711283432  cycles elapsed\n            61686216  peak memory footprint\n",
+      "process_real_seconds": 1.41,
+      "process_user_seconds": 1.38,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66764800,
+      "process_instructions": 18719419807,
+      "process_cycles": 4711283432,
+      "process_involuntary_context_switches": 469
+    },
+    {
+      "arm": "owned",
+      "repetition": 1,
+      "seconds": 1.510667041,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.4733809999888763\ninstcombine changed=True seconds=0.16090799996163696\nsimplifycfg changed=True seconds=0.558195999939926\ndce changed=True seconds=0.30296300002373755\nreal 1.50\nuser 1.46\nsys 0.02\n            66797568  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5137  page reclaims\n                  19  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 593  involuntary context switches\n         20598808743  instructions retired\n          4943510018  cycles elapsed\n            61719008  peak memory footprint\n",
+      "process_real_seconds": 1.5,
+      "process_user_seconds": 1.46,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66797568,
+      "process_instructions": 20598808743,
+      "process_cycles": 4943510018,
+      "process_involuntary_context_switches": 593
+    },
+    {
+      "arm": "baseline",
+      "repetition": 1,
+      "seconds": 1.862478125,
+      "returncode": 0,
+      "output_matches": true,
+      "stderr": "inline-defined changed=False seconds=0.5925019999267533\ninstcombine changed=True seconds=0.18856999999843538\nsimplifycfg changed=True seconds=0.7004990000277758\ndce changed=True seconds=0.36540200002491474\nreal 1.85\nuser 1.81\nsys 0.02\n            66748416  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                5135  page reclaims\n                  18  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                 499  involuntary context switches\n         24076921038  instructions retired\n          6121706059  cycles elapsed\n            61653424  peak memory footprint\n",
+      "process_real_seconds": 1.85,
+      "process_user_seconds": 1.81,
+      "process_sys_seconds": 0.02,
+      "process_peak_rss_bytes": 66748416,
+      "process_instructions": 24076921038,
+      "process_cycles": 6121706059,
+      "process_involuntary_context_switches": 499
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "base": "candidate-source",
+  "overlays": {
+    "pcc/py_frontend/pipeline.py": "5b5bb62d1731d68b52f6e2c6ed7b3e3c18f10f94ccd2dce62056befd7caefbb7",
+    "pcc/py_frontend/codegen/class_gen.py": "dcbd2126d1c5979b3b93eb26259be866c61ac2551667d2964cab834d27237303",
+    "pcc/py_frontend/codegen/tuple_zip_lowering.py": "99f43d0cd0c9979f32d4f391597aeb303f02a24db106a0fd7b5f580edc4074e5",
+    "pcc/py_frontend/codegen/native_text_modules.py": "6377d55915fd29af9f7ad95cf11a3c4c8879be36125f01bcc3a50915c73b83e6",
+    "pcc/py_frontend/codegen/set_lowering.py": "f8af781ddd59050ae5579e402cbf193ac7e9a5316495095c0f252288bab89254",
+    "pcc/py_frontend/codegen/compare_membership_lowering.py": "084ab1b7f56542932aee81a50a28194f2d3fd0fe4beaeef959d9e9b7ab1d8168",
+    "pcc/native_ir/inline.py": "e75eefa191e5179202a13dbead4fa4ce9c97b21614051705b7d452f3882a5366",
+    "pcc/native_ir/simplifycfg.py": "de58d64f348033e06ad2ba36f27cf330e2cbbcb4aabfa586c51f5644ba1fe9e6",
+    "pcc/py_runtime/py/py_obj.py": "a47b01796931caa683743d0b4afa57acb2cca40ce224f2d2013df9362e51ff49",
+    "pcc/py_runtime/src/py_obj.c": "16ebeb3d5e4e6d9cc1fb627c6bc40ce6ea0a1f7b759e425f48ebcdff2ad21675",
+    "pcc/py_runtime/py/py_tuple.py": "43d340f9e1be68242a216fef98d43852538285a0d554c5376c0a85895ee0e8ff",
+    "pcc/py_runtime/src/py_tuple.c": "df7675ea63ad815561933cd83569e81a9711e5e7c7ea365922b413cfa3bd592d"
+  }
+}

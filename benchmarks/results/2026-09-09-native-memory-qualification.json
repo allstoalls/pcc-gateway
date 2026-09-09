@@ -1,0 +1,93 @@
+{
+  "status": "SCOPED_VALIDATION_COMPLETE",
+  "compiler": {
+    "binary": "/Users/jiamo/my/pcc/build/asyncio-memory-walrus-stage1-20260909/pcc1",
+    "sha256": "0f66351daf95cf9201f6d8e859a5107e32a9e7af2650fbff0dd24f54f61d1a65",
+    "source_manifest_sha256": "fafea499679be3130af8d773dc3b990a95872bec97d485c37e7553d94e630ba5",
+    "runtime_bundle_sha256": "18665269c8ba5a2a054b6f51292894679fa9e794f9ae7a2e254ea4fd12af0141",
+    "build_elapsed_s": 299.58111183403526,
+    "build_peak_tree_rss_bytes": 7331217408,
+    "build_status": "SUCCEEDED",
+    "stage": "host pcc0 -> native pcc1 only; no fixed point claimed"
+  },
+  "runtime": {
+    "archive": "/Users/jiamo/my/pcc/build/asyncio-memory-walrus-stage1-20260909/runtime-bundle/libpy_runtime_pcc_py.a",
+    "sha256": "1457c4e642b17f29661a2fe27bb012549c3e88942ba468364b909e9cb6a59821",
+    "external_object_emitter": "LLVM"
+  },
+  "limits": [
+    "Native pcc1 still uses host source/link helpers in this experiment",
+    "Shared installed compiler unchanged",
+    "High-concurrency asyncio throughput target remains unmet; no live HTTP/HTTPS or new-source fixed point claim"
+  ],
+  "confirmed_native_case": "constructor argument order and failure cleanup: passed with pcc1, GC0-4",
+  "next_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-memory-walrus-gates.json",
+  "native_tests": {
+    "passed": 63,
+    "gc_backends": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "receipts": [
+      "native-constructor-walrus-fixed.json",
+      "native-memory-walrus-gates.json"
+    ],
+    "scope": "all programs compiled by the isolated pcc1 and executed; tests include failure cleanup, aliases, finalizers and GC0-4 where specified"
+  },
+  "native_http_compile": {
+    "status": "COMPLETE",
+    "elapsed_s": 187.1081781249959,
+    "peak_tree_rss_bytes": 2349793280,
+    "command": [
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/pcc1-memory-walrus",
+      "--profile-json",
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-memory-walrus-profile.json",
+      "local_http_app.py",
+      "-o",
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-memory-walrus"
+    ]
+  },
+  "native_http_run": {
+    "returncode": 0,
+    "stdout": "PCC1_GATEWAY_HTTP1_LOCAL_OK",
+    "scope": "local HTTP codec/lifecycle fixture, no live network/TLS"
+  },
+  "host_http_compile": {
+    "status": "COMPLETE",
+    "elapsed_s": 81.4635774170747,
+    "peak_tree_rss_bytes": 1760198656,
+    "command": [
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/pcc-memory-walrus",
+      "--backend",
+      "self",
+      "--python-libpython",
+      "off",
+      "--ir-scaffold",
+      "on",
+      "--profile-json",
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/host-http-memory-walrus-profile.json",
+      "local_http_app.py",
+      "-o",
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/host-http-memory-walrus"
+    ]
+  },
+  "host_http_run": {
+    "returncode": 0,
+    "stdout": "PCC1_GATEWAY_HTTP1_LOCAL_OK"
+  },
+  "gateway_tests": {
+    "default_passed": 294,
+    "deselected_integration": 20,
+    "receipt": "2026-09-09-gateway-final-tests.json",
+    "native_examples": {
+      "dashboard": "passed",
+      "structured_failure_cleanup": "passed",
+      "local_http": "passed with both host pcc and native pcc1"
+    }
+  },
+  "handler_comparison": "2026-09-09-final-three-way.json",
+  "native_profile": "2026-09-09-current-native-profile.json"
+}

@@ -1,0 +1,7 @@
+{
+  "user_instruction": "继续吧 10%",
+  "observed_remaining_percent": 21,
+  "previous_stop_remaining_percent": 20,
+  "explicit_stop_remaining_percent": 10,
+  "user_review_authorizes_continuation": true
+}

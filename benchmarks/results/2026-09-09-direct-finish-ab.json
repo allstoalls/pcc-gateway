@@ -1,0 +1,103 @@
+{
+  "archives": {
+    "candidate": {
+      "artifact_sha256": "dac2502778b1c1231a93ae0e08b8823df2d2bd5474348a918f81420d721c9ebe",
+      "command": [
+        "/Users/jiamo/my/pcc/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-direct-finish-ab/candidate"
+      ],
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota30-runtime/py_runtime_direct_finish/libpy_runtime_pcc_py.a",
+      "sha256": "28d4395330cf507e45ff9d0664dce5459700231a690b49a9cfbcd60595fbf30a"
+    },
+    "control": {
+      "artifact_sha256": "1d5e995739ebdcbb5877fdcbc5bb1f1a93ae362c3f54fc43709dda520cc82597",
+      "command": [
+        "/Users/jiamo/my/pcc/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-direct-finish-ab/control"
+      ],
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota30-runtime/py_runtime_checked_fast/libpy_runtime_pcc_py.a",
+      "sha256": "d101772ada276e7be9fc5a1114a7892316f24e2bf166f3bc4441efbc51aa556d"
+    }
+  },
+  "arm_environment": {
+    "asyncio": {},
+    "candidate": {},
+    "control": {}
+  },
+  "arm_source_identities": {
+    "candidate": "15518a79566591bfbbab53416c38692fb2fe37c468f2d23e39ed6ff4caaaabfe",
+    "control": "15518a79566591bfbbab53416c38692fb2fe37c468f2d23e39ed6ff4caaaabfe"
+  },
+  "backends": {
+    "candidate": "self",
+    "control": "self"
+  },
+  "base_optimization_environment": {
+    "PCC_DIRECT_GENERATOR_TASKS": "1",
+    "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "0",
+    "PCC_FAST_COMPLETED_CONTINUATIONS": "1",
+    "PCC_GC_BACKEND": null,
+    "PCC_GENERATOR_FIRST_ENTRY_INIT": "1",
+    "PCC_KNOWN_OBJECT_REFS": "1",
+    "PCC_RUNTIME_HIGH": null,
+    "PCC_WITH_THREADS": null
+  },
+  "compiler": "/Users/jiamo/my/pcc/.venv/bin/pcc",
+  "compiler_sha256": "afb914a53606ca68ce759b2082f8852623c6f12199ea86fbf2a786f0b24b0d0a",
+  "compiler_source": "/Users/jiamo/my/pcc/build/gateway-link-memory-stage1-20260909/source-snapshot",
+  "compiler_sources": {
+    "candidate": "/Users/jiamo/my/pcc/build/gateway-link-memory-stage1-20260909/source-snapshot",
+    "control": "/Users/jiamo/my/pcc/build/gateway-link-memory-stage1-20260909/source-snapshot"
+  },
+  "complete": false,
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "programs": {
+    "candidate": "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+    "control": "/Users/jiamo/my/pcc-gateway/benchmark_native.py"
+  },
+  "python_version": "3.15.0rc1 (main, Aug 25 2026, 13:50:37) [Clang 22.1.3 ]",
+  "runs": [
+    {
+      "concurrency": 100,
+      "delay_ms": 0,
+      "elapsed_ms": 347.0039999810979,
+      "implementation": "control",
+      "latency_max_ms": 2.0759999752044678,
+      "latency_min_ms": 0.623999978415668,
+      "process_cycles": 1181019120,
+      "process_instructions": 5010514563,
+      "process_involuntary_context_switches": 229,
+      "process_peak_rss_bytes": 14843904,
+      "process_real_seconds": 0.35,
+      "process_sys_seconds": 0.0,
+      "process_user_seconds": 0.35,
+      "repetition": 0,
+      "requests": 20000,
+      "rounds": 200,
+      "warmup_requests": 200
+    }
+  ],
+  "schema": "pcc-gateway.runtime-ab.v1",
+  "source_identity": "15518a79566591bfbbab53416c38692fb2fe37c468f2d23e39ed6ff4caaaabfe",
+  "started_utc": "2026-09-09T08:17:40.658558+00:00",
+  "summary": [],
+  "summary_output": true,
+  "tool_overrides": {},
+  "qualification": "invalid: candidate had unresolved pcc_gc_backend; no throughput verdict"
+}

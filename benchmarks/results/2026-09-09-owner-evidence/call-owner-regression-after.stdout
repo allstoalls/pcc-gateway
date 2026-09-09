@@ -1,0 +1,42 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 32 items
+
+tests/python/test_call_argument_emitted_ownership.py::test_owned_dynamic_field_argument_is_consumed[consume(holder.value)] PASSED [  3%]
+tests/python/test_call_argument_emitted_ownership.py::test_owned_dynamic_field_argument_is_consumed[reader.consume(holder.value)] PASSED [  6%]
+tests/python/test_call_argument_emitted_ownership.py::test_direct_method_result_keeps_owner_through_root_reload PASSED [  9%]
+tests/python/test_walrus_object_ownership.py::test_walrus_match_survives_truth_test_and_collection[re.match(r"(?P<word>[a-z]+)", "alpha")] PASSED [ 12%]
+tests/python/test_walrus_object_ownership.py::test_walrus_match_survives_truth_test_and_collection[pattern.match("alpha")] PASSED [ 15%]
+tests/python/test_walrus_object_ownership.py::test_walrus_match_survives_truth_test_and_collection[pattern.match((" alpha ").strip())] PASSED [ 18%]
+tests/python/test_walrus_object_ownership.py::test_walrus_borrowed_aliases_rebinding_and_truth_failure PASSED [ 21%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[holder.items-2000] PASSED [ 25%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[not holder.items-0] PASSED [ 28%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[holder.items or holder.empty-2000] PASSED [ 31%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[holder.empty or holder.items-2000] PASSED [ 34%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[holder.items and holder.empty-0] PASSED [ 37%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[[1 for row in [holder] if row.items]-2000] PASSED [ 40%]
+tests/python/test_condition_operand_ownership.py::test_condition_field_reads_release_their_tree[[1 for row in [holder] if row.empty]-0] PASSED [ 43%]
+tests/python/test_condition_operand_ownership.py::test_truth_tests_short_circuit_once_and_release_after_errors PASSED [ 46%]
+tests/python/test_class_init_argument_ownership.py::test_constructor_temporaries_are_released[] PASSED [ 50%]
+tests/python/test_class_init_argument_ownership.py::test_constructor_temporaries_are_released[[]] PASSED [ 53%]
+tests/python/test_class_init_argument_ownership.py::test_constructor_temporaries_are_released[make()] PASSED [ 56%]
+tests/python/test_class_init_argument_ownership.py::test_constructor_arguments_keep_source_order_and_cleanup_on_failure PASSED [ 59%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = (text.strip(),)\n    return len(result)] PASSED [ 62%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = [text.strip()]\n    return len(result)] PASSED [ 65%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = {text.strip()}\n    return len(result)] PASSED [ 68%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = {text.strip(): text.upper()}\n    return len(result)] PASSED [ 71%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = []\n    result.append(text.strip())\n    return len(result)] PASSED [ 75%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.add(text.strip())\n    return len(result)] PASSED [ 78%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.add(text.strip())\n    result.add(text.strip())\n    return len(result)] PASSED [ 81%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.discard(text.strip())\n    return 1] PASSED [ 84%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    try:\n        result.remove(text.strip())\n    except KeyError:\n        pass\n    return 1] PASSED [ 87%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[set().add(text.strip())\n    return 1] PASSED [ 90%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = []\n    result.append(Node.from_text(text.strip()))\n    return len(result)] PASSED [ 93%]
+tests/python/test_container_emitted_ownership.py::test_literal_unwind_consumes_dynamic_string_temporary PASSED [ 96%]
+tests/python/test_container_emitted_ownership.py::test_set_temporary_receiver_and_failure_cleanup_gc_backends PASSED [100%]
+
+============================= 32 passed in 59.74s ==============================

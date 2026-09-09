@@ -1,0 +1,27 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 17 items
+
+tests/python/test_call_argument_emitted_ownership.py::test_owned_dynamic_field_argument_is_consumed[consume(holder.value)] PASSED [  5%]
+tests/python/test_call_argument_emitted_ownership.py::test_owned_dynamic_field_argument_is_consumed[reader.consume(holder.value)] PASSED [ 11%]
+tests/python/test_call_argument_emitted_ownership.py::test_direct_method_result_keeps_owner_through_root_reload PASSED [ 17%]
+tests/python/test_call_argument_emitted_ownership.py::test_dynamic_callable_consumes_argument_temporaries PASSED [ 23%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = (text.strip(),)\n    return len(result)] PASSED [ 29%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = [text.strip()]\n    return len(result)] PASSED [ 35%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = {text.strip()}\n    return len(result)] PASSED [ 41%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = {text.strip(): text.upper()}\n    return len(result)] PASSED [ 47%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = []\n    result.append(text.strip())\n    return len(result)] PASSED [ 52%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.add(text.strip())\n    return len(result)] PASSED [ 58%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.add(text.strip())\n    result.add(text.strip())\n    return len(result)] PASSED [ 64%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    result.discard(text.strip())\n    return 1] PASSED [ 70%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = set()\n    try:\n        result.remove(text.strip())\n    except KeyError:\n        pass\n    return 1] PASSED [ 76%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[set().add(text.strip())\n    return 1] PASSED [ 82%]
+tests/python/test_container_emitted_ownership.py::test_container_temporaries_are_released[result = []\n    result.append(Node.from_text(text.strip()))\n    return len(result)] PASSED [ 88%]
+tests/python/test_container_emitted_ownership.py::test_literal_unwind_consumes_dynamic_string_temporary PASSED [ 94%]
+tests/python/test_container_emitted_ownership.py::test_set_temporary_receiver_and_failure_cleanup_gc_backends PASSED [100%]
+
+============================= 17 passed in 30.95s ==============================

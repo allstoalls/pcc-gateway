@@ -1,0 +1,26 @@
+{
+  "scope": "native benchmark artifacts; same verified runtime; three vthread flags default to 1 in both private source snapshots",
+  "artifacts": {
+    "prior_pcc1": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-benchmark",
+      "sha256": "6d9596430b723ff97117eaf11d3ef4794596e46e4b5e214192ff552fb3506f27",
+      "stage1_build_receipt": "/Users/jiamo/my/pcc/build/asyncio-pruned-default-stage1-20260908/build-receipt.json",
+      "compiler_sha256": "7ff80a3ffd7f82b785077acaaf2433682d948dc101293784aa17f071db387d52",
+      "source_manifest_sha256": "08504ae7a6402f24d1dccfe546de83ed59e2d25aaacba489ab5e7735609d42fa",
+      "runtime_bundle_sha256": "b762c96583dd3c304551e72ba6e6a4e6e57a4ed373df6f674ce18197ceebc34b"
+    },
+    "candidate_pcc1": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-benchmark-ownership-fixed",
+      "sha256": "33144dde9a51b444532a8feb32113733dcb5e4002637c9806210835488f3ed76",
+      "stage1_build_receipt": "/Users/jiamo/my/pcc/build/asyncio-ownership-fixed-stage1-20260908/build-receipt.json",
+      "compiler_sha256": "da8b4a0e94fa14ceeae210930b82f5cc47b8b9752b69183eda2cfbe944b21218",
+      "source_manifest_sha256": "f18740b91924f8f7b4b0dc2eed7cfbc944e2316fe1e7292a0649e8e0e73177f0",
+      "runtime_bundle_sha256": "b762c96583dd3c304551e72ba6e6a4e6e57a4ed373df6f674ce18197ceebc34b"
+    }
+  },
+  "application_sha256": {
+    "benchmark_native.py": "e4bbb90b0a9a4212b6dc3e9bcddb65d568e43f9d918c2e9e133886ebb44c8cb5",
+    "pcc_gateway/structured.py": "95497b4c28d6fc417024ec9031410c478e7d567efe6511e54bd4ee70c1f57a52",
+    "benchmark_asyncio.py": "18f69e6ce478e976e3dee8c67c99ad774fffa70d39e0e4fcd2ecf563b2368383"
+  }
+}

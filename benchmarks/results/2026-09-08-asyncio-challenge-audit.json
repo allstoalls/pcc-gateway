@@ -1,0 +1,34 @@
+{
+  "schema": "pcc-gateway.asyncio-challenge-audit.v1",
+  "core_commit": "d87f85940fe8fc6301f428f74e9b89bdfbac061a",
+  "frozen_inputs_rechecked": true,
+  "input_manifest_sha256": "9b1faf9295404b4731d4e178685a208daf5d8e64dcfb297134fffd9d38662781",
+  "candidate_delta": {
+    "before": "9e7f947cb64441587dba85c33cbffab50a46448c08ab72192c3e52fc49f4d5e2",
+    "after": "aa2ad6818637e218efc96c68d6027516cbbd2d71e59981e6afc04a287e7c8e62"
+  },
+  "construction_script_sha256": "9d4fa77883c51c2d65ae8661b7247268294cf96c00388320f6e13e10f97c7636",
+  "construction_script_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-memory-valid-raw-ab.py",
+  "compiler_command_hash": "657ca8c5daf82d573f90f17e7fca2e0448fb71b8b5f99f1b911138757d2bb4e0",
+  "snapshot": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge",
+  "validation": {
+    "structured_and_benchmark_model_tests": 21,
+    "gateway_memory_manifest_tests": 1,
+    "core_host_optimizer_tests": 38,
+    "core_optimized_branch_loop_native_execution_tests": 1,
+    "native_optimizer_build": "TIMEOUT at 300 seconds in self backend huge emit worker",
+    "runtime_ab_runs": 90,
+    "runtime_ab_delay_and_count_checks": true,
+    "gc_scope": "GC0 diagnostic artifacts only; no GC/runtime production source changed",
+    "http_tls_scope": "not measured"
+  },
+  "no_op_experiment": {
+    "build_sha256": "48ca80d63aa115c758d2c855fd2e3e7f0ca2dcb771942ddaee2421228a3c52ae",
+    "identical_control_candidate_binary": true
+  },
+  "failed_preparation": {
+    "installed_pcc1": "lacks continuation_factory and c_obj",
+    "worktree_archive": "py_obj.py does not match archive provenance",
+    "first_raw_runtime_build": "runtime sources outside py_runtime*/py omitted runtime ABI exports; rejected before timing"
+  }
+}

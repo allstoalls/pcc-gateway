@@ -1,0 +1,21 @@
+{
+  "scope": "largest synchronized tree-RSS sample; remainder includes parent and other tracked processes",
+  "arms": {
+    "previous_capped": {
+      "elapsed_s": "331.410504",
+      "tree_rss_bytes": "4920393728",
+      "process_count": "5",
+      "largest_rss_bytes": "3771121664",
+      "other_processes_rss_bytes": 1149272064,
+      "largest_command_prefix": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/bin/python3.15 /Users/jiamo/my/pcc/build/gateway-bool-memory-stage1-20260909/"
+    },
+    "current_complete": {
+      "elapsed_s": "300.409749",
+      "tree_rss_bytes": "4198924288",
+      "process_count": "5",
+      "largest_rss_bytes": "3785129984",
+      "other_processes_rss_bytes": 413794304,
+      "largest_command_prefix": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/bin/python3.15 /Users/jiamo/my/pcc/build/gateway-tuple-owner-stage1-v3-202609"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 34 items / 1 deselected / 33 selected
+
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_results_are_owned_in_raw_scaffold_modules[PATTERN.match(text)-hello-2000] PASSED [  3%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_results_are_owned_in_raw_scaffold_modules[re.match(r"([a-z]+)", text)-hello-2000] PASSED [  6%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_results_are_owned_in_raw_scaffold_modules[re.match(r"([a-z]+)", text)-123-0] PASSED [  9%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_results_are_owned_in_raw_scaffold_modules[OPCODE.match(text)-%slot = alloca i64-2000] PASSED [ 12%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_results_are_owned_in_raw_scaffold_modules[HEADER.match(text)-define-2000] PASSED [ 15%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_dynamic_regex_compile_releases_pattern_and_argument PASSED [ 18%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_sub_consumes_temporary_operands PASSED [ 21%]
+tests/python/test_raw_scaffold_regex_ownership.py::test_regex_sub_evaluation_order_and_argument_error_cleanup PASSED [ 24%]
+tests/python/test_gc4_leaf_root_ownership.py::test_leaf_root_self_store_and_clear[pcc_py_runtime_archive] PASSED [ 27%]
+tests/python/test_gc4_leaf_root_ownership.py::test_leaf_root_self_store_and_clear[c_runtime_archive] PASSED [ 30%]
+tests/python/test_owned_inline_labels.py::test_multiblock_inline_preserves_dotted_original_labels PASSED [ 33%]
+tests/python/test_owned_inline_labels.py::test_two_calls_get_disjoint_blocks_and_return_values PASSED [ 36%]
+tests/python/test_owned_inline_labels.py::test_multiblock_call_cannot_replace_an_unrelated_caller_return PASSED [ 39%]
+tests/python/test_owned_inline_labels.py::test_two_exit_void_callee_preserves_nonvoid_caller_return PASSED [ 42%]
+tests/python/test_owned_inline_labels.py::test_inliner_preserves_calls_with_different_argument_widths PASSED [ 45%]
+tests/python/test_owned_inline_labels.py::test_multiblock_inline_splits_call_site_and_repairs_loop_phi PASSED [ 48%]
+tests/python/test_owned_inline_labels.py::test_cfg_inline_preserves_addressed_caller_blocks PASSED [ 51%]
+tests/python/test_owned_inline_labels.py::test_cfg_inline_reuses_namespace_and_avoids_return_label_collision PASSED [ 54%]
+tests/python/test_owned_ir_passes.py::test_owned_scalar_and_cfg_passes_without_llvm PASSED [ 57%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = tail call i64 @effect()] PASSED [ 60%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = notail call i64 @effect()] PASSED [ 63%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = load volatile i64, ptr %p] PASSED [ 66%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = load atomic i64, ptr %p acquire, align 8] PASSED [ 69%]
+tests/python/test_owned_ir_passes.py::test_function_cleanup_keeps_module_call_effect_contracts PASSED [ 72%]
+tests/python/test_owned_ir_passes.py::test_owned_inliner_without_llvm PASSED [ 75%]
+tests/python/test_owned_ir_passes.py::test_local_name_replacement_preserves_prefixes_and_literals PASSED [ 78%]
+tests/python/test_owned_ir_passes.py::test_defined_inlining_preserves_external_symbols_and_replacement_boundaries PASSED [ 81%]
+tests/python/test_owned_ir_passes.py::test_pointer_inline_rewrites_earlier_backedge_phi_uses PASSED [ 84%]
+tests/python/test_owned_ir_passes.py::test_owned_pass_dispatch_preserves_order_and_needs_no_host PASSED [ 87%]
+tests/python/test_owned_ir_passes.py::test_cfg_return_fold_preserves_third_predecessor[False] PASSED [ 90%]
+tests/python/test_owned_ir_passes.py::test_cfg_return_fold_preserves_third_predecessor[True] PASSED [ 93%]
+tests/python/test_owned_ir_passes.py::test_label_rewrite_does_not_run_regex_on_unrelated_instructions PASSED [ 96%]
+tests/python/test_owned_ir_passes.py::test_phi_pruning_preserves_name_prefixes_and_literals PASSED [100%]
+
+====================== 33 passed, 1 deselected in 20.96s =======================

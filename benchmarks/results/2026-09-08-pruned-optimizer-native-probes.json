@@ -1,0 +1,41 @@
+{
+  "complete": true,
+  "binary_sha256": "82c38e57b9cdc5c30b8b4b998831b077a921e7e59ad622a17132e0de4a33fa7d",
+  "cases": [
+    {
+      "name": "diamond",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "loop",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "varargs",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "overwrite",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "loop_local",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "escaped_volatile",
+      "returncode": 0,
+      "equal": true
+    },
+    {
+      "name": "load_before_store",
+      "returncode": 0,
+      "equal": true
+    }
+  ]
+}

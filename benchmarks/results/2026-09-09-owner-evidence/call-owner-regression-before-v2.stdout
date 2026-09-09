@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 1 item
+
+tests/python/test_call_argument_emitted_ownership.py::test_direct_method_result_keeps_owner_through_root_reload FAILED [100%]
+
+=================================== FAILURES ===================================
+__________ test_direct_method_result_keeps_owner_through_root_reload ___________
+tests/python/test_call_argument_emitted_ownership.py:108: in test_direct_method_result_keeps_owner_through_root_reload
+    assert growth1 < 16384 and growth2 < 16384, (growth1, growth2)
+E   AssertionError: (167000, 461968)
+E   assert (167000 < 16384)
+----------------------------- Captured stderr call -----------------------------
+pcc link: dropped unwind metadata (no __unwind_info synthesis): __LD,__compact_unwind, __TEXT,__eh_frame
+=========================== short test summary info ============================
+FAILED tests/python/test_call_argument_emitted_ownership.py::test_direct_method_result_keeps_owner_through_root_reload - AssertionError: (167000, 461968)
+assert (167000 < 16384)
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+============================== 1 failed in 2.66s ===============================

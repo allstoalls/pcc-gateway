@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 25 items / 1 deselected / 24 selected
+
+tests/python/test_owned_ir_passes.py::test_owned_scalar_and_cfg_passes_without_llvm PASSED [  4%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = tail call i64 @effect()] PASSED [  8%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = notail call i64 @effect()] PASSED [ 12%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = load volatile i64, ptr %p] PASSED [ 16%]
+tests/python/test_owned_ir_passes.py::test_owned_dce_preserves_effects_without_result_users[%unused = load atomic i64, ptr %p acquire, align 8] PASSED [ 20%]
+tests/python/test_owned_ir_passes.py::test_function_cleanup_keeps_module_call_effect_contracts PASSED [ 25%]
+tests/python/test_owned_ir_passes.py::test_owned_inliner_without_llvm PASSED [ 29%]
+tests/python/test_owned_ir_passes.py::test_local_name_replacement_preserves_prefixes_and_literals PASSED [ 33%]
+tests/python/test_owned_ir_passes.py::test_defined_inlining_preserves_external_symbols_and_replacement_boundaries PASSED [ 37%]
+tests/python/test_owned_ir_passes.py::test_pointer_inline_rewrites_earlier_backedge_phi_uses PASSED [ 41%]
+tests/python/test_owned_ir_passes.py::test_owned_pass_dispatch_preserves_order_and_needs_no_host PASSED [ 45%]
+tests/python/test_owned_ir_passes.py::test_cfg_return_fold_preserves_third_predecessor[False] PASSED [ 50%]
+tests/python/test_owned_ir_passes.py::test_cfg_return_fold_preserves_third_predecessor[True] PASSED [ 54%]
+tests/python/test_owned_ir_passes.py::test_label_rewrite_does_not_run_regex_on_unrelated_instructions PASSED [ 58%]
+tests/python/test_owned_ir_passes.py::test_phi_pruning_preserves_name_prefixes_and_literals PASSED [ 62%]
+tests/python/test_owned_ir_passes.py::test_linear_merging_reuses_predecessor_counts PASSED [ 66%]
+tests/python/test_owned_inline_labels.py::test_multiblock_inline_preserves_dotted_original_labels PASSED [ 70%]
+tests/python/test_owned_inline_labels.py::test_two_calls_get_disjoint_blocks_and_return_values PASSED [ 75%]
+tests/python/test_owned_inline_labels.py::test_multiblock_call_cannot_replace_an_unrelated_caller_return PASSED [ 79%]
+tests/python/test_owned_inline_labels.py::test_two_exit_void_callee_preserves_nonvoid_caller_return PASSED [ 83%]
+tests/python/test_owned_inline_labels.py::test_inliner_preserves_calls_with_different_argument_widths PASSED [ 87%]
+tests/python/test_owned_inline_labels.py::test_multiblock_inline_splits_call_site_and_repairs_loop_phi PASSED [ 91%]
+tests/python/test_owned_inline_labels.py::test_cfg_inline_preserves_addressed_caller_blocks PASSED [ 95%]
+tests/python/test_owned_inline_labels.py::test_cfg_inline_reuses_namespace_and_avoids_return_label_collision PASSED [100%]
+
+======================= 24 passed, 1 deselected in 0.41s =======================

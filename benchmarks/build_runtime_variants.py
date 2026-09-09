@@ -17,7 +17,7 @@ import subprocess
 import sys
 
 
-PASSES = "instsimplify,simplifycfg,inline-defined,instsimplify,simplifycfg,instcombine,dce"
+PASSES = "mem2reg,sroa,instsimplify,simplifycfg,inline-defined,instsimplify,simplifycfg,instcombine,dce"
 GUARD = '''import importlib.abc
 import sys
 class RejectLLVM(importlib.abc.MetaPathFinder):

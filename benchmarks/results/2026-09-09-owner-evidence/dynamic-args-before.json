@@ -1,0 +1,62 @@
+{
+  "artifacts": {
+    "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/dynamic-args-before.samples",
+    "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/dynamic-args-before.stderr",
+    "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/dynamic-args-before.stdout"
+  },
+  "command": [
+    "env",
+    "PCC_RUNTIME_ARCHIVE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a",
+    "uv",
+    "run",
+    "pytest",
+    "tests/python/test_call_argument_emitted_ownership.py::test_dynamic_callable_consumes_argument_temporaries",
+    "-x",
+    "-n0",
+    "-vv",
+    "--tb=short"
+  ],
+  "command_lookup_failure_count": 0,
+  "completed_at_utc": "2026-09-09T13:48:19.772185+00:00",
+  "cwd": "/Users/jiamo/my/pcc",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 3.136430084006861,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "C.UTF-8",
+    "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 17,
+  "largest_process_observed": {
+    "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/scripts/pcc_link_macho.py --out /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pytest-of-jiamo/pytest-1466/test_dynamic_callable_consumes0/dynamic_argument_owner.tmp --previous-output /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pytest-of-jiamo/pytest-1466/test_dynamic_callable_consumes0/dynamic_argument_owner --asm /var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc_py_self_d143qjd4/self_backend.s --archive /Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a",
+    "elapsed_s": 2.547907,
+    "manifest_paths": [],
+    "pid": 60011,
+    "ppid": 59537,
+    "rss_bytes": 120832000
+  },
+  "max_tree_rss_bytes": 2147483648,
+  "peak_process_count": 10,
+  "peak_tree_rss_bytes": 244842496,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 1,
+  "sample_count": 12,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-09T13:48:16.635617+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "uv run pytest tests/python/test_call_argument_emitted_ownership.py::test_dynamic_callable_consumes_argument_temporaries -x -n0 -vv --tb=short",
+      "manifest_paths": [],
+      "pid": 59535,
+      "ppid": 59534,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 60.0
+}

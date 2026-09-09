@@ -1,0 +1,148 @@
+{
+  "complete": true,
+  "compiler_sha256": "b45582507e80dbf591f1dd2016fecdaaccd345f463193bc408bef8d09571c9a0",
+  "build_scope": "normal-mode native execution of direct-built candidate; Stage1 harness failed native-direct smoke; not a qualified full build or fixed point",
+  "runs": [
+    {
+      "name": "tuple",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "TUPLE_ITERATOR_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "tuple",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "TUPLE_ITERATOR_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "tuple",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "TUPLE_ITERATOR_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "tuple",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "TUPLE_ITERATOR_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "tuple",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "TUPLE_ITERATOR_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "bool",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "input True\noutput True\n",
+      "stderr": ""
+    },
+    {
+      "name": "bool",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "input True\noutput True\n",
+      "stderr": ""
+    },
+    {
+      "name": "bool",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "input True\noutput True\n",
+      "stderr": ""
+    },
+    {
+      "name": "bool",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "input True\noutput True\n",
+      "stderr": ""
+    },
+    {
+      "name": "bool",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "input True\noutput True\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "NATIVE_RECORD_RELOCATION_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "NATIVE_RECORD_RELOCATION_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "NATIVE_RECORD_RELOCATION_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "NATIVE_RECORD_RELOCATION_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "NATIVE_RECORD_RELOCATION_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    }
+  ],
+  "scope_correction": "Original generator retained the previous candidate build_scope label; corrected after checking direct-stage1-watch.json returncode=1. Native execution results are unchanged."
+}

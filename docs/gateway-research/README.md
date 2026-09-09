@@ -4,7 +4,7 @@ This note records the upstream source shapes reviewed for the pcc virtual-thread
 gateway and HTTP-framework design. The full external repositories live under
 `~/pcc_refs`; they are references and behavioral oracles only. No source below
 is vendored, imported, linked, executed, or treated as the production owner of
-`pcc.gateway` or `pcc.web`.
+`pcc_gateway` or `pcc_gateway.web`.
 
 The production claim root is a current `pcc1` binary using `--backend=self` and
 `--python-libpython=off`. Host Python, upstream test programs, and pcc's existing
@@ -160,8 +160,8 @@ compatibility.
 The intended layering is:
 
 ```text
-pcc.web typed application framework
-        -> pcc.gateway HTTP/router/proxy/lifecycle kernel
+pcc_gateway.web typed application framework
+        -> pcc_gateway HTTP/router/proxy/lifecycle kernel
         -> pcc virtual-thread effects + buffers + waitset
         -> freestanding pcc-Python socket/syscall substrate
 ```

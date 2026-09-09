@@ -1,0 +1,81 @@
+{
+  "artifacts": {
+    "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-compare.samples",
+    "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-compare.stderr",
+    "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-compare.stdout"
+  },
+  "command": [
+    "env",
+    "PCC_KNOWN_OBJECT_REFS=1",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT=1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS=1",
+    "PCC_DIRECT_GENERATOR_TASKS=1",
+    "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT=1",
+    "env",
+    "-u",
+    "LC_ALL",
+    "uv",
+    "run",
+    "python",
+    "benchmarks/compare.py",
+    "--pcc",
+    "benchmarks/build/2026-09-09-quota20-tuple/direct-pcc-final",
+    "--pcc1",
+    "benchmarks/build/2026-09-09-quota20-tuple/direct-pcc1-final",
+    "--pcc1-binary",
+    "/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/pcc1",
+    "--compiler-source",
+    "/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/source-snapshot",
+    "--runtime-archive",
+    "benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a",
+    "--zero-delay-requests",
+    "20000",
+    "--repeats",
+    "5",
+    "--output",
+    "benchmarks/results/2026-09-09-owner-final-three-way.json"
+  ],
+  "command_lookup_failure_count": 1,
+  "completed_at_utc": "2026-09-09T13:09:58.183360+00:00",
+  "cwd": "/Users/jiamo/my/pcc-gateway",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 176.40411408396903,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "en_US.UTF-8",
+    "PATH": "/Users/jiamo/my/pcc-gateway/.venv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin:/Users/jiamo/.lmstudio/bin",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 258,
+  "largest_process_observed": {
+    "command": "/Users/jiamo/my/pcc-gateway/.venv/bin/python3 benchmarks/compare.py --pcc benchmarks/build/2026-09-09-quota20-tuple/direct-pcc-final --pcc1 benchmarks/build/2026-09-09-quota20-tuple/direct-pcc1-final --pcc1-binary /Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/pcc1 --compiler-source /Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/source-snapshot --runtime-archive benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a --zero-delay-requests 20000 --repeats 5 --output benchmarks/results/2026-09-09-owner-final-three-way.json",
+    "elapsed_s": 171.024944,
+    "manifest_paths": [],
+    "pid": 14482,
+    "ppid": 14480,
+    "rss_bytes": 847167488
+  },
+  "max_tree_rss_bytes": 4294967296,
+  "peak_process_count": 11,
+  "peak_tree_rss_bytes": 880246784,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 0,
+  "sample_count": 612,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-09T13:07:01.747854+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "uv run python benchmarks/compare.py --pcc benchmarks/build/2026-09-09-quota20-tuple/direct-pcc-final --pcc1 benchmarks/build/2026-09-09-quota20-tuple/direct-pcc1-final --pcc1-binary /Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/pcc1 --compiler-source /Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/source-snapshot --runtime-archive benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a --zero-delay-requests 20000 --repeats 5 --output benchmarks/results/2026-09-09-owner-final-three-way.json",
+      "manifest_paths": [],
+      "pid": 14480,
+      "ppid": 14479,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 240.0
+}

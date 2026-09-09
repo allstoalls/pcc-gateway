@@ -1,0 +1,95 @@
+{
+  "complete": false,
+  "compiler_sha256": "3c92d7999590b10d12a5d16b0096e6120e0cb516e37afd39fa883d735580888d",
+  "steps": [
+    {
+      "name": "benchmark",
+      "compile_returncode": 0
+    },
+    {
+      "name": "benchmark",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 10, \"delay_ms\": 0, \"elapsed_ms\": 0.598000013269484, \"latency_max_ms\": 0.09400001727044582, \"latency_min_ms\": 0.07800001185387373, \"requests\": 30, \"rounds\": 3, \"warmup_requests\": 20}\n",
+      "stderr": ""
+    },
+    {
+      "name": "benchmark",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 10, \"delay_ms\": 0, \"elapsed_ms\": 1.2989999959245324, \"latency_max_ms\": 0.20000000949949026, \"latency_min_ms\": 0.19699998665601015, \"requests\": 30, \"rounds\": 3, \"warmup_requests\": 20}\n",
+      "stderr": ""
+    },
+    {
+      "name": "benchmark",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 10, \"delay_ms\": 0, \"elapsed_ms\": 1.2919999426230788, \"latency_max_ms\": 0.20100001711398363, \"latency_min_ms\": 0.19599997904151678, \"requests\": 30, \"rounds\": 3, \"warmup_requests\": 20}\n",
+      "stderr": ""
+    },
+    {
+      "name": "benchmark",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 10, \"delay_ms\": 0, \"elapsed_ms\": 1.7649999354034662, \"latency_max_ms\": 0.2899999963119626, \"latency_min_ms\": 0.24699990171939135, \"requests\": 30, \"rounds\": 3, \"warmup_requests\": 20}\n",
+      "stderr": ""
+    },
+    {
+      "name": "benchmark",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 10, \"delay_ms\": 0, \"elapsed_ms\": 2.406999934464693, \"latency_max_ms\": 0.38100010715425014, \"latency_min_ms\": 0.3310000756755471, \"requests\": 30, \"rounds\": 3, \"warmup_requests\": 20}\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "compile_returncode": 0
+    },
+    {
+      "name": "cleanup",
+      "backend": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "cleanup",
+      "backend": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "name": "records",
+      "compile_returncode": 0
+    },
+    {
+      "name": "records",
+      "backend": 0,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-link-memory-frame-traffic/native_object_probe.py\", line 1, in <module>\n    from pcc.backend.macho_obj import Section, TextSymbol, TEXT_SECTION_FLAGS\nImportError: No module named 'pcc.backend.macho_obj'\n"
+    }
+  ]
+}

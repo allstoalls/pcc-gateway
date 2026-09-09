@@ -1,0 +1,660 @@
+{
+  "scope": "native standalone optimizer on the same server IR, mem2reg+sroa, GC0; external C diagnostic observers and externally LLVM-emitted pinned runtime; not full HTTP compilation or pcc1 fixed point",
+  "input_bytes": 36258936,
+  "input_sha256": "d7b7502464bb32d6cfabd00bc724d4974af9900704f7f0acce83b0d390e8d879",
+  "runs": [
+    {
+      "name": "census-server-dict-get",
+      "status": "COMPLETE",
+      "elapsed_s": 62.21857570903376,
+      "peak_tree_rss_bytes": 1214545920,
+      "heap_metrics": {
+        "live_requested": 658221932,
+        "live_usable": 869846784,
+        "mapped": 1166061568,
+        "metadata_mapped": 20348928,
+        "slab_mapped": 958201856,
+        "object_slabs": 13245,
+        "raw_slabs": 1376,
+        "raw_small_live_count": 738210,
+        "raw_small_requested": 34031691,
+        "raw_small_usable": 47529088,
+        "large_managed_objects": 192,
+        "reclaimable_raw_slabs": 131072,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 2164100,
+        "live_requested_after_walk": 658221932,
+        "empty_lists": 2745,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 32768
+      },
+      "types": {
+        "3": {
+          "count": 1,
+          "requested_bytes": 24,
+          "usable_bytes": 32,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "4": {
+          "count": 4185193,
+          "requested_bytes": 488224337,
+          "usable_bytes": 677597104,
+          "backing_bytes": 0,
+          "refcount_one": 3401302
+        },
+        "5": {
+          "count": 164690,
+          "requested_bytes": 6587600,
+          "usable_bytes": 10540160,
+          "backing_bytes": 16123576,
+          "refcount_one": 164515
+        },
+        "6": {
+          "count": 103,
+          "requested_bytes": 5768,
+          "usable_bytes": 6592,
+          "backing_bytes": 59904,
+          "refcount_one": 88
+        },
+        "7": {
+          "count": 3641,
+          "requested_bytes": 162584,
+          "usable_bytes": 211744,
+          "backing_bytes": 0,
+          "refcount_one": 3636
+        },
+        "8": {
+          "count": 28615,
+          "requested_bytes": 1373520,
+          "usable_bytes": 1831360,
+          "backing_bytes": 3696256,
+          "refcount_one": 5
+        },
+        "9": {
+          "count": 408,
+          "requested_bytes": 39168,
+          "usable_bytes": 52224,
+          "backing_bytes": 0,
+          "refcount_one": 204
+        },
+        "10": {
+          "count": 14,
+          "requested_bytes": 1680,
+          "usable_bytes": 1792,
+          "backing_bytes": 0,
+          "refcount_one": 14
+        },
+        "13": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "14": {
+          "count": 87,
+          "requested_bytes": 2784,
+          "usable_bytes": 2784,
+          "backing_bytes": 0,
+          "refcount_one": 87
+        },
+        "101": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "102": {
+          "count": 2,
+          "requested_bytes": 48,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 2
+        },
+        "104": {
+          "count": 13,
+          "requested_bytes": 416,
+          "usable_bytes": 416,
+          "backing_bytes": 0,
+          "refcount_one": 13
+        },
+        "105": {
+          "count": 33,
+          "requested_bytes": 1056,
+          "usable_bytes": 1056,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "106": {
+          "count": 610,
+          "requested_bytes": 29280,
+          "usable_bytes": 39040,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "107": {
+          "count": 346499,
+          "requested_bytes": 19403944,
+          "usable_bytes": 22175936,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        }
+      },
+      "command": [
+        "env",
+        "PCC_HEAP_CENSUS_FILE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/census-server-dict-get.tsv",
+        "PCC_OPT_PROFILE_MEMORY=1",
+        "PCC_GC_BACKEND=0",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/dict-get-census-native",
+        "mem2reg,sroa",
+        "benchmarks/build/2026-09-08-asyncio-challenge/native-http-ir/pcc_gateway.server.ll",
+        "benchmarks/build/2026-09-08-asyncio-challenge/census-server-dict-get.ll"
+      ],
+      "output_sha256": "19c8dbd264941d80050315990f5a1bf934d3b2a6fd302def2b97e22f4b83c2fb"
+    },
+    {
+      "name": "comp-balanced-server",
+      "status": "COMPLETE",
+      "elapsed_s": 62.49662879202515,
+      "peak_tree_rss_bytes": 1165656064,
+      "heap_metrics": {
+        "live_requested": 597511260,
+        "live_usable": 787324864,
+        "mapped": 1154764800,
+        "metadata_mapped": 20316160,
+        "slab_mapped": 951058432,
+        "object_slabs": 12874,
+        "raw_slabs": 1638,
+        "raw_small_live_count": 262402,
+        "raw_small_requested": 13331193,
+        "raw_small_usable": 17583936,
+        "large_managed_objects": 192,
+        "reclaimable_raw_slabs": 24444928,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 2140330,
+        "live_requested_after_walk": 597511260,
+        "empty_lists": 2737,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 32768
+      },
+      "types": {
+        "3": {
+          "count": 1,
+          "requested_bytes": 24,
+          "usable_bytes": 32,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "4": {
+          "count": 3855655,
+          "requested_bytes": 471266643,
+          "usable_bytes": 653779504,
+          "backing_bytes": 0,
+          "refcount_one": 3246742
+        },
+        "5": {
+          "count": 73788,
+          "requested_bytes": 2951520,
+          "usable_bytes": 4722432,
+          "backing_bytes": 7889912,
+          "refcount_one": 73613
+        },
+        "6": {
+          "count": 103,
+          "requested_bytes": 5768,
+          "usable_bytes": 6592,
+          "backing_bytes": 59904,
+          "refcount_one": 88
+        },
+        "7": {
+          "count": 3641,
+          "requested_bytes": 162584,
+          "usable_bytes": 211744,
+          "backing_bytes": 0,
+          "refcount_one": 3636
+        },
+        "8": {
+          "count": 28615,
+          "requested_bytes": 1373520,
+          "usable_bytes": 1831360,
+          "backing_bytes": 3696256,
+          "refcount_one": 5
+        },
+        "9": {
+          "count": 408,
+          "requested_bytes": 39168,
+          "usable_bytes": 52224,
+          "backing_bytes": 0,
+          "refcount_one": 204
+        },
+        "10": {
+          "count": 14,
+          "requested_bytes": 1680,
+          "usable_bytes": 1792,
+          "backing_bytes": 0,
+          "refcount_one": 14
+        },
+        "13": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "14": {
+          "count": 87,
+          "requested_bytes": 2784,
+          "usable_bytes": 2784,
+          "backing_bytes": 0,
+          "refcount_one": 87
+        },
+        "101": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "102": {
+          "count": 2,
+          "requested_bytes": 48,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 2
+        },
+        "104": {
+          "count": 13,
+          "requested_bytes": 416,
+          "usable_bytes": 416,
+          "backing_bytes": 0,
+          "refcount_one": 13
+        },
+        "105": {
+          "count": 33,
+          "requested_bytes": 1056,
+          "usable_bytes": 1056,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "107": {
+          "count": 52817,
+          "requested_bytes": 2957752,
+          "usable_bytes": 3380288,
+          "backing_bytes": 0,
+          "refcount_one": 51856
+        }
+      },
+      "command": [
+        "env",
+        "PCC_HEAP_CENSUS_FILE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/comp-balanced-server.tsv",
+        "PCC_OPT_PROFILE_MEMORY=1",
+        "PCC_GC_BACKEND=0",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/comp-balanced-native",
+        "mem2reg,sroa",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-ir/pcc_gateway.server.ll",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/comp-balanced-server.ll"
+      ],
+      "output_sha256": "19c8dbd264941d80050315990f5a1bf934d3b2a6fd302def2b97e22f4b83c2fb"
+    },
+    {
+      "name": "container-owner-server",
+      "status": "COMPLETE",
+      "elapsed_s": 62.29850479098968,
+      "peak_tree_rss_bytes": 954269696,
+      "heap_metrics": {
+        "live_requested": 475103908,
+        "live_usable": 617448864,
+        "mapped": 943747072,
+        "metadata_mapped": 19857408,
+        "slab_mapped": 743964672,
+        "object_slabs": 9714,
+        "raw_slabs": 1638,
+        "raw_small_live_count": 262402,
+        "raw_small_requested": 13331195,
+        "raw_small_usable": 17583936,
+        "large_managed_objects": 66,
+        "reclaimable_raw_slabs": 24444928,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 1884402,
+        "live_requested_after_walk": 475103908,
+        "empty_lists": 2737,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 32768
+      },
+      "types": {
+        "3": {
+          "count": 1,
+          "requested_bytes": 24,
+          "usable_bytes": 32,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "4": {
+          "count": 2793970,
+          "requested_bytes": 348859289,
+          "usable_bytes": 483903504,
+          "backing_bytes": 0,
+          "refcount_one": 2185057
+        },
+        "5": {
+          "count": 73788,
+          "requested_bytes": 2951520,
+          "usable_bytes": 4722432,
+          "backing_bytes": 7889912,
+          "refcount_one": 73613
+        },
+        "6": {
+          "count": 103,
+          "requested_bytes": 5768,
+          "usable_bytes": 6592,
+          "backing_bytes": 59904,
+          "refcount_one": 88
+        },
+        "7": {
+          "count": 3641,
+          "requested_bytes": 162584,
+          "usable_bytes": 211744,
+          "backing_bytes": 0,
+          "refcount_one": 3636
+        },
+        "8": {
+          "count": 28615,
+          "requested_bytes": 1373520,
+          "usable_bytes": 1831360,
+          "backing_bytes": 3696256,
+          "refcount_one": 5
+        },
+        "9": {
+          "count": 408,
+          "requested_bytes": 39168,
+          "usable_bytes": 52224,
+          "backing_bytes": 0,
+          "refcount_one": 204
+        },
+        "10": {
+          "count": 14,
+          "requested_bytes": 1680,
+          "usable_bytes": 1792,
+          "backing_bytes": 0,
+          "refcount_one": 14
+        },
+        "13": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "14": {
+          "count": 87,
+          "requested_bytes": 2784,
+          "usable_bytes": 2784,
+          "backing_bytes": 0,
+          "refcount_one": 87
+        },
+        "101": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "102": {
+          "count": 2,
+          "requested_bytes": 48,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 2
+        },
+        "104": {
+          "count": 13,
+          "requested_bytes": 416,
+          "usable_bytes": 416,
+          "backing_bytes": 0,
+          "refcount_one": 13
+        },
+        "105": {
+          "count": 33,
+          "requested_bytes": 1056,
+          "usable_bytes": 1056,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "107": {
+          "count": 52817,
+          "requested_bytes": 2957752,
+          "usable_bytes": 3380288,
+          "backing_bytes": 0,
+          "refcount_one": 51856
+        }
+      },
+      "command": [
+        "env",
+        "PCC_HEAP_CENSUS_FILE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/container-owner-server.tsv",
+        "PCC_OPT_PROFILE_MEMORY=1",
+        "PCC_GC_BACKEND=0",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/container-owner-native",
+        "mem2reg,sroa",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-ir/pcc_gateway.server.ll",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/container-owner-server.ll"
+      ],
+      "output_sha256": "19c8dbd264941d80050315990f5a1bf934d3b2a6fd302def2b97e22f4b83c2fb"
+    },
+    {
+      "name": "parser-prefilter-server",
+      "status": "COMPLETE",
+      "elapsed_s": 52.14730366598815,
+      "peak_tree_rss_bytes": 815759360,
+      "heap_metrics": {
+        "live_requested": 401593724,
+        "live_usable": 502796832,
+        "mapped": 804515840,
+        "metadata_mapped": 19496960,
+        "slab_mapped": 605093888,
+        "object_slabs": 7595,
+        "raw_slabs": 1638,
+        "raw_small_live_count": 262402,
+        "raw_small_requested": 13331196,
+        "raw_small_usable": 17583936,
+        "large_managed_objects": 66,
+        "reclaimable_raw_slabs": 24444928,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 1102550,
+        "live_requested_after_walk": 401593724,
+        "empty_lists": 2737,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 32768
+      },
+      "types": {
+        "3": {
+          "count": 1,
+          "requested_bytes": 24,
+          "usable_bytes": 32,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "4": {
+          "count": 1792696,
+          "requested_bytes": 275349104,
+          "usable_bytes": 369251472,
+          "backing_bytes": 0,
+          "refcount_one": 1361608
+        },
+        "5": {
+          "count": 73788,
+          "requested_bytes": 2951520,
+          "usable_bytes": 4722432,
+          "backing_bytes": 7889912,
+          "refcount_one": 73613
+        },
+        "6": {
+          "count": 103,
+          "requested_bytes": 5768,
+          "usable_bytes": 6592,
+          "backing_bytes": 59904,
+          "refcount_one": 88
+        },
+        "7": {
+          "count": 3641,
+          "requested_bytes": 162584,
+          "usable_bytes": 211744,
+          "backing_bytes": 0,
+          "refcount_one": 3636
+        },
+        "8": {
+          "count": 28615,
+          "requested_bytes": 1373520,
+          "usable_bytes": 1831360,
+          "backing_bytes": 3696256,
+          "refcount_one": 5
+        },
+        "9": {
+          "count": 408,
+          "requested_bytes": 39168,
+          "usable_bytes": 52224,
+          "backing_bytes": 0,
+          "refcount_one": 204
+        },
+        "10": {
+          "count": 14,
+          "requested_bytes": 1680,
+          "usable_bytes": 1792,
+          "backing_bytes": 0,
+          "refcount_one": 14
+        },
+        "13": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 1
+        },
+        "14": {
+          "count": 87,
+          "requested_bytes": 2784,
+          "usable_bytes": 2784,
+          "backing_bytes": 0,
+          "refcount_one": 87
+        },
+        "101": {
+          "count": 1,
+          "requested_bytes": 40,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "102": {
+          "count": 2,
+          "requested_bytes": 48,
+          "usable_bytes": 64,
+          "backing_bytes": 0,
+          "refcount_one": 2
+        },
+        "104": {
+          "count": 13,
+          "requested_bytes": 416,
+          "usable_bytes": 416,
+          "backing_bytes": 0,
+          "refcount_one": 13
+        },
+        "105": {
+          "count": 33,
+          "requested_bytes": 1056,
+          "usable_bytes": 1056,
+          "backing_bytes": 0,
+          "refcount_one": 0
+        },
+        "107": {
+          "count": 52817,
+          "requested_bytes": 2957752,
+          "usable_bytes": 3380288,
+          "backing_bytes": 0,
+          "refcount_one": 51856
+        }
+      },
+      "command": [
+        "env",
+        "PCC_HEAP_CENSUS_FILE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/parser-prefilter-server.tsv",
+        "PCC_OPT_PROFILE_MEMORY=1",
+        "PCC_GC_BACKEND=0",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/parser-prefilter-native",
+        "mem2reg,sroa",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-ir/pcc_gateway.server.ll",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/parser-prefilter-server.ll"
+      ],
+      "output_sha256": "19c8dbd264941d80050315990f5a1bf934d3b2a6fd302def2b97e22f4b83c2fb"
+    }
+  ],
+  "allocation_sampling": {
+    "rate": 1024,
+    "string_allocations": 244332467,
+    "retained_samples": 3765,
+    "sample_overflow": 0,
+    "bytes_by_first_visible_caller": {
+      "_user_pcc_native_ir_mem2reg__apply": 2681,
+      "_user_pcc_native_ir_mem2reg__collect_uses": 3611,
+      "_user_pcc_py_frontend_compiled_default_passes__parse_alloca": 94364,
+      "_user_pcc_py_frontend_compiled_default_passes_run_compiled_default_tier": 50882,
+      "_user_pcc_native_ir_ir_mutator_MutableModule_parse": 43009,
+      "_user_pcc_py_frontend_compiled_default_passes__all_defined_ssa_names": 31596,
+      "_user_pcc_py_frontend_compiled_default_passes__parse_load": 59697,
+      "_user_pcc_native_ir_ir_mutator__parse_function": 63073,
+      "_user_pcc_native_ir_mem2reg__build_cfg": 3105,
+      "_user_pcc_native_ir_ir_mutator__parse_module": 10613,
+      "_user_pcc_py_frontend_compiled_default_passes__promote_entry_single_store": 2372,
+      "_user_pcc_native_ir_mem2reg__promote_function": 4181,
+      "_user_pcc_native_ir_mem2reg__parse_load": 2458,
+      "_user_pcc_native_ir_mem2reg__parse_store": 1815,
+      "_user_pcc_py_frontend_compiled_default_passes__mem2reg_single_block_function": 2489,
+      "_user_pcc_native_ir_mem2reg__parse_alloca": 665,
+      "_user_pcc_py_frontend_compiled_default_passes__sroa_function": 44,
+      "_user_pcc_native_ir_mem2reg__entry_block_candidates": 349,
+      "_user_pcc_py_frontend_compiled_default_passes__parse_store": 42
+    },
+    "limitation": "Sampled attribution, not exact bytes by caller. Unwinding skips some frames; call sites were checked against disassembly."
+  },
+  "open": [
+    "Full new-source native compiler and gateway validation pending",
+    "Full pcc1 candidate build underway; gateway/QPS results pending",
+    "Concurrent-100 asyncio throughput target still open"
+  ],
+  "focused_checks": {
+    "receipt": "parser-prefilter-focused-v2.json",
+    "passed": 24,
+    "scope": "host-emitted native programs, standalone native optimizer and GC0-4 literal exception cleanup"
+  }
+}

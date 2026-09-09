@@ -1,0 +1,197 @@
+{
+  "scope": "waiter initialization mirror mismatch; external LLDB and C poison probe diagnostics",
+  "before": {
+    "previous_http_counter": {
+      "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-memory-walrus",
+      "binary_sha256": "8f454bc5b52b4be8276ef1dbc643256047789efffd2153bc2f6c87db807ccffd",
+      "counter_symbol_address": "00000001010b8780",
+      "command": [
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/native-http-memory-walrus"
+      ],
+      "observer_sha256": "c59c7728d580926ef6aac3fcf583edb977b2ba9e11f77d7753c086937103dc0c",
+      "scope": "read-only exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+      "returncode": 0,
+      "process_counters": [
+        {
+          "pid": 93933,
+          "unmanaged_refcount_ops": 1
+        }
+      ],
+      "total_unmanaged_refcount_ops": 1
+    },
+    "candidate_http_counter": {
+      "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http",
+      "binary_sha256": "21be9b1c06ddc63aa64ca8e44f29d96f2de0f75109a4b62b67259b8a6d1bc455",
+      "counter_symbol_address": "00000001010bdb00",
+      "command": [
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http"
+      ],
+      "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+      "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+      "returncode": 0,
+      "process_counters": [
+        {
+          "pid": 93208,
+          "unmanaged_refcount_ops": 1
+        }
+      ],
+      "total_unmanaged_refcount_ops": 1
+    },
+    "poison_probe_exit_code": 4,
+    "poison_probe_stdout": "unmanaged_delta=1"
+  },
+  "cause": "Python _waiter_clear used a retaining root replacement on fresh uninitialized malloc storage; C counterpart performs a raw store; recycling callers already release/unregister any prior root",
+  "change": "py_threading.py _waiter_clear: store_ptr(node,0,null())",
+  "gates": [
+    {
+      "artifacts": {
+        "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.samples",
+        "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.stderr",
+        "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.stdout"
+      },
+      "command": [
+        "env",
+        "PCC_RUNTIME_ARCHIVE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_waiter_fixed/libpy_runtime_pcc_py.a",
+        "uv",
+        "run",
+        "pytest",
+        "tests/python/test_waiter_raw_initialization.py",
+        "-x",
+        "-n0",
+        "-vv",
+        "--tb=short"
+      ],
+      "command_lookup_failure_count": 0,
+      "completed_at_utc": "2026-09-09T03:52:03.246617+00:00",
+      "cwd": "/Users/jiamo/my/pcc",
+      "darwin_preflight_reserve_bytes": 0,
+      "elapsed_s": 1.4798330420162529,
+      "environment": {
+        "HOME": "/Users/jiamo",
+        "LANG": "C.UTF-8",
+        "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin",
+        "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+      },
+      "interval_s": 0.25,
+      "known_process_count": 14,
+      "largest_process_observed": {
+        "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/.venv/bin/pytest tests/python/test_waiter_raw_initialization.py -x -n0 -vv --tb=short",
+        "elapsed_s": 1.169237,
+        "manifest_paths": [],
+        "pid": 2094,
+        "ppid": 2092,
+        "rss_bytes": 84099072
+      },
+      "max_tree_rss_bytes": 2147483648,
+      "peak_process_count": 9,
+      "peak_tree_rss_bytes": 160890880,
+      "process_table_retry_count": 0,
+      "process_table_timeouts_s": [
+        1.0
+      ],
+      "returncode": 0,
+      "sample_count": 6,
+      "schema": "pcc.process_tree_sample.v1",
+      "started_at_utc": "2026-09-09T03:52:01.766675+00:00",
+      "status": "COMPLETE",
+      "terminal_processes": [
+        {
+          "command": "uv run pytest tests/python/test_waiter_raw_initialization.py -x -n0 -vv --tb=short",
+          "manifest_paths": [],
+          "pid": 2092,
+          "ppid": 2091,
+          "rss_bytes": 0
+        }
+      ],
+      "timeout_s": 60.0
+    },
+    {
+      "artifacts": {
+        "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-gates.samples",
+        "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-gates.stderr",
+        "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-gates.stdout"
+      },
+      "command": [
+        "env",
+        "PCC_RUNTIME_ARCHIVE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_waiter_fixed/libpy_runtime_pcc_py.a",
+        "uv",
+        "run",
+        "pytest",
+        "tests/python/test_waiter_raw_initialization.py",
+        "tests/python/gc_production_contract/test_vthread_waiter_node_pool.py",
+        "-x",
+        "-n0",
+        "-vv",
+        "--tb=short"
+      ],
+      "command_lookup_failure_count": 0,
+      "completed_at_utc": "2026-09-09T03:50:30.935274+00:00",
+      "cwd": "/Users/jiamo/my/pcc",
+      "darwin_preflight_reserve_bytes": 0,
+      "elapsed_s": 2.060263833962381,
+      "environment": {
+        "HOME": "/Users/jiamo",
+        "LANG": "C.UTF-8",
+        "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin",
+        "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+      },
+      "interval_s": 0.25,
+      "known_process_count": 19,
+      "largest_process_observed": {
+        "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/.venv/bin/pytest tests/python/test_waiter_raw_initialization.py tests/python/gc_production_contract/test_vthread_waiter_node_pool.py -x -n0 -vv --tb=short",
+        "elapsed_s": 1.74438,
+        "manifest_paths": [],
+        "pid": 99646,
+        "ppid": 99644,
+        "rss_bytes": 85049344
+      },
+      "max_tree_rss_bytes": 4294967296,
+      "peak_process_count": 9,
+      "peak_tree_rss_bytes": 119226368,
+      "process_table_retry_count": 0,
+      "process_table_timeouts_s": [
+        1.0
+      ],
+      "returncode": 0,
+      "sample_count": 8,
+      "schema": "pcc.process_tree_sample.v1",
+      "started_at_utc": "2026-09-09T03:50:28.874882+00:00",
+      "status": "COMPLETE",
+      "terminal_processes": [
+        {
+          "command": "uv run pytest tests/python/test_waiter_raw_initialization.py tests/python/gc_production_contract/test_vthread_waiter_node_pool.py -x -n0 -vv --tb=short",
+          "manifest_paths": [],
+          "pid": 99644,
+          "ppid": 99643,
+          "rss_bytes": 0
+        }
+      ],
+      "timeout_s": 120.0
+    }
+  ],
+  "lldb_stdout": "(lldb) target create \"benchmarks/build/2026-09-09-refcount-specialization/local-http\"\nCurrent executable set to '/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http' (arm64).\n(lldb) breakpoint set -n user_py_obj__note_unmanaged_refcount_op\nBreakpoint 1: where = local-http`user_py_obj__note_unmanaged_refcount_op, address = 0x00000001007618f0\n(lldb) run\nProcess 93949 launched: '/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http' (arm64)\nProcess 93949 stopped\n* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1\n    frame #0: 0x00000001007618f0 local-http`user_py_obj__note_unmanaged_refcount_op\nlocal-http`user_py_obj__note_unmanaged_refcount_op:\n->  0x1007618f0 <+0>:  adrp   x8, 2396\n    0x1007618f4 <+4>:  add    x8, x8, #0xb00            ; pcc_gc_unmanaged_refcount_ops\n    0x1007618f8 <+8>:  ldr    x9, [x8]\n    0x1007618fc <+12>: add    x9, x9, #0x1\nTarget 0: (local-http) stopped.\n(lldb) thread backtrace\n* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1\n  * frame #0: 0x00000001007618f0 local-http`user_py_obj__note_unmanaged_refcount_op\n    frame #1: 0x00000001007629bc local-http`user_py_obj__py_decref_prepare + 132\n    frame #2: 0x00000001007bdd3c local-http`user_py_threading__waiter_clear + 32\n    frame #3: 0x000000010078aaf4 local-http`py_gen_next + 148\n    frame #4: 0x000000010078aaf4 local-http`py_gen_next + 148\n    frame #5: 0x000000010078aaf4 local-http`py_gen_next + 148\n    frame #6: 0x000000010078aaf4 local-http`py_gen_next + 148\n    frame #7: 0x0000000100000e24 local-http`user_local_http_app_main + 360\n    frame #8: 0x0000000100016a08 local-http`main + 8436\n    frame #9: 0x000000018a73be00 dyld`start + 6992\n(lldb) register read x0 x19 x20 x21\n      x0 = 0x0000000000000000\n     x19 = 0x000000016fdfcce8\n     x20 = 0x00000001012c1690\n     x21 = 0x0000000000000000\n(lldb) continue\nPCC1_GATEWAY_HTTP1_LOCAL_OK\nProcess 93949 resuming\nProcess 93949 exited with status = 0 (0x00000000)\n",
+  "sources": {
+    "../pcc/pcc/py_runtime/py/py_threading.py": "f8f543730a1df0f71ff0529691226fc0cae430ed8e4c58c65f652b1aee5c1bf4",
+    "../pcc/tests/python/test_waiter_raw_initialization.py": "2087136919664e9dfa48357b54fdbc720c1a6fb386041ccaaf838e742b748ea4"
+  },
+  "http_after_pending": false,
+  "after": {
+    "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http-waiter-fixed",
+    "binary_sha256": "d9b6d332d97b960fa9e548c9d0ec6609c8c7e6e295764954691636b8818e5d9d",
+    "counter_symbol_address": "00000001010bdb00",
+    "command": [
+      "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http-waiter-fixed"
+    ],
+    "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+    "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+    "returncode": 0,
+    "process_counters": [
+      {
+        "pid": 10707,
+        "unmanaged_refcount_ops": 0
+      }
+    ],
+    "total_unmanaged_refcount_ops": 0
+  },
+  "http_five_gc_run": "2026-09-09-waiter-fixed-http-run.json"
+}

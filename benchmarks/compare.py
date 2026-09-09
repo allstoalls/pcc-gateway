@@ -18,6 +18,11 @@ import shutil
 import statistics
 import subprocess
 import sys
+
+try:
+    from .processes import run_command
+except ImportError:
+    from processes import run_command
 import time
 
 
@@ -190,7 +195,8 @@ def compare(args, core, concurrencies, delays, parser):
         "optimization_environment": {key: env.get(key) for key in (
             "PCC_GC_BACKEND", "PCC_WITH_THREADS", "PCC_RUNTIME_HIGH",
             "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT", "PCC_GENERATOR_FIRST_ENTRY_INIT",
-            "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS")},
+            "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS",
+            "PCC_KNOWN_OBJECT_REFS")},
         "warmup_batches": 2,
         "memory_scope": "Darwin /usr/bin/time per-process peak RSS, including startup and warmups",
         "rounds": args.rounds,
@@ -238,7 +244,7 @@ def compare(args, core, concurrencies, delays, parser):
         started = time.perf_counter()
         log = build / f"{label}-compile.log"
         with log.open("w") as stream:
-            compiled = subprocess.run(command, cwd=ROOT, env=env, stdout=stream,
+            compiled = run_command(command, cwd=ROOT, env=env, stdout=stream,
                                       stderr=subprocess.STDOUT, timeout=300)
         report["compilers"][label] = {
             "path": compiler, "sha256": digest(compiler), "command": command,
@@ -269,7 +275,7 @@ def compare(args, core, concurrencies, delays, parser):
                     command = commands[label] + [str(concurrency), str(delay), str(rounds)]
                     timed_command = (["/usr/bin/time", "-lp", *command]
                                      if sys.platform == "darwin" else command)
-                    ran = subprocess.run(timed_command, cwd=ROOT, env=env, text=True,
+                    ran = run_command(timed_command, cwd=ROOT, env=env, text=True,
                                          capture_output=True, timeout=60)
                     if ran.returncode:
                         raise RuntimeError(f"{label} failed ({ran.returncode}): {ran.stdout}\n{ran.stderr}")

@@ -1,0 +1,80 @@
+{
+  "archives": {
+    "candidate": {
+      "artifact_sha256": "a9fce5c35404073f1f98dfdc3dc077e9c270ea7251385a7b9ab0cfd7956d2d48",
+      "command": [
+        "/Users/jiamo/my/pcc/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-ceiling-ab-v2/candidate"
+      ],
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/ceiling/libpy_runtime_pcc_py.a",
+      "sha256": "219b2f94282538419fab22c52c9e65fa48e3b1ecb98d92277d791a9c98b7beae"
+    },
+    "control": {
+      "artifact_sha256": "2832607e13e5f4c10a0c68e091d0939a1ee85d512ae61d369aff7d2cf125b760",
+      "command": [
+        "/Users/jiamo/my/pcc/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-ceiling-ab-v2/control"
+      ],
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/control/libpy_runtime_pcc_py.a",
+      "sha256": "7d1e014c9afec85cca665a1829df302da4bc2049b36deb6094eb6d9188f3841a"
+    }
+  },
+  "arm_environment": {
+    "candidate": {},
+    "control": {}
+  },
+  "arm_source_identities": {
+    "candidate": "34f716709b1434b219bee70089677686099a0a1388f0636c2a6cd19d803b7185",
+    "control": "34f716709b1434b219bee70089677686099a0a1388f0636c2a6cd19d803b7185"
+  },
+  "backends": {
+    "candidate": "self",
+    "control": "self"
+  },
+  "base_optimization_environment": {
+    "PCC_DIRECT_GENERATOR_TASKS": "1",
+    "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS": "1",
+    "PCC_GC_BACKEND": "0",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT": "1",
+    "PCC_RUNTIME_HIGH": "py",
+    "PCC_WITH_THREADS": "0"
+  },
+  "compiler": "/Users/jiamo/my/pcc/.venv/bin/pcc",
+  "compiler_sha256": "afb914a53606ca68ce759b2082f8852623c6f12199ea86fbf2a786f0b24b0d0a",
+  "compiler_source": "/Users/jiamo/my/pcc/build/asyncio-memory-walrus-stage1-20260909/source-snapshot",
+  "compiler_sources": {
+    "candidate": "/Users/jiamo/my/pcc/build/asyncio-memory-walrus-stage1-20260909/source-snapshot",
+    "control": "/Users/jiamo/my/pcc/build/asyncio-memory-walrus-stage1-20260909/source-snapshot"
+  },
+  "complete": false,
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "programs": {
+    "candidate": "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+    "control": "/Users/jiamo/my/pcc-gateway/benchmark_native.py"
+  },
+  "python_version": "3.15.0rc1 (main, Aug 25 2026, 13:50:37) [Clang 22.1.3 ]",
+  "runs": [],
+  "schema": "pcc-gateway.runtime-ab.v1",
+  "source_identity": "34f716709b1434b219bee70089677686099a0a1388f0636c2a6cd19d803b7185",
+  "started_utc": "2026-09-09T02:27:46.820895+00:00",
+  "summary": [],
+  "summary_output": true,
+  "tool_overrides": {}
+}

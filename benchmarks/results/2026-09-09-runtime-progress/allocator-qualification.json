@@ -1,0 +1,141 @@
+{
+  "scope": "Per-arm qualification; original complete=false receipt retained because external LLVM reference failed",
+  "arms": {
+    "baseline": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": true
+        },
+        {
+          "gc": 1,
+          "valid": true
+        },
+        {
+          "gc": 2,
+          "valid": true
+        },
+        {
+          "gc": 3,
+          "valid": true
+        },
+        {
+          "gc": 4,
+          "valid": true
+        }
+      ],
+      "complete_gc0_4": true
+    },
+    "merged13_o0": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": true
+        },
+        {
+          "gc": 1,
+          "valid": true
+        },
+        {
+          "gc": 2,
+          "valid": true
+        },
+        {
+          "gc": 3,
+          "valid": true
+        },
+        {
+          "gc": 4,
+          "valid": true
+        }
+      ],
+      "complete_gc0_4": true
+    },
+    "owned13_round2": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": true
+        },
+        {
+          "gc": 1,
+          "valid": true
+        },
+        {
+          "gc": 2,
+          "valid": true
+        },
+        {
+          "gc": 3,
+          "valid": true
+        },
+        {
+          "gc": 4,
+          "valid": true
+        }
+      ],
+      "complete_gc0_4": true
+    },
+    "owned_round3": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": true
+        },
+        {
+          "gc": 1,
+          "valid": true
+        },
+        {
+          "gc": 2,
+          "valid": true
+        },
+        {
+          "gc": 3,
+          "valid": true
+        },
+        {
+          "gc": 4,
+          "valid": true
+        }
+      ],
+      "complete_gc0_4": true
+    },
+    "owned_round4": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": true
+        },
+        {
+          "gc": 1,
+          "valid": true
+        },
+        {
+          "gc": 2,
+          "valid": true
+        },
+        {
+          "gc": 3,
+          "valid": true
+        },
+        {
+          "gc": 4,
+          "valid": true
+        }
+      ],
+      "complete_gc0_4": true
+    },
+    "llvm_o2_reference": {
+      "gates": [
+        {
+          "gc": 0,
+          "valid": false
+        }
+      ],
+      "complete_gc0_4": false
+    }
+  },
+  "excluded_reference": "llvm_o2_reference failed GC0 allocator provenance/publication expectations; not a valid speed ceiling",
+  "original_report": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/allocator-contract-fixed/report.json"
+}

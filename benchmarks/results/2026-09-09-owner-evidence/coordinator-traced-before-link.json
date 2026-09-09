@@ -1,0 +1,177 @@
+{
+  "scope": "same source/options, coordinator-only tracemalloc plus GC and allocator pressure diagnostics; not ordinary build qualification",
+  "gc_enabled": true,
+  "before_rss_bytes": 1347141632,
+  "after_rss_bytes": 1343995904,
+  "collected_objects": 0,
+  "collection_seconds": 0.2943812500452623,
+  "large_stack_values": [],
+  "traced_current_bytes": 29622452,
+  "traced_peak_bytes": 1325016736,
+  "traced_top": [
+    {
+      "size": 17486839,
+      "count": 112842,
+      "trace": "<frozen importlib._bootstrap>:549"
+    },
+    {
+      "size": 5259578,
+      "count": 23956,
+      "trace": "<frozen importlib._bootstrap_external>:517"
+    },
+    {
+      "size": 739654,
+      "count": 5877,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:499"
+    },
+    {
+      "size": 165936,
+      "count": 1828,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/codegen/_l1_codegen_static_methods.py:29"
+    },
+    {
+      "size": 156887,
+      "count": 814,
+      "trace": "<frozen posixpath>:89"
+    },
+    {
+      "size": 132352,
+      "count": 87,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/re/_compiler.py:778"
+    },
+    {
+      "size": 88672,
+      "count": 652,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/codegen/_l1_codegen_static_methods.py:38"
+    },
+    {
+      "size": 79022,
+      "count": 486,
+      "trace": "<frozen posixpath>:383"
+    },
+    {
+      "size": 60288,
+      "count": 471,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:404"
+    },
+    {
+      "size": 57824,
+      "count": 797,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/pipeline_self_backend_emit.py:839"
+    },
+    {
+      "size": 50771,
+      "count": 431,
+      "trace": "<frozen importlib._bootstrap_external>:1432"
+    },
+    {
+      "size": 50148,
+      "count": 796,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/pipeline_self_backend_emit.py:815"
+    },
+    {
+      "size": 49912,
+      "count": 541,
+      "trace": "<frozen importlib._bootstrap>:49"
+    },
+    {
+      "size": 48243,
+      "count": 789,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:504"
+    },
+    {
+      "size": 46148,
+      "count": 289,
+      "trace": "<frozen importlib._bootstrap_external>:133"
+    },
+    {
+      "size": 41888,
+      "count": 276,
+      "trace": "<frozen importlib._bootstrap_external>:584"
+    },
+    {
+      "size": 38544,
+      "count": 429,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/codegen/layer1_support.py:168"
+    },
+    {
+      "size": 37481,
+      "count": 136,
+      "trace": "<frozen abc>:106"
+    },
+    {
+      "size": 37264,
+      "count": 274,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/codegen/layer1_support.py:188"
+    },
+    {
+      "size": 34576,
+      "count": 321,
+      "trace": "<string>:2"
+    },
+    {
+      "size": 34366,
+      "count": 434,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/pipeline_paths.py:23"
+    },
+    {
+      "size": 33360,
+      "count": 278,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/reprlib.py:15"
+    },
+    {
+      "size": 33120,
+      "count": 276,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:534"
+    },
+    {
+      "size": 30024,
+      "count": 139,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/reprlib.py:13"
+    },
+    {
+      "size": 27734,
+      "count": 141,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/collections/__init__.py:515"
+    },
+    {
+      "size": 27612,
+      "count": 468,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/pipeline_self_backend_emit.py:813"
+    },
+    {
+      "size": 27344,
+      "count": 61,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:916"
+    },
+    {
+      "size": 27200,
+      "count": 502,
+      "trace": "/Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/lib/python3.15/dataclasses.py:500"
+    },
+    {
+      "size": 26360,
+      "count": 23,
+      "trace": "<frozen importlib._bootstrap_external>:1415"
+    },
+    {
+      "size": 25968,
+      "count": 1,
+      "trace": "/Users/jiamo/my/pcc/build/gateway-owner-qualified-stage1-20260909/source-snapshot/pcc/py_frontend/codegen/runtime_abi.py:1232"
+    }
+  ],
+  "malloc_before": {
+    "blocks_in_use": 18532,
+    "size_in_use": 18016528,
+    "max_size_in_use": 0,
+    "size_allocated": 859832320
+  },
+  "malloc_after": {
+    "blocks_in_use": 18532,
+    "size_in_use": 18016528,
+    "max_size_in_use": 0,
+    "size_allocated": 859832320
+  },
+  "pressure_relieved_bytes": 0,
+  "rss_after_pressure": 1343356928
+}

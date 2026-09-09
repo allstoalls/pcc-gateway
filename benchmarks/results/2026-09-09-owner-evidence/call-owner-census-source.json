@@ -1,0 +1,10 @@
+{
+  "note": "post2 source plus generic _call_user owner marker and diagnostic census driver; extra probe modules are not imported by driver",
+  "files": {
+    "pcc/py_frontend/codegen/unary_call_lowering.py": "4c245305e8d20c27a4c4605271af494633e6a24045d2f0812dda0991fa28c3bf",
+    "pcc/native_ir/driver.py": "0bd6972d13a65b90963a01e48bde51605474d5c6d283fda2b2da143b4d65457b",
+    "pcc/native_ir/simplifycfg.py": "ffa0a5eee66e950bd27965caf463a677c0d5f45865f4e768b151a7a7ec59f101",
+    "pcc/native_ir/inline.py": "e75eefa191e5179202a13dbead4fa4ce9c97b21614051705b7d452f3882a5366",
+    "pcc/py_frontend/codegen/native_text_modules.py": "80c44ef0ee723e0480da9e60317347d73255a41fe88daafa45662c30615ba088"
+  }
+}

@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+export PCC_SOURCE_ROOT="/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/source-snapshot"
+export PCC_REPO_ROOT="$PCC_SOURCE_ROOT"
+export PYTHONPATH="$PCC_SOURCE_ROOT"
+export PCC_RUNTIME_ARCHIVE="/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a"
+export PCC_RUNTIME_CC=/usr/bin/false
+export PCC_HOST_PYTHON=/Users/jiamo/my/pcc/.venv/bin/python
+export PCC_PY_FRONTEND_JOBS=4
+export PCC_SELF_BACKEND_JOBS=4
+exec "/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/pcc1" "$@"

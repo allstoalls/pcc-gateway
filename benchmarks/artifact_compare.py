@@ -15,6 +15,11 @@ import statistics
 import subprocess
 import sys
 
+try:
+    from .processes import run_command
+except ImportError:
+    from processes import run_command
+
 from compare import ROOT, digest, process_metrics, save
 
 
@@ -74,7 +79,7 @@ def main():
                         command = ["/usr/bin/time", "-lp", *commands[label],
                                    str(concurrency), str(delay), str(rounds), "--summary"]
                         before_load = os.getloadavg()
-                        result = subprocess.run(command, cwd=ROOT, env=env, text=True,
+                        result = run_command(command, cwd=ROOT, env=env, text=True,
                                                 capture_output=True, timeout=90)
                         if result.returncode:
                             raise RuntimeError(label + ": " + result.stdout + result.stderr)

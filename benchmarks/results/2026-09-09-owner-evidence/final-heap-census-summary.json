@@ -1,0 +1,1808 @@
+{
+  "scope": "GC0 quiescent census, same post2 optimizer/runtime; external clang diagnostic observer, not performance or ownership qualification",
+  "complete": true,
+  "returncode": 0,
+  "stderr": "inline-defined changed=True seconds=18.721060000010766\ninline-defined heap_live=203144559 heap_capacity=459390976\ninstcombine changed=True seconds=6.790159999975003\ninstcombine heap_live=278086341 heap_capacity=566099968\nsimplifycfg changed=True seconds=17.50885099999141\nsimplifycfg heap_live=976870312 heap_capacity=1947299840\ndce changed=True seconds=9.056289000087418\ndce heap_live=1096571264 heap_capacity=2219315200\n",
+  "helper_command": [
+    "/usr/bin/clang",
+    "-O2",
+    "-c",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/heap_census_v4.c",
+    "-I/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/src",
+    "-I/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/include",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-heap-census.o"
+  ],
+  "helper_source_sha256": "8fec5be5e6da594db4719b887df2531472297976400462d7a12a55f350c09811",
+  "runtime_sha256": "1ee0b1bb5e2b5eca1cbf0d5c7fb69ec03c6f595fa51a0eb6c81313adac698e53",
+  "binary_sha256": "857ac334622af38ce36bfae80bd6a27ceafbf0ea5051a189075f8859c5112151",
+  "output_matches_uninstrumented": true,
+  "phases": [
+    {
+      "phase": 0,
+      "metrics": {
+        "live_requested": 6568246,
+        "live_usable": 6663072,
+        "mapped": 8044544,
+        "metadata_mapped": 425984,
+        "slab_mapped": 1310720,
+        "object_slabs": 8,
+        "raw_slabs": 12,
+        "raw_small_live_count": 1027,
+        "raw_small_requested": 106746,
+        "raw_small_usable": 139216,
+        "large_managed_objects": 2,
+        "reclaimable_raw_slabs": 131072,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 0,
+        "live_requested_after_walk": 6568246,
+        "empty_lists": 8,
+        "gc_primary_index_bytes": 98304,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 32768
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 694,
+          "requested": 6203740,
+          "usable": 6222480,
+          "backing_requested": 0,
+          "refcount_one": 679,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 1869,
+          "requested": 77632,
+          "usable": 98592,
+          "backing_requested": 0,
+          "refcount_one": 1864,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 104,
+          "requested": 5824,
+          "usable": 6656,
+          "backing_requested": 60160,
+          "refcount_one": 89,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 408,
+          "requested": 39168,
+          "usable": 52224,
+          "backing_requested": 0,
+          "refcount_one": 204,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 13,
+          "requested": 624,
+          "usable": 832,
+          "backing_requested": 2816,
+          "refcount_one": 5,
+          "class_name": ""
+        },
+        {
+          "tag": 10,
+          "count": 12,
+          "requested": 1440,
+          "usable": 1536,
+          "backing_requested": 0,
+          "refcount_one": 12,
+          "class_name": ""
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 5,
+          "count": 13,
+          "requested": 520,
+          "usable": 832,
+          "backing_requested": 464,
+          "refcount_one": 12,
+          "class_name": ""
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        }
+      ],
+      "strings": [
+        {
+          "length": 6164629,
+          "count": 1,
+          "requested": 6164670,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 7,
+          "count": 65,
+          "requested": 3120,
+          "prefix": "__doc__"
+        },
+        {
+          "length": 7,
+          "count": 33,
+          "requested": 1584,
+          "prefix": "findall"
+        },
+        {
+          "length": 7,
+          "count": 33,
+          "requested": 1584,
+          "prefix": "pattern"
+        },
+        {
+          "length": 6,
+          "count": 33,
+          "requested": 1551,
+          "prefix": "search"
+        },
+        {
+          "length": 5,
+          "count": 33,
+          "requested": 1518,
+          "prefix": "split"
+        },
+        {
+          "length": 5,
+          "count": 33,
+          "requested": 1518,
+          "prefix": "match"
+        },
+        {
+          "length": 3,
+          "count": 33,
+          "requested": 1452,
+          "prefix": "sub"
+        },
+        {
+          "length": 11,
+          "count": 14,
+          "requested": 728,
+          "prefix": "__package__"
+        },
+        {
+          "length": 8,
+          "count": 14,
+          "requested": 686,
+          "prefix": "__file__"
+        },
+        {
+          "length": 8,
+          "count": 14,
+          "requested": 686,
+          "prefix": "__name__"
+        },
+        {
+          "length": 97,
+          "count": 3,
+          "requested": 414,
+          "prefix": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-"
+        },
+        {
+          "length": 94,
+          "count": 3,
+          "requested": 405,
+          "prefix": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-"
+        },
+        {
+          "length": 91,
+          "count": 3,
+          "requested": 396,
+          "prefix": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-"
+        },
+        {
+          "length": 19,
+          "count": 6,
+          "requested": 360,
+          "prefix": "replace_local_names"
+        },
+        {
+          "length": 42,
+          "count": 3,
+          "requested": 249,
+          "prefix": "inline-defined,instcombine,simplifycfg,dce"
+        },
+        {
+          "length": 20,
+          "count": 4,
+          "requested": 244,
+          "prefix": "simplify_module_text"
+        },
+        {
+          "length": 15,
+          "count": 4,
+          "requested": 224,
+          "prefix": "dce_module_text"
+        },
+        {
+          "length": 24,
+          "count": 3,
+          "requested": 195,
+          "prefix": "fold_llvm_integer_binary"
+        },
+        {
+          "length": 23,
+          "count": 3,
+          "requested": 192,
+          "prefix": "_collect_function_attrs"
+        },
+        {
+          "length": 132,
+          "count": 1,
+          "requested": 173,
+          "prefix": "^(?P<indent>\\s*)%(?P<res>[\\w\\.]+)\\s*=\\s*(?:tail\\s+|musttail\\s+|n"
+        },
+        {
+          "length": 16,
+          "count": 3,
+          "requested": 171,
+          "prefix": "_split_functions"
+        },
+        {
+          "length": 14,
+          "count": 3,
+          "requested": 165,
+          "prefix": "unsigned_value"
+        },
+        {
+          "length": 13,
+          "count": 3,
+          "requested": 162,
+          "prefix": "FOLD_CONSTANT"
+        },
+        {
+          "length": 121,
+          "count": 1,
+          "requested": 162,
+          "prefix": "^(?P<indent>\\s*)(?:(?:tail|musttail|notail)\\s+)?call\\s+(?P<ret>["
+        }
+      ],
+      "sample_group_count": 309,
+      "sample_limit_note": "Bounded prefix/length group table overflowed; type totals remain complete, listed string samples are partial and not a global ranking."
+    },
+    {
+      "phase": 1,
+      "metrics": {
+        "live_requested": 203144278,
+        "live_usable": 272582832,
+        "mapped": 459390976,
+        "metadata_mapped": 10354688,
+        "slab_mapped": 406913024,
+        "object_slabs": 5180,
+        "raw_slabs": 1029,
+        "raw_small_live_count": 490272,
+        "raw_small_requested": 22578614,
+        "raw_small_usable": 32502592,
+        "large_managed_objects": 23797,
+        "reclaimable_raw_slabs": 131072,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 744013,
+        "live_requested_after_walk": 203144278,
+        "empty_lists": 6260,
+        "gc_primary_index_bytes": 25165824,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 524288
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 1362112,
+          "requested": 125310496,
+          "usable": 173592928,
+          "backing_requested": 0,
+          "refcount_one": 1140178,
+          "class_name": ""
+        },
+        {
+          "tag": 107,
+          "count": 204159,
+          "requested": 11432904,
+          "usable": 13066176,
+          "backing_requested": 0,
+          "refcount_one": 112697,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 7,
+          "count": 202144,
+          "requested": 10454976,
+          "usable": 17407520,
+          "backing_requested": 0,
+          "refcount_one": 198472,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 83152,
+          "requested": 3326080,
+          "usable": 5321728,
+          "backing_requested": 6139856,
+          "refcount_one": 49098,
+          "class_name": ""
+        },
+        {
+          "tag": 108,
+          "count": 43388,
+          "requested": 2429728,
+          "usable": 2776832,
+          "backing_requested": 0,
+          "refcount_one": 28421,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 14,
+          "count": 32941,
+          "requested": 1054112,
+          "usable": 1054112,
+          "backing_requested": 0,
+          "refcount_one": 32941,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 2724,
+          "requested": 152544,
+          "usable": 174336,
+          "backing_requested": 805376,
+          "refcount_one": 2582,
+          "class_name": ""
+        },
+        {
+          "tag": 2,
+          "count": 23794,
+          "requested": 856476,
+          "usable": 1521952,
+          "backing_requested": 0,
+          "refcount_one": 22202,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 1577,
+          "requested": 75696,
+          "usable": 100928,
+          "backing_requested": 203008,
+          "refcount_one": 1569,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 1224,
+          "requested": 117504,
+          "usable": 156672,
+          "backing_requested": 0,
+          "refcount_one": 1020,
+          "class_name": ""
+        },
+        {
+          "tag": 109,
+          "count": 155,
+          "requested": 12400,
+          "usable": 19840,
+          "backing_requested": 0,
+          "refcount_one": 28,
+          "class_name": "Function"
+        },
+        {
+          "tag": 106,
+          "count": 207,
+          "requested": 9936,
+          "usable": 13248,
+          "backing_requested": 0,
+          "refcount_one": 207,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 115,
+          "count": 136,
+          "requested": 4352,
+          "usable": 4352,
+          "backing_requested": 0,
+          "refcount_one": 136,
+          "class_name": "re.Match"
+        },
+        {
+          "tag": 10,
+          "count": 15,
+          "requested": 1800,
+          "usable": 1920,
+          "backing_requested": 0,
+          "refcount_one": 15,
+          "class_name": ""
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        },
+        {
+          "tag": 3,
+          "count": 1,
+          "requested": 24,
+          "usable": 32,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        }
+      ],
+      "strings": [
+        {
+          "length": 9563989,
+          "count": 1,
+          "requested": 9564030,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 6164629,
+          "count": 1,
+          "requested": 6164670,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 1,
+          "count": 58521,
+          "requested": 2457882,
+          "prefix": "0"
+        },
+        {
+          "length": 2,
+          "count": 52970,
+          "requested": 2277710,
+          "prefix": "br"
+        },
+        {
+          "length": 4,
+          "count": 49607,
+          "requested": 2232315,
+          "prefix": "call"
+        },
+        {
+          "length": 1,
+          "count": 24282,
+          "requested": 1019844,
+          "prefix": "1"
+        },
+        {
+          "length": 4,
+          "count": 18869,
+          "requested": 849105,
+          "prefix": "icmp"
+        },
+        {
+          "length": 2,
+          "count": 19607,
+          "requested": 843101,
+          "prefix": "64"
+        },
+        {
+          "length": 0,
+          "count": 16500,
+          "requested": 676500,
+          "prefix": ""
+        },
+        {
+          "length": 13,
+          "count": 11575,
+          "requested": 625050,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 4,
+          "count": 12670,
+          "requested": 570150,
+          "prefix": "load"
+        },
+        {
+          "length": 7,
+          "count": 10392,
+          "requested": 498816,
+          "prefix": "bitcast"
+        },
+        {
+          "length": 3,
+          "count": 8025,
+          "requested": 353100,
+          "prefix": "ret"
+        },
+        {
+          "length": 3,
+          "count": 6884,
+          "requested": 302896,
+          "prefix": "phi"
+        },
+        {
+          "length": 8,
+          "count": 6137,
+          "requested": 300713,
+          "prefix": "ptrtoint"
+        },
+        {
+          "length": 5,
+          "count": 5249,
+          "requested": 241454,
+          "prefix": "store"
+        },
+        {
+          "length": 4,
+          "count": 4367,
+          "requested": 196515,
+          "prefix": "zext"
+        },
+        {
+          "length": 8,
+          "count": 3486,
+          "requested": 170814,
+          "prefix": "inttoptr"
+        },
+        {
+          "length": 4,
+          "count": 3720,
+          "requested": 167400,
+          "prefix": " #1 "
+        },
+        {
+          "length": 9,
+          "count": 2706,
+          "requested": 135300,
+          "prefix": "ret void\n"
+        },
+        {
+          "length": 2,
+          "count": 2937,
+          "requested": 126291,
+          "prefix": "  "
+        },
+        {
+          "length": 3,
+          "count": 2793,
+          "requested": 122892,
+          "prefix": "ptr"
+        },
+        {
+          "length": 3,
+          "count": 2590,
+          "requested": 113960,
+          "prefix": "sub"
+        },
+        {
+          "length": 4,
+          "count": 2344,
+          "requested": 105480,
+          "prefix": "sext"
+        },
+        {
+          "length": 3,
+          "count": 2187,
+          "requested": 96228,
+          "prefix": "add"
+        }
+      ],
+      "sample_group_count": 65536,
+      "sample_limit_note": "Bounded prefix/length group table overflowed; type totals remain complete, listed string samples are partial and not a global ranking."
+    },
+    {
+      "phase": 2,
+      "metrics": {
+        "live_requested": 278086091,
+        "live_usable": 368176912,
+        "mapped": 566099968,
+        "metadata_mapped": 10649600,
+        "slab_mapped": 504037376,
+        "object_slabs": 6427,
+        "raw_slabs": 1264,
+        "raw_small_live_count": 655535,
+        "raw_small_requested": 36352938,
+        "raw_small_usable": 48327456,
+        "large_managed_objects": 29547,
+        "reclaimable_raw_slabs": 262144,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 1133902,
+        "live_requested_after_walk": 278086091,
+        "empty_lists": 6260,
+        "gc_primary_index_bytes": 25165824,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 524288
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 1920101,
+          "requested": 170942481,
+          "usable": 231970416,
+          "backing_requested": 0,
+          "refcount_one": 1684616,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 455028,
+          "requested": 22082656,
+          "usable": 33592096,
+          "backing_requested": 0,
+          "refcount_one": 451356,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 82019,
+          "requested": 3936912,
+          "usable": 5249216,
+          "backing_requested": 10642944,
+          "refcount_one": 81814,
+          "class_name": ""
+        },
+        {
+          "tag": 107,
+          "count": 204159,
+          "requested": 11432904,
+          "usable": 13066176,
+          "backing_requested": 0,
+          "refcount_one": 112697,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 5,
+          "count": 83493,
+          "requested": 3339720,
+          "usable": 5343552,
+          "backing_requested": 6150768,
+          "refcount_one": 49435,
+          "class_name": ""
+        },
+        {
+          "tag": 108,
+          "count": 43388,
+          "requested": 2429728,
+          "usable": 2776832,
+          "backing_requested": 0,
+          "refcount_one": 28421,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 2,
+          "count": 29543,
+          "requested": 1063440,
+          "usable": 1889888,
+          "backing_requested": 0,
+          "refcount_one": 27951,
+          "class_name": ""
+        },
+        {
+          "tag": 14,
+          "count": 32945,
+          "requested": 1054240,
+          "usable": 1054240,
+          "backing_requested": 0,
+          "refcount_one": 32945,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 2724,
+          "requested": 152544,
+          "usable": 174336,
+          "backing_requested": 805376,
+          "refcount_one": 2582,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 1224,
+          "requested": 117504,
+          "usable": 156672,
+          "backing_requested": 0,
+          "refcount_one": 1020,
+          "class_name": ""
+        },
+        {
+          "tag": 109,
+          "count": 155,
+          "requested": 12400,
+          "usable": 19840,
+          "backing_requested": 0,
+          "refcount_one": 28,
+          "class_name": "Function"
+        },
+        {
+          "tag": 106,
+          "count": 207,
+          "requested": 9936,
+          "usable": 13248,
+          "backing_requested": 0,
+          "refcount_one": 207,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 115,
+          "count": 136,
+          "requested": 4352,
+          "usable": 4352,
+          "backing_requested": 0,
+          "refcount_one": 136,
+          "class_name": "re.Match"
+        },
+        {
+          "tag": 10,
+          "count": 15,
+          "requested": 1800,
+          "usable": 1920,
+          "backing_requested": 0,
+          "refcount_one": 15,
+          "class_name": ""
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 3,
+          "count": 4,
+          "requested": 96,
+          "usable": 128,
+          "backing_requested": 0,
+          "refcount_one": 4,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        }
+      ],
+      "strings": [
+        {
+          "length": 9563989,
+          "count": 1,
+          "requested": 9564030,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 9251902,
+          "count": 1,
+          "requested": 9251943,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 6164629,
+          "count": 1,
+          "requested": 6164670,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 4,
+          "count": 62440,
+          "requested": 2809800,
+          "prefix": "call"
+        },
+        {
+          "length": 1,
+          "count": 59133,
+          "requested": 2483586,
+          "prefix": "0"
+        },
+        {
+          "length": 2,
+          "count": 52970,
+          "requested": 2277710,
+          "prefix": "br"
+        },
+        {
+          "length": 1,
+          "count": 40030,
+          "requested": 1681260,
+          "prefix": "1"
+        },
+        {
+          "length": 2,
+          "count": 32852,
+          "requested": 1412636,
+          "prefix": "64"
+        },
+        {
+          "length": 4,
+          "count": 29693,
+          "requested": 1336185,
+          "prefix": "icmp"
+        },
+        {
+          "length": 13,
+          "count": 20728,
+          "requested": 1119312,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 4,
+          "count": 21752,
+          "requested": 978840,
+          "prefix": "load"
+        },
+        {
+          "length": 0,
+          "count": 16879,
+          "requested": 692039,
+          "prefix": ""
+        },
+        {
+          "length": 3,
+          "count": 11990,
+          "requested": 527560,
+          "prefix": "phi"
+        },
+        {
+          "length": 7,
+          "count": 10392,
+          "requested": 498816,
+          "prefix": "bitcast"
+        },
+        {
+          "length": 8,
+          "count": 10144,
+          "requested": 497056,
+          "prefix": "ptrtoint"
+        },
+        {
+          "length": 3,
+          "count": 8025,
+          "requested": 353100,
+          "prefix": "ret"
+        },
+        {
+          "length": 4,
+          "count": 5749,
+          "requested": 258705,
+          "prefix": "zext"
+        },
+        {
+          "length": 8,
+          "count": 5257,
+          "requested": 257593,
+          "prefix": "inttoptr"
+        },
+        {
+          "length": 5,
+          "count": 5249,
+          "requested": 241454,
+          "prefix": "store"
+        },
+        {
+          "length": 1,
+          "count": 5548,
+          "requested": 233016,
+          "prefix": "8"
+        },
+        {
+          "length": 4,
+          "count": 4769,
+          "requested": 214605,
+          "prefix": "sext"
+        },
+        {
+          "length": 5,
+          "count": 3935,
+          "requested": 181010,
+          "prefix": "trunc"
+        },
+        {
+          "length": 4,
+          "count": 3720,
+          "requested": 167400,
+          "prefix": " #1 "
+        },
+        {
+          "length": 1,
+          "count": 3680,
+          "requested": 154560,
+          "prefix": "3"
+        },
+        {
+          "length": 3,
+          "count": 3279,
+          "requested": 144276,
+          "prefix": "add"
+        }
+      ],
+      "sample_group_count": 65536,
+      "sample_limit_note": "Bounded prefix/length group table overflowed; type totals remain complete, listed string samples are partial and not a global ranking."
+    },
+    {
+      "phase": 3,
+      "metrics": {
+        "live_requested": 976870062,
+        "live_usable": 1324789472,
+        "mapped": 1947299840,
+        "metadata_mapped": 39354368,
+        "slab_mapped": 1773338624,
+        "object_slabs": 21442,
+        "raw_slabs": 5617,
+        "raw_small_live_count": 3214636,
+        "raw_small_requested": 163052426,
+        "raw_small_usable": 212685344,
+        "large_managed_objects": 29548,
+        "reclaimable_raw_slabs": 393216,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 3679759,
+        "live_requested_after_walk": 976870062,
+        "empty_lists": 20859,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 524288
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 5800381,
+          "requested": 576695468,
+          "usable": 819786176,
+          "backing_requested": 0,
+          "refcount_one": 4642563,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 1095777,
+          "requested": 43831080,
+          "usable": 70129728,
+          "backing_requested": 53615560,
+          "refcount_one": 962722,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 960987,
+          "requested": 46786368,
+          "usable": 65136800,
+          "backing_requested": 0,
+          "refcount_one": 904999,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 151747,
+          "requested": 7283856,
+          "usable": 9711808,
+          "backing_requested": 19662464,
+          "refcount_one": 150802,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 28911,
+          "requested": 1619016,
+          "usable": 1850304,
+          "backing_requested": 14202624,
+          "refcount_one": 28729,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 158100,
+          "requested": 15177600,
+          "usable": 20236800,
+          "backing_requested": 0,
+          "refcount_one": 157896,
+          "class_name": ""
+        },
+        {
+          "tag": 107,
+          "count": 204159,
+          "requested": 11432904,
+          "usable": 13066176,
+          "backing_requested": 0,
+          "refcount_one": 112697,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 14,
+          "count": 135768,
+          "requested": 4344576,
+          "usable": 4344576,
+          "backing_requested": 0,
+          "refcount_one": 135768,
+          "class_name": ""
+        },
+        {
+          "tag": 108,
+          "count": 43388,
+          "requested": 2429728,
+          "usable": 2776832,
+          "backing_requested": 0,
+          "refcount_one": 28421,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 111,
+          "count": 30549,
+          "requested": 1466352,
+          "usable": 1955136,
+          "backing_requested": 0,
+          "refcount_one": 26307,
+          "class_name": "_Block"
+        },
+        {
+          "tag": 2,
+          "count": 29543,
+          "requested": 1063440,
+          "usable": 1889888,
+          "backing_requested": 0,
+          "refcount_one": 27951,
+          "class_name": ""
+        },
+        {
+          "tag": 115,
+          "count": 26282,
+          "requested": 841024,
+          "usable": 841024,
+          "backing_requested": 0,
+          "refcount_one": 26282,
+          "class_name": "re.Match"
+        },
+        {
+          "tag": 109,
+          "count": 155,
+          "requested": 12400,
+          "usable": 19840,
+          "backing_requested": 0,
+          "refcount_one": 28,
+          "class_name": "Function"
+        },
+        {
+          "tag": 106,
+          "count": 207,
+          "requested": 9936,
+          "usable": 13248,
+          "backing_requested": 0,
+          "refcount_one": 207,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 10,
+          "count": 15,
+          "requested": 1800,
+          "usable": 1920,
+          "backing_requested": 0,
+          "refcount_one": 15,
+          "class_name": ""
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 3,
+          "count": 6,
+          "requested": 144,
+          "usable": 192,
+          "backing_requested": 0,
+          "refcount_one": 6,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        }
+      ],
+      "strings": [
+        {
+          "length": 9563989,
+          "count": 1,
+          "requested": 9564030,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 9251902,
+          "count": 1,
+          "requested": 9251943,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 7383922,
+          "count": 1,
+          "requested": 7383963,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 6164629,
+          "count": 1,
+          "requested": 6164670,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 1,
+          "count": 80515,
+          "requested": 3381630,
+          "prefix": "\n"
+        },
+        {
+          "length": 4,
+          "count": 74492,
+          "requested": 3352140,
+          "prefix": "call"
+        },
+        {
+          "length": 1,
+          "count": 59293,
+          "requested": 2490306,
+          "prefix": "0"
+        },
+        {
+          "length": 2,
+          "count": 52970,
+          "requested": 2277710,
+          "prefix": "br"
+        },
+        {
+          "length": 4,
+          "count": 46271,
+          "requested": 2082195,
+          "prefix": "icmp"
+        },
+        {
+          "length": 13,
+          "count": 32458,
+          "requested": 1752732,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 1,
+          "count": 40108,
+          "requested": 1684536,
+          "prefix": "1"
+        },
+        {
+          "length": 2,
+          "count": 32852,
+          "requested": 1412636,
+          "prefix": "64"
+        },
+        {
+          "length": 4,
+          "count": 31289,
+          "requested": 1408005,
+          "prefix": "load"
+        },
+        {
+          "length": 9,
+          "count": 26282,
+          "requested": 1314100,
+          "prefix": "groupdict"
+        },
+        {
+          "length": 8,
+          "count": 26646,
+          "requested": 1305654,
+          "prefix": "ret void"
+        },
+        {
+          "length": 6,
+          "count": 26282,
+          "requested": 1235254,
+          "prefix": "groups"
+        },
+        {
+          "length": 5,
+          "count": 26297,
+          "requested": 1209662,
+          "prefix": "group"
+        },
+        {
+          "length": 5,
+          "count": 26292,
+          "requested": 1209432,
+          "prefix": "start"
+        },
+        {
+          "length": 4,
+          "count": 26282,
+          "requested": 1182690,
+          "prefix": "span"
+        },
+        {
+          "length": 3,
+          "count": 26289,
+          "requested": 1156716,
+          "prefix": "end"
+        },
+        {
+          "length": 2,
+          "count": 25538,
+          "requested": 1098134,
+          "prefix": "op"
+        },
+        {
+          "length": 8,
+          "count": 17679,
+          "requested": 866271,
+          "prefix": "ptrtoint"
+        },
+        {
+          "length": 3,
+          "count": 19658,
+          "requested": 864952,
+          "prefix": "phi"
+        },
+        {
+          "length": 39,
+          "count": 10214,
+          "requested": 817120,
+          "prefix": "call void @pcc_py_gc_minor_graph_lock()"
+        },
+        {
+          "length": 10,
+          "count": 13791,
+          "requested": 703341,
+          "prefix": "ret i64 -1"
+        }
+      ],
+      "sample_group_count": 65536,
+      "sample_limit_note": "Bounded prefix/length group table overflowed; type totals remain complete, listed string samples are partial and not a global ranking."
+    },
+    {
+      "phase": 4,
+      "metrics": {
+        "live_requested": 1096571030,
+        "live_usable": 1479140432,
+        "mapped": 2219315200,
+        "metadata_mapped": 40075264,
+        "slab_mapped": 2037121024,
+        "object_slabs": 24885,
+        "raw_slabs": 6199,
+        "raw_small_live_count": 3475683,
+        "raw_small_requested": 184986634,
+        "raw_small_usable": 237778144,
+        "large_managed_objects": 29549,
+        "reclaimable_raw_slabs": 720896,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 4362110,
+        "live_requested_after_walk": 1096571030,
+        "empty_lists": 20859,
+        "gc_primary_index_bytes": 100663296,
+        "gc_object_index_bytes": 0,
+        "gc_forwarding_index_bytes": 0,
+        "gc_forwarding_target_index_bytes": 0,
+        "gc_identity_index_bytes": 0,
+        "gc_frame_index_bytes": 0,
+        "gc_zpage_owner_index_bytes": 0,
+        "gc_zpage_page_index_bytes": 0,
+        "gc_managed_pointer_index_bytes": 524288
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 6670217,
+          "requested": 643959836,
+          "usable": 906953424,
+          "backing_requested": 0,
+          "refcount_one": 5484886,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 1095784,
+          "requested": 43831360,
+          "usable": 70130176,
+          "backing_requested": 53645616,
+          "refcount_one": 962725,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 1486239,
+          "requested": 70905992,
+          "usable": 98752928,
+          "backing_requested": 0,
+          "refcount_one": 1430251,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 281980,
+          "requested": 13535040,
+          "usable": 18046720,
+          "backing_requested": 36334336,
+          "refcount_one": 278679,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 28912,
+          "requested": 1619072,
+          "usable": 1850368,
+          "backing_requested": 14333696,
+          "refcount_one": 28730,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 158100,
+          "requested": 15177600,
+          "usable": 20236800,
+          "backing_requested": 0,
+          "refcount_one": 157896,
+          "class_name": ""
+        },
+        {
+          "tag": 107,
+          "count": 204159,
+          "requested": 11432904,
+          "usable": 13066176,
+          "backing_requested": 0,
+          "refcount_one": 112697,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 14,
+          "count": 135772,
+          "requested": 4344704,
+          "usable": 4344704,
+          "backing_requested": 0,
+          "refcount_one": 135772,
+          "class_name": ""
+        },
+        {
+          "tag": 108,
+          "count": 43388,
+          "requested": 2429728,
+          "usable": 2776832,
+          "backing_requested": 0,
+          "refcount_one": 28421,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 111,
+          "count": 30549,
+          "requested": 1466352,
+          "usable": 1955136,
+          "backing_requested": 0,
+          "refcount_one": 26307,
+          "class_name": "_Block"
+        },
+        {
+          "tag": 2,
+          "count": 29543,
+          "requested": 1063440,
+          "usable": 1889888,
+          "backing_requested": 0,
+          "refcount_one": 27951,
+          "class_name": ""
+        },
+        {
+          "tag": 115,
+          "count": 26282,
+          "requested": 841024,
+          "usable": 841024,
+          "backing_requested": 0,
+          "refcount_one": 26282,
+          "class_name": "re.Match"
+        },
+        {
+          "tag": 109,
+          "count": 155,
+          "requested": 12400,
+          "usable": 19840,
+          "backing_requested": 0,
+          "refcount_one": 28,
+          "class_name": "Function"
+        },
+        {
+          "tag": 106,
+          "count": 207,
+          "requested": 9936,
+          "usable": 13248,
+          "backing_requested": 0,
+          "refcount_one": 207,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 10,
+          "count": 15,
+          "requested": 1800,
+          "usable": 1920,
+          "backing_requested": 0,
+          "refcount_one": 15,
+          "class_name": ""
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 3,
+          "count": 8,
+          "requested": 192,
+          "usable": 256,
+          "backing_requested": 0,
+          "refcount_one": 8,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        }
+      ],
+      "strings": [
+        {
+          "length": 9563989,
+          "count": 1,
+          "requested": 9564030,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 9251902,
+          "count": 1,
+          "requested": 9251943,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 7383922,
+          "count": 1,
+          "requested": 7383963,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 7370494,
+          "count": 1,
+          "requested": 7370535,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 6164629,
+          "count": 1,
+          "requested": 6164670,
+          "prefix": "; ModuleID = '<string>'\nsource_filename = \"<string>\"\ntarget trip"
+        },
+        {
+          "length": 4,
+          "count": 101993,
+          "requested": 4589685,
+          "prefix": "call"
+        },
+        {
+          "length": 1,
+          "count": 80515,
+          "requested": 3381630,
+          "prefix": "\n"
+        },
+        {
+          "length": 4,
+          "count": 72639,
+          "requested": 3268755,
+          "prefix": "icmp"
+        },
+        {
+          "length": 13,
+          "count": 52537,
+          "requested": 2836998,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 1,
+          "count": 59293,
+          "requested": 2490306,
+          "prefix": "0"
+        },
+        {
+          "length": 2,
+          "count": 52970,
+          "requested": 2277710,
+          "prefix": "br"
+        },
+        {
+          "length": 4,
+          "count": 47901,
+          "requested": 2155545,
+          "prefix": "load"
+        },
+        {
+          "length": 1,
+          "count": 40109,
+          "requested": 1684578,
+          "prefix": "1"
+        },
+        {
+          "length": 8,
+          "count": 29841,
+          "requested": 1462209,
+          "prefix": "ptrtoint"
+        },
+        {
+          "length": 2,
+          "count": 32852,
+          "requested": 1412636,
+          "prefix": "64"
+        },
+        {
+          "length": 3,
+          "count": 31889,
+          "requested": 1403116,
+          "prefix": "phi"
+        },
+        {
+          "length": 9,
+          "count": 26282,
+          "requested": 1314100,
+          "prefix": "groupdict"
+        },
+        {
+          "length": 8,
+          "count": 26646,
+          "requested": 1305654,
+          "prefix": "ret void"
+        },
+        {
+          "length": 6,
+          "count": 26282,
+          "requested": 1235254,
+          "prefix": "groups"
+        },
+        {
+          "length": 5,
+          "count": 26297,
+          "requested": 1209662,
+          "prefix": "group"
+        },
+        {
+          "length": 5,
+          "count": 26292,
+          "requested": 1209432,
+          "prefix": "start"
+        },
+        {
+          "length": 4,
+          "count": 26282,
+          "requested": 1182690,
+          "prefix": "span"
+        },
+        {
+          "length": 3,
+          "count": 26289,
+          "requested": 1156716,
+          "prefix": "end"
+        },
+        {
+          "length": 2,
+          "count": 25538,
+          "requested": 1098134,
+          "prefix": "op"
+        },
+        {
+          "length": 39,
+          "count": 10214,
+          "requested": 817120,
+          "prefix": "call void @pcc_py_gc_minor_graph_lock()"
+        }
+      ],
+      "sample_group_count": 65536,
+      "sample_limit_note": "Bounded prefix/length group table overflowed; type totals remain complete, listed string samples are partial and not a global ranking."
+    }
+  ],
+  "raw_json": {
+    "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-heap-census.json",
+    "bytes": 42511160,
+    "sha256": "0ba8197e9252069823af689cc9d9f575da78bc6a78cce5107d47f1255cbfed44"
+  }
+}

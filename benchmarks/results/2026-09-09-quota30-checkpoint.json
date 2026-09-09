@@ -1,0 +1,172 @@
+{
+  "schema": "pcc.gateway.quota_checkpoint.v1",
+  "status": "paused_for_user_review",
+  "quota": {
+    "observed_at": "2026-09-09T08:50:56.532Z",
+    "start_remaining_percent": 40,
+    "remaining_percent": 30,
+    "stop_remaining_percent": 30
+  },
+  "goal_complete": false,
+  "owned_processes_remaining": [],
+  "artifact_root": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota30-runtime",
+  "changes": {
+    "boxed_bool_constructor": "Fixed; 7 focused tests pass and recovered pcc1 emitted execution passes GC0-4.",
+    "checked_gc0_refcounts": "Live source edited; prototype passes 9 private tests. Final matching runtime gates and C/Python parity remain incomplete.",
+    "tuple_generator": "Unfixed: native tuple(generator yielding 11,22) returns (). Blocks real native relocation projection qualification."
+  },
+  "memory": {
+    "full_build": {
+      "status": "MEMORY_LIMIT",
+      "returncode": 130,
+      "elapsed_s": 331.5722994590178,
+      "peak_tree_rss_bytes": 4920393728,
+      "max_tree_rss_bytes": 4831838208,
+      "receipt": "benchmarks/build/2026-09-09-quota30-runtime/bool-stage1-watch.json"
+    },
+    "recovered_link": {
+      "status": "COMPLETE",
+      "returncode": 0,
+      "elapsed_s": 94.97765799995977,
+      "peak_tree_rss_bytes": 3762962432,
+      "max_tree_rss_bytes": 4831838208,
+      "receipt": "benchmarks/build/2026-09-09-quota30-runtime/recovered-link-watch.json"
+    }
+  },
+  "performance": {
+    "checked_refcount": {
+      "receipt": "2026-09-09-checked-fast-ab.json",
+      "scope": "private prototype, zero wait C100; not final qualified defaults",
+      "summary": [
+        {
+          "delay_ms": 0,
+          "implementation": "control",
+          "process_cycles_per_request_median": 64538.6568,
+          "process_instructions_per_request_median": 283284.591,
+          "process_peak_rss_bytes_median": 14876672,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.9e-05,
+          "qps_max": 53395.556948790305,
+          "qps_median": 52831.923164710395,
+          "qps_min": 52361.092559601035
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "candidate",
+          "process_cycles_per_request_median": 60294.63555,
+          "process_instructions_per_request_median": 263363.42285,
+          "process_peak_rss_bytes_median": 14843904,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.75e-05,
+          "qps_max": 57507.45441032883,
+          "qps_median": 56437.70829358415,
+          "qps_min": 53873.50500912232
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "asyncio",
+          "process_cycles_per_request_median": 44547.30985,
+          "process_instructions_per_request_median": 175630.64245,
+          "process_peak_rss_bytes_median": 29474816,
+          "process_sys_seconds_per_request_median": 5e-07,
+          "process_user_seconds_per_request_median": 1.3000000000000001e-05,
+          "qps_max": 85747.74249642856,
+          "qps_median": 82350.87026668046,
+          "qps_min": 81681.85653387704
+        }
+      ]
+    },
+    "bulk_frame_experiment": {
+      "receipt": "2026-09-09-bulk-current-ab.json",
+      "scope": "private prototype, zero wait C100; not final qualified defaults",
+      "summary": [
+        {
+          "delay_ms": 0,
+          "implementation": "control",
+          "process_cycles_per_request_median": 59993.49175,
+          "process_instructions_per_request_median": 263331.56515,
+          "process_peak_rss_bytes_median": 14827520,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.75e-05,
+          "qps_max": 57178.30770111625,
+          "qps_median": 56835.78152547482,
+          "qps_min": 56310.26958012963
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "candidate",
+          "process_cycles_per_request_median": 58288.5721,
+          "process_instructions_per_request_median": 250107.65355,
+          "process_peak_rss_bytes_median": 14843904,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.7e-05,
+          "qps_max": 58718.52687987205,
+          "qps_median": 58599.98770291384,
+          "qps_min": 55698.35997066785
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "asyncio",
+          "process_cycles_per_request_median": 43735.5723,
+          "process_instructions_per_request_median": 175492.88885,
+          "process_peak_rss_bytes_median": 29540352,
+          "process_sys_seconds_per_request_median": 5e-07,
+          "process_user_seconds_per_request_median": 1.25e-05,
+          "qps_max": 85666.43511670713,
+          "qps_median": 82289.35842400513,
+          "qps_min": 80557.71458908197
+        }
+      ]
+    },
+    "direct_finish_experiment": {
+      "receipt": "2026-09-09-direct-finish-v2-ab.json",
+      "scope": "private prototype, zero wait C100; not final qualified defaults",
+      "summary": [
+        {
+          "delay_ms": 0,
+          "implementation": "control",
+          "process_cycles_per_request_median": 59230.2836,
+          "process_instructions_per_request_median": 250414.0395,
+          "process_peak_rss_bytes_median": 14843904,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.75e-05,
+          "qps_max": 57047.01814743785,
+          "qps_median": 56600.30282572044,
+          "qps_min": 56118.612305805415
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "candidate",
+          "process_cycles_per_request_median": 57749.11215,
+          "process_instructions_per_request_median": 243606.80265,
+          "process_peak_rss_bytes_median": 14843904,
+          "process_sys_seconds_per_request_median": 0.0,
+          "process_user_seconds_per_request_median": 1.7e-05,
+          "qps_max": 58860.92339823037,
+          "qps_median": 57921.822917084326,
+          "qps_min": 57608.99620994402
+        },
+        {
+          "delay_ms": 0,
+          "implementation": "asyncio",
+          "process_cycles_per_request_median": 45911.19975,
+          "process_instructions_per_request_median": 175884.3344,
+          "process_peak_rss_bytes_median": 29573120,
+          "process_sys_seconds_per_request_median": 5e-07,
+          "process_user_seconds_per_request_median": 1.3000000000000001e-05,
+          "qps_max": 79306.83163108116,
+          "qps_median": 78128.25515150679,
+          "qps_min": 72470.5732620639
+        }
+      ]
+    }
+  },
+  "pending": [
+    "Fix generic tuple(generator) in Python/C runtime with correct GC roots and failure cleanup.",
+    "Run final checked refcount tests and C/Python GC0-4 parity; previous final test command named a nonexistent file and ran no tests.",
+    "Qualify real native relocation records after tuple fix.",
+    "Resolve full-build parent/linker overlapping memory and rerun within unchanged cap.",
+    "Run final qualified pcc/pcc1/asyncio comparison; C100 target remains open."
+  ],
+  "compiler_sha256": "1e8ed7b107cb326fed62daeab2ddf42f33e0adc56e994257eee9106964daf320"
+}

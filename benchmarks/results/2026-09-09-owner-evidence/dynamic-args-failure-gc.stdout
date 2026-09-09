@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.15.0rc1, pytest-9.0.3, pluggy-1.6.0 -- /Users/jiamo/my/pcc/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/jiamo/my/pcc
+configfile: pyproject.toml
+plugins: xdist-3.8.0
+collecting ... collected 1 item
+
+tests/python/test_call_argument_emitted_ownership.py::test_dynamic_arguments_keep_order_and_unwind_after_later_failure PASSED [100%]
+
+============================== 1 passed in 3.12s ===============================

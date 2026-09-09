@@ -1,0 +1,51 @@
+{
+  "complete": true,
+  "compiler_sha256": "afb914a53606ca68ce759b2082f8852623c6f12199ea86fbf2a786f0b24b0d0a",
+  "compiler_kind": "host pcc builds native optimizer; runtime execution is native",
+  "runs": [
+    {
+      "backend": 0,
+      "returncode": 0,
+      "matches_host": true,
+      "stdout": "",
+      "stderr": "inline-defined changed=True seconds=0.0035729999653995037\ninstcombine changed=False seconds=0.0016449999529868364\nsimplifycfg changed=True seconds=0.004740000003948808\ndce changed=False seconds=0.00048699998296797276\n"
+    },
+    {
+      "backend": 1,
+      "returncode": 0,
+      "matches_host": true,
+      "stdout": "",
+      "stderr": "inline-defined changed=True seconds=0.005619000061415136\ninstcombine changed=False seconds=0.0015539999585598707\nsimplifycfg changed=True seconds=0.008451999980024993\ndce changed=False seconds=0.0009350000182166696\n"
+    },
+    {
+      "backend": 2,
+      "returncode": 0,
+      "matches_host": true,
+      "stdout": "",
+      "stderr": "inline-defined changed=True seconds=0.005487999995239079\ninstcombine changed=False seconds=0.0014349999837577343\nsimplifycfg changed=True seconds=0.008433000068180263\ndce changed=False seconds=0.0008769999258220196\n"
+    },
+    {
+      "backend": 3,
+      "returncode": 0,
+      "matches_host": true,
+      "stdout": "",
+      "stderr": "inline-defined changed=True seconds=0.006471000029705465\ninstcombine changed=False seconds=0.0017060000682249665\nsimplifycfg changed=True seconds=0.010016000014729798\ndce changed=False seconds=0.0011030000168830156\n"
+    },
+    {
+      "backend": 4,
+      "returncode": 0,
+      "matches_host": true,
+      "stdout": "",
+      "stderr": "inline-defined changed=True seconds=0.009175000013783574\ninstcombine changed=False seconds=0.0022279999684542418\nsimplifycfg changed=True seconds=0.014413999975658953\ndce changed=False seconds=0.0017380000790581107\n"
+    }
+  ],
+  "build_returncode": 0,
+  "small_gc_complete": true,
+  "real_runtime": {
+    "returncode": 0,
+    "matches_host": true,
+    "stdout": "",
+    "stderr": "inline-defined changed=True seconds=19.057003999943845\ninline-defined heap_live=203144398 heap_capacity=459423744\ninstcombine changed=True seconds=6.781347000040114\ninstcombine heap_live=278086180 heap_capacity=566099968\nsimplifycfg changed=True seconds=17.185931000043638\nsimplifycfg heap_live=976870152 heap_capacity=1947267072\ndce changed=True seconds=8.28600500000175\ndce heap_live=1096639473 heap_capacity=2219282432\n"
+  },
+  "binary_sha256": "d2c5acf3e831c6ec39c3bb97092cd806d89e5c9ffbb16388256fa89629f1de80"
+}

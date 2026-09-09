@@ -17,6 +17,11 @@ import statistics
 import subprocess
 import sys
 
+try:
+    from .processes import run_command
+except ImportError:
+    from processes import run_command
+
 from compare import ROOT, digest, percentile, process_metrics, save
 
 
@@ -112,7 +117,8 @@ def main():
               "base_optimization_environment": {key: env.get(key) for key in (
                   "PCC_GC_BACKEND", "PCC_WITH_THREADS", "PCC_RUNTIME_HIGH",
                   "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT", "PCC_GENERATOR_FIRST_ENTRY_INIT",
-                  "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS")},
+                  "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS",
+                  "PCC_KNOWN_OBJECT_REFS")},
               "runs": [], "summary": []}
     with _performance_lock():
         build.mkdir(parents=True, exist_ok=False)
@@ -143,7 +149,7 @@ def main():
             compile_env["PCC_RUNTIME_ARCHIVE"] = str(archive)
             print("Compiling " + label, flush=True)
             with (build / (label + "-compile.log")).open("w") as stream:
-                ran = subprocess.run(command, env=compile_env, cwd=programs[label].parent, stdout=stream,
+                ran = run_command(command, env=compile_env, cwd=programs[label].parent, stdout=stream,
                                      stderr=subprocess.STDOUT, timeout=300)
             if ran.returncode:
                 raise RuntimeError(label + " compile failed; see " + str(build))
@@ -169,7 +175,7 @@ def main():
                     if sys.platform == "darwin":
                         command = ["/usr/bin/time", "-lp", *command]
                     run_env = dict(env, **arm_env[label])
-                    ran = subprocess.run(command, env=run_env, cwd=ROOT, capture_output=True,
+                    ran = run_command(command, env=run_env, cwd=ROOT, capture_output=True,
                                          text=True, timeout=60)
                     if ran.returncode:
                         raise RuntimeError(label + ": " + ran.stdout + ran.stderr)

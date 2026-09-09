@@ -1,0 +1,1411 @@
+{
+  "scope": "quiescent GC0 heap census; condition-fix optimizer source; diagnostic C helper built with external clang",
+  "phases": [
+    {
+      "phase": 0,
+      "metrics": {
+        "live_requested": 36644822,
+        "live_usable": 36733328,
+        "mapped": 38100992,
+        "metadata_mapped": 425984,
+        "slab_mapped": 1310720,
+        "object_slabs": 8,
+        "raw_slabs": 12,
+        "raw_small_live_count": 1019,
+        "raw_small_requested": 122330,
+        "raw_small_usable": 154512,
+        "large_managed_objects": 2,
+        "reclaimable_raw_slabs": 65536,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 0,
+        "live_requested_after_walk": 36644822
+      },
+      "types": [
+        {
+          "tag": 4,
+          "count": 690,
+          "requested": 36297612,
+          "usable": 36314512,
+          "backing_requested": 0,
+          "refcount_one": 674,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 14,
+          "requested": 560,
+          "usable": 896,
+          "backing_requested": 496,
+          "refcount_one": 13,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 103,
+          "requested": 5768,
+          "usable": 6592,
+          "backing_requested": 59904,
+          "refcount_one": 88,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 1869,
+          "requested": 77536,
+          "usable": 98336,
+          "backing_requested": 0,
+          "refcount_one": 1864,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 13,
+          "requested": 624,
+          "usable": 832,
+          "backing_requested": 2816,
+          "refcount_one": 5,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 408,
+          "requested": 39168,
+          "usable": 52224,
+          "backing_requested": 0,
+          "refcount_one": 204,
+          "class_name": ""
+        },
+        {
+          "tag": 10,
+          "count": 12,
+          "requested": 1440,
+          "usable": 1536,
+          "backing_requested": 0,
+          "refcount_one": 12,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        }
+      ],
+      "string_samples": [
+        {
+          "length": 36258936,
+          "count": 1,
+          "requested": 36258977,
+          "prefix": "; ModuleID = \"pcc_gateway.server\"\ntarget triple = \"unknown-unkno"
+        },
+        {
+          "length": 7,
+          "count": 64,
+          "requested": 3072,
+          "prefix": "__doc__"
+        },
+        {
+          "length": 7,
+          "count": 33,
+          "requested": 1584,
+          "prefix": "findall"
+        },
+        {
+          "length": 7,
+          "count": 33,
+          "requested": 1584,
+          "prefix": "pattern"
+        },
+        {
+          "length": 6,
+          "count": 33,
+          "requested": 1551,
+          "prefix": "search"
+        },
+        {
+          "length": 5,
+          "count": 33,
+          "requested": 1518,
+          "prefix": "split"
+        },
+        {
+          "length": 5,
+          "count": 33,
+          "requested": 1518,
+          "prefix": "match"
+        },
+        {
+          "length": 3,
+          "count": 33,
+          "requested": 1452,
+          "prefix": "sub"
+        },
+        {
+          "length": 11,
+          "count": 14,
+          "requested": 728,
+          "prefix": "__package__"
+        },
+        {
+          "length": 8,
+          "count": 14,
+          "requested": 686,
+          "prefix": "__file__"
+        },
+        {
+          "length": 8,
+          "count": 14,
+          "requested": 686,
+          "prefix": "__name__"
+        },
+        {
+          "length": 105,
+          "count": 3,
+          "requested": 438,
+          "prefix": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-"
+        },
+        {
+          "length": 82,
+          "count": 3,
+          "requested": 369,
+          "prefix": "benchmarks/build/2026-09-08-asyncio-challenge/native-http-ir/pcc"
+        },
+        {
+          "length": 62,
+          "count": 3,
+          "requested": 309,
+          "prefix": "benchmarks/build/2026-09-08-asyncio-challenge/census-server.ll"
+        },
+        {
+          "length": 19,
+          "count": 5,
+          "requested": 300,
+          "prefix": "replace_local_names"
+        },
+        {
+          "length": 20,
+          "count": 4,
+          "requested": 244,
+          "prefix": "simplify_module_text"
+        },
+        {
+          "length": 15,
+          "count": 4,
+          "requested": 224,
+          "prefix": "dce_module_text"
+        },
+        {
+          "length": 24,
+          "count": 3,
+          "requested": 195,
+          "prefix": "fold_llvm_integer_binary"
+        },
+        {
+          "length": 23,
+          "count": 3,
+          "requested": 192,
+          "prefix": "_collect_function_attrs"
+        },
+        {
+          "length": 132,
+          "count": 1,
+          "requested": 173,
+          "prefix": "^(?P<indent>\\s*)%(?P<res>[\\w\\.]+)\\s*=\\s*(?:tail\\s+|musttail\\s+|n"
+        },
+        {
+          "length": 16,
+          "count": 3,
+          "requested": 171,
+          "prefix": "_split_functions"
+        },
+        {
+          "length": 14,
+          "count": 3,
+          "requested": 165,
+          "prefix": "unsigned_value"
+        },
+        {
+          "length": 13,
+          "count": 3,
+          "requested": 162,
+          "prefix": "FOLD_CONSTANT"
+        },
+        {
+          "length": 121,
+          "count": 1,
+          "requested": 162,
+          "prefix": "^(?P<indent>\\s*)(?:(?:tail|musttail|notail)\\s+)?call\\s+(?P<ret>["
+        },
+        {
+          "length": 13,
+          "count": 3,
+          "requested": 162,
+          "prefix": "MutableModule"
+        },
+        {
+          "length": 39,
+          "count": 2,
+          "requested": 160,
+          "prefix": "pcc.py_frontend.compiled_default_passes"
+        },
+        {
+          "length": 12,
+          "count": 3,
+          "requested": 159,
+          "prefix": "mem2reg,sroa"
+        },
+        {
+          "length": 12,
+          "count": 3,
+          "requested": 159,
+          "prefix": "signed_value"
+        },
+        {
+          "length": 38,
+          "count": 2,
+          "requested": 158,
+          "prefix": "pcc.native_ir.ir_mutator.MutableModule"
+        },
+        {
+          "length": 37,
+          "count": 2,
+          "requested": 156,
+          "prefix": "pcc.py_frontend.compiled_owned_passes"
+        }
+      ]
+    },
+    {
+      "phase": 1,
+      "metrics": {
+        "live_requested": 252902603,
+        "live_usable": 335551376,
+        "mapped": 467869696,
+        "metadata_mapped": 10354688,
+        "slab_mapped": 393281536,
+        "object_slabs": 5121,
+        "raw_slabs": 880,
+        "raw_small_live_count": 508182,
+        "raw_small_requested": 21678330,
+        "raw_small_usable": 32788672,
+        "large_managed_objects": 2,
+        "reclaimable_raw_slabs": 65536,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 757150,
+        "live_requested_after_walk": 252902603
+      },
+      "types": [
+        {
+          "tag": 3,
+          "count": 1,
+          "requested": 24,
+          "usable": 32,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 4,
+          "count": 1438476,
+          "requested": 178729225,
+          "usable": 245078800,
+          "backing_requested": 0,
+          "refcount_one": 1393299,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 45761,
+          "requested": 1830440,
+          "usable": 2928704,
+          "backing_requested": 5177744,
+          "refcount_one": 45760,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 103,
+          "requested": 5768,
+          "usable": 6592,
+          "backing_requested": 59904,
+          "refcount_one": 88,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 1869,
+          "requested": 77536,
+          "usable": 98336,
+          "backing_requested": 0,
+          "refcount_one": 1864,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 13,
+          "requested": 624,
+          "usable": 832,
+          "backing_requested": 2816,
+          "refcount_one": 5,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 408,
+          "requested": 39168,
+          "usable": 52224,
+          "backing_requested": 0,
+          "refcount_one": 204,
+          "class_name": ""
+        },
+        {
+          "tag": 10,
+          "count": 13,
+          "requested": 1560,
+          "usable": 1664,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 106,
+          "count": 610,
+          "requested": 29280,
+          "usable": 39040,
+          "backing_requested": 0,
+          "refcount_one": 610,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 107,
+          "count": 369753,
+          "requested": 20706168,
+          "usable": 23664192,
+          "backing_requested": 0,
+          "refcount_one": 324884,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 108,
+          "count": 45160,
+          "requested": 2528960,
+          "usable": 2890240,
+          "backing_requested": 0,
+          "refcount_one": 45160,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 109,
+          "count": 291,
+          "requested": 23280,
+          "usable": 37248,
+          "backing_requested": 0,
+          "refcount_one": 291,
+          "class_name": "Function"
+        },
+        {
+          "tag": 110,
+          "count": 1,
+          "requested": 72,
+          "usable": 128,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": "MutableModule"
+        }
+      ],
+      "string_samples": [
+        {
+          "length": 4,
+          "count": 160319,
+          "requested": 7214355,
+          "prefix": "call"
+        },
+        {
+          "length": 7,
+          "count": 80393,
+          "requested": 3858864,
+          "prefix": "bitcast"
+        },
+        {
+          "length": 4,
+          "count": 42428,
+          "requested": 1909260,
+          "prefix": "load"
+        },
+        {
+          "length": 2,
+          "count": 43503,
+          "requested": 1870629,
+          "prefix": "br"
+        },
+        {
+          "length": 91,
+          "count": 7282,
+          "requested": 961224,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 89,
+          "count": 7282,
+          "requested": 946660,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        },
+        {
+          "length": 5,
+          "count": 20237,
+          "requested": 930902,
+          "prefix": "store"
+        },
+        {
+          "length": 90,
+          "count": 3961,
+          "requested": 518891,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 88,
+          "count": 3961,
+          "requested": 510969,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        },
+        {
+          "length": 13,
+          "count": 8035,
+          "requested": 433890,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 76,
+          "count": 3316,
+          "requested": 387972,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.14"
+        },
+        {
+          "length": 76,
+          "count": 3048,
+          "requested": 356616,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.15"
+        },
+        {
+          "length": 76,
+          "count": 2988,
+          "requested": 349596,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.13"
+        },
+        {
+          "length": 76,
+          "count": 2972,
+          "requested": 347724,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.12"
+        },
+        {
+          "length": 76,
+          "count": 2892,
+          "requested": 338364,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.11"
+        },
+        {
+          "length": 76,
+          "count": 2592,
+          "requested": 303264,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.10"
+        },
+        {
+          "length": 83,
+          "count": 2375,
+          "requested": 294500,
+          "prefix": "  store i1 0, ptr %__pcc_vthread_delegate_pcc_virtual_thread_cal"
+        },
+        {
+          "length": 81,
+          "count": 2375,
+          "requested": 289750,
+          "prefix": "store i1 0, ptr %__pcc_vthread_delegate_pcc_virtual_thread_call_"
+        },
+        {
+          "length": 4,
+          "count": 6246,
+          "requested": 281070,
+          "prefix": "icmp"
+        },
+        {
+          "length": 120,
+          "count": 1395,
+          "requested": 224595,
+          "prefix": "  call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_"
+        },
+        {
+          "length": 118,
+          "count": 1296,
+          "requested": 206064,
+          "prefix": "call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_vi"
+        },
+        {
+          "length": 75,
+          "count": 1641,
+          "requested": 190356,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.18"
+        },
+        {
+          "length": 76,
+          "count": 1567,
+          "requested": 183339,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.19"
+        },
+        {
+          "length": 75,
+          "count": 1517,
+          "requested": 175972,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.16"
+        },
+        {
+          "length": 121,
+          "count": 926,
+          "requested": 150012,
+          "prefix": "  call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_"
+        },
+        {
+          "length": 1,
+          "count": 3293,
+          "requested": 138306,
+          "prefix": "\n"
+        },
+        {
+          "length": 119,
+          "count": 862,
+          "requested": 137920,
+          "prefix": "call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_vi"
+        },
+        {
+          "length": 75,
+          "count": 1103,
+          "requested": 127948,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.17"
+        },
+        {
+          "length": 6,
+          "count": 2645,
+          "requested": 124315,
+          "prefix": "alloca"
+        },
+        {
+          "length": 22,
+          "count": 1893,
+          "requested": 119259,
+          "prefix": "  br label %err.exit\n\n"
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "metrics": {
+        "live_requested": 897479899,
+        "live_usable": 1088998144,
+        "mapped": 1558265856,
+        "metadata_mapped": 37453824,
+        "slab_mapped": 1077805056,
+        "object_slabs": 9199,
+        "raw_slabs": 7247,
+        "raw_small_live_count": 4730425,
+        "raw_small_requested": 184138794,
+        "raw_small_usable": 246098752,
+        "large_managed_objects": 44,
+        "reclaimable_raw_slabs": 196608,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 875489,
+        "live_requested_after_walk": 897479899
+      },
+      "types": [
+        {
+          "tag": 3,
+          "count": 1,
+          "requested": 24,
+          "usable": 32,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 4,
+          "count": 1628442,
+          "requested": 198593225,
+          "usable": 272914096,
+          "backing_requested": 0,
+          "refcount_one": 1006661,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 2066836,
+          "requested": 82673440,
+          "usable": 132277504,
+          "backing_requested": 70422008,
+          "refcount_one": 1958969,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 356,
+          "requested": 19936,
+          "usable": 22784,
+          "backing_requested": 304896,
+          "refcount_one": 205,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 6920,
+          "requested": 319984,
+          "usable": 421600,
+          "backing_requested": 0,
+          "refcount_one": 6915,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 101269,
+          "requested": 4860912,
+          "usable": 6481216,
+          "backing_requested": 13086080,
+          "refcount_one": 56500,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 408,
+          "requested": 39168,
+          "usable": 52224,
+          "backing_requested": 0,
+          "refcount_one": 204,
+          "class_name": ""
+        },
+        {
+          "tag": 10,
+          "count": 14,
+          "requested": 1680,
+          "usable": 1792,
+          "backing_requested": 0,
+          "refcount_one": 14,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 14,
+          "count": 87,
+          "requested": 2784,
+          "usable": 2784,
+          "backing_requested": 0,
+          "refcount_one": 87,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 106,
+          "count": 610,
+          "requested": 29280,
+          "usable": 39040,
+          "backing_requested": 0,
+          "refcount_one": 610,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 107,
+          "count": 346499,
+          "requested": 19403944,
+          "usable": 22175936,
+          "backing_requested": 0,
+          "refcount_one": 293682,
+          "class_name": "Instruction"
+        },
+        {
+          "tag": 108,
+          "count": 45160,
+          "requested": 2528960,
+          "usable": 2890240,
+          "backing_requested": 0,
+          "refcount_one": 45160,
+          "class_name": "BasicBlock"
+        },
+        {
+          "tag": 109,
+          "count": 291,
+          "requested": 23280,
+          "usable": 37248,
+          "backing_requested": 0,
+          "refcount_one": 290,
+          "class_name": "Function"
+        },
+        {
+          "tag": 110,
+          "count": 1,
+          "requested": 72,
+          "usable": 128,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": "MutableModule"
+        }
+      ],
+      "string_samples": [
+        {
+          "length": 4,
+          "count": 160319,
+          "requested": 7214355,
+          "prefix": "call"
+        },
+        {
+          "length": 7,
+          "count": 80393,
+          "requested": 3858864,
+          "prefix": "bitcast"
+        },
+        {
+          "length": 2,
+          "count": 43503,
+          "requested": 1870629,
+          "prefix": "br"
+        },
+        {
+          "length": 2,
+          "count": 34765,
+          "requested": 1494895,
+          "prefix": "i1"
+        },
+        {
+          "length": 4,
+          "count": 27741,
+          "requested": 1248345,
+          "prefix": "load"
+        },
+        {
+          "length": 91,
+          "count": 7282,
+          "requested": 961224,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 89,
+          "count": 7282,
+          "requested": 946660,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        },
+        {
+          "length": 90,
+          "count": 3961,
+          "requested": 518891,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 88,
+          "count": 3961,
+          "requested": 510969,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        },
+        {
+          "length": 13,
+          "count": 8035,
+          "requested": 433890,
+          "prefix": "getelementptr"
+        },
+        {
+          "length": 3,
+          "count": 9611,
+          "requested": 422884,
+          "prefix": "phi"
+        },
+        {
+          "length": 76,
+          "count": 3316,
+          "requested": 387972,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.14"
+        },
+        {
+          "length": 3,
+          "count": 8294,
+          "requested": 364936,
+          "prefix": "ptr"
+        },
+        {
+          "length": 76,
+          "count": 3048,
+          "requested": 356616,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.15"
+        },
+        {
+          "length": 76,
+          "count": 2988,
+          "requested": 349596,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.13"
+        },
+        {
+          "length": 76,
+          "count": 2972,
+          "requested": 347724,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.12"
+        },
+        {
+          "length": 76,
+          "count": 2892,
+          "requested": 338364,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.11"
+        },
+        {
+          "length": 170,
+          "count": 1438,
+          "requested": 303418,
+          "prefix": "  br i1 1, label %pcc_vthread_delegate_pcc_virtual_thread_call_2"
+        },
+        {
+          "length": 76,
+          "count": 2592,
+          "requested": 303264,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.10"
+        },
+        {
+          "length": 81,
+          "count": 2375,
+          "requested": 289750,
+          "prefix": "store i1 0, ptr %__pcc_vthread_delegate_pcc_virtual_thread_call_"
+        },
+        {
+          "length": 4,
+          "count": 6246,
+          "requested": 281070,
+          "prefix": "icmp"
+        },
+        {
+          "length": 120,
+          "count": 1395,
+          "requested": 224595,
+          "prefix": "  call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_"
+        },
+        {
+          "length": 118,
+          "count": 1296,
+          "requested": 206064,
+          "prefix": "call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_vi"
+        },
+        {
+          "length": 76,
+          "count": 1567,
+          "requested": 183339,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.19"
+        },
+        {
+          "length": 75,
+          "count": 1517,
+          "requested": 175972,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.16"
+        },
+        {
+          "length": 5,
+          "count": 3523,
+          "requested": 162058,
+          "prefix": "store"
+        },
+        {
+          "length": 121,
+          "count": 926,
+          "requested": 150012,
+          "prefix": "  call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_"
+        },
+        {
+          "length": 1,
+          "count": 3293,
+          "requested": 138306,
+          "prefix": "\n"
+        },
+        {
+          "length": 119,
+          "count": 862,
+          "requested": 137920,
+          "prefix": "call void (ptr) @pcc_gc_release(ptr %pcc_vthread_delegate_pcc_vi"
+        },
+        {
+          "length": 168,
+          "count": 636,
+          "requested": 132924,
+          "prefix": "  br i1 1, label %pcc_vthread_delegate_pcc_virtual_thread_call_2"
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "metrics": {
+        "live_requested": 1196335262,
+        "live_usable": 1505131152,
+        "mapped": 2110984192,
+        "metadata_mapped": 38895616,
+        "slab_mapped": 1582563328,
+        "object_slabs": 16756,
+        "raw_slabs": 7392,
+        "raw_small_live_count": 4779466,
+        "raw_small_requested": 186935162,
+        "raw_small_usable": 248985888,
+        "large_managed_objects": 192,
+        "reclaimable_raw_slabs": 131072,
+        "observer_mmap": 6291456,
+        "bad_headers": 0,
+        "string_groups_overflow": 2198089,
+        "live_requested_after_walk": 1196335262
+      },
+      "types": [
+        {
+          "tag": 3,
+          "count": 1,
+          "requested": 24,
+          "usable": 32,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 4,
+          "count": 4207412,
+          "requested": 489869180,
+          "usable": 679888240,
+          "backing_requested": 0,
+          "refcount_one": 3397027,
+          "class_name": ""
+        },
+        {
+          "tag": 5,
+          "count": 2112286,
+          "requested": 84491440,
+          "usable": 135186304,
+          "backing_requested": 78584408,
+          "refcount_one": 2004419,
+          "class_name": ""
+        },
+        {
+          "tag": 6,
+          "count": 356,
+          "requested": 19936,
+          "usable": 22784,
+          "backing_requested": 304896,
+          "refcount_one": 205,
+          "class_name": ""
+        },
+        {
+          "tag": 7,
+          "count": 6921,
+          "requested": 320024,
+          "usable": 421664,
+          "backing_requested": 0,
+          "refcount_one": 6916,
+          "class_name": ""
+        },
+        {
+          "tag": 8,
+          "count": 101269,
+          "requested": 4860912,
+          "usable": 6481216,
+          "backing_requested": 13086080,
+          "refcount_one": 56500,
+          "class_name": ""
+        },
+        {
+          "tag": 9,
+          "count": 408,
+          "requested": 39168,
+          "usable": 52224,
+          "backing_requested": 0,
+          "refcount_one": 204,
+          "class_name": ""
+        },
+        {
+          "tag": 10,
+          "count": 14,
+          "requested": 1680,
+          "usable": 1792,
+          "backing_requested": 0,
+          "refcount_one": 14,
+          "class_name": ""
+        },
+        {
+          "tag": 13,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 1,
+          "class_name": ""
+        },
+        {
+          "tag": 14,
+          "count": 87,
+          "requested": 2784,
+          "usable": 2784,
+          "backing_requested": 0,
+          "refcount_one": 87,
+          "class_name": ""
+        },
+        {
+          "tag": 101,
+          "count": 1,
+          "requested": 40,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": ""
+        },
+        {
+          "tag": 102,
+          "count": 2,
+          "requested": 48,
+          "usable": 64,
+          "backing_requested": 0,
+          "refcount_one": 2,
+          "class_name": ""
+        },
+        {
+          "tag": 104,
+          "count": 13,
+          "requested": 416,
+          "usable": 416,
+          "backing_requested": 0,
+          "refcount_one": 13,
+          "class_name": "module"
+        },
+        {
+          "tag": 105,
+          "count": 33,
+          "requested": 1056,
+          "usable": 1056,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "re.Pattern"
+        },
+        {
+          "tag": 106,
+          "count": 610,
+          "requested": 29280,
+          "usable": 39040,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "Argument"
+        },
+        {
+          "tag": 107,
+          "count": 346499,
+          "requested": 19403944,
+          "usable": 22175936,
+          "backing_requested": 0,
+          "refcount_one": 0,
+          "class_name": "Instruction"
+        }
+      ],
+      "string_samples": [
+        {
+          "length": 4,
+          "count": 160319,
+          "requested": 7214355,
+          "prefix": "call"
+        },
+        {
+          "length": 7,
+          "count": 80393,
+          "requested": 3858864,
+          "prefix": "bitcast"
+        },
+        {
+          "length": 1,
+          "count": 48162,
+          "requested": 2022804,
+          "prefix": "\n"
+        },
+        {
+          "length": 91,
+          "count": 14564,
+          "requested": 1922448,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 2,
+          "count": 43503,
+          "requested": 1870629,
+          "prefix": "br"
+        },
+        {
+          "length": 132,
+          "count": 9996,
+          "requested": 1729308,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_vthread_"
+        },
+        {
+          "length": 2,
+          "count": 34837,
+          "requested": 1497991,
+          "prefix": "i1"
+        },
+        {
+          "length": 63,
+          "count": 13188,
+          "requested": 1371552,
+          "prefix": "getelementptr inbounds [50 x i8], ptr @.tb.file.3, i32 0, i32 0"
+        },
+        {
+          "length": 133,
+          "count": 7278,
+          "requested": 1266372,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_vthread_"
+        },
+        {
+          "length": 4,
+          "count": 27741,
+          "requested": 1248345,
+          "prefix": "load"
+        },
+        {
+          "length": 35,
+          "count": 15900,
+          "requested": 1208400,
+          "prefix": "call ptr () @py_current_exception()"
+        },
+        {
+          "length": 30,
+          "count": 16302,
+          "requested": 1157442,
+          "prefix": "call i64 () @py_err_occurred()"
+        },
+        {
+          "length": 90,
+          "count": 7922,
+          "requested": 1037782,
+          "prefix": "  call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.p"
+        },
+        {
+          "length": 22,
+          "count": 15742,
+          "requested": 991746,
+          "prefix": "load ptr, ptr @py_None"
+        },
+        {
+          "length": 89,
+          "count": 7282,
+          "requested": 946660,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        },
+        {
+          "length": 104,
+          "count": 5544,
+          "requested": 803880,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_return_v"
+        },
+        {
+          "length": 76,
+          "count": 6632,
+          "requested": 775944,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.14"
+        },
+        {
+          "length": 105,
+          "count": 5166,
+          "requested": 754236,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_return_v"
+        },
+        {
+          "length": 76,
+          "count": 6096,
+          "requested": 713232,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.15"
+        },
+        {
+          "length": 39,
+          "count": 8790,
+          "requested": 703200,
+          "prefix": "bitcast ptr @.pcc.gc.frame.map.1 to ptr"
+        },
+        {
+          "length": 76,
+          "count": 5976,
+          "requested": 699192,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.13"
+        },
+        {
+          "length": 76,
+          "count": 5944,
+          "requested": 695448,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.12"
+        },
+        {
+          "length": 76,
+          "count": 5784,
+          "requested": 676728,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.11"
+        },
+        {
+          "length": 3,
+          "count": 14641,
+          "requested": 644204,
+          "prefix": "ptr"
+        },
+        {
+          "length": 87,
+          "count": 5022,
+          "requested": 642816,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %container.tm"
+        },
+        {
+          "length": 76,
+          "count": 5184,
+          "requested": 606528,
+          "prefix": "  call void (ptr) @pcc_gc_frame_leave(ptr %gc.frame.leave.ptr.10"
+        },
+        {
+          "length": 103,
+          "count": 3978,
+          "requested": 572832,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_return_v"
+        },
+        {
+          "length": 85,
+          "count": 4476,
+          "requested": 563976,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %operand.tmp."
+        },
+        {
+          "length": 131,
+          "count": 2976,
+          "requested": 511872,
+          "prefix": "call ptr (ptr, ptr) @pcc_gc_load_ptr(ptr null, ptr %pcc_vthread_"
+        },
+        {
+          "length": 88,
+          "count": 3961,
+          "requested": 510969,
+          "prefix": "call void (ptr, ptr) @pcc_gc_store_root(ptr %gc.root.cleanup.ptr"
+        }
+      ]
+    }
+  ],
+  "output_sha256": "19c8dbd264941d80050315990f5a1bf934d3b2a6fd302def2b97e22f4b83c2fb"
+}

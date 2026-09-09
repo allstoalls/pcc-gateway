@@ -1,0 +1,507 @@
+{
+  "schema": "pcc_gateway.owner_checkpoint.v1",
+  "complete": true,
+  "scope": "Evidence checkpoint; compiler memory and asyncio C100 targets remain open",
+  "artifact_root": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple",
+  "artifacts": {
+    "compiler": {
+      "path": "/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/pcc1",
+      "sha256": "b45582507e80dbf591f1dd2016fecdaaccd345f463193bc408bef8d09571c9a0"
+    },
+    "runtime": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/py_runtime_leaf_fixed/libpy_runtime_pcc_py.a",
+      "sha256": "1ee0b1bb5e2b5eca1cbf0d5c7fb69ec03c6f595fa51a0eb6c81313adac698e53"
+    }
+  },
+  "compiler_source": "/Users/jiamo/my/pcc/build/gateway-direct-owner-stage1-20260909/source-snapshot",
+  "runtime_emission": "external LLVM O0; 170 coherent modules; not owned runtime construction",
+  "receipts": {
+    "final-native-validation.json": {
+      "path": "2026-09-09-owner-evidence/final-native-validation.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-native-validation.json",
+      "sha256": "6ebec1e4bbf59f2897dca4841b6152d6bc1fefe699409061a1952db9bd9afa7b"
+    },
+    "native-post2-gate.json": {
+      "path": "2026-09-09-owner-evidence/native-post2-gate.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/native-post2-gate.json",
+      "sha256": "e7535ea69a96d35b62a86b5d16f3ca0ffd6f164685041a79ca6a272f85dcc17c"
+    },
+    "native-post2-watch.json": {
+      "path": "2026-09-09-owner-evidence/native-post2-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/native-post2-watch.json",
+      "sha256": "341f4b259c369bfaeea7acfa295d4df6911dc6b51e2d882296fe6996e3bb4c55"
+    },
+    "stage1-watch-v3.json": {
+      "path": "2026-09-09-owner-evidence/stage1-watch-v3.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/stage1-watch-v3.json",
+      "sha256": "3a23ef7e1b5d6a172196605a42337b30c10ee3e404362f6378388e5d5d8bd0c9"
+    },
+    "final-stage1-watch.json": {
+      "path": "2026-09-09-owner-evidence/final-stage1-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-stage1-watch.json",
+      "sha256": "ac8b94777cbe329c3b1bb9df4bccad396e43c21bdedb6306c81da6e1c5ccb2ac"
+    },
+    "direct-stage1-watch.json": {
+      "path": "2026-09-09-owner-evidence/direct-stage1-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/direct-stage1-watch.json",
+      "sha256": "736d296ded37cb797ea3da4f2b2d85e50dff1b2f1ca0b0d9561fe5447a0d8918"
+    },
+    "final-recovered-link-watch.json": {
+      "path": "2026-09-09-owner-evidence/final-recovered-link-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-recovered-link-watch.json",
+      "sha256": "8affb2e975642624cf74b0135dab48809a37ccb5af7ab317c6791c244231c55a"
+    },
+    "coordinator-traced-before-link.json": {
+      "path": "2026-09-09-owner-evidence/coordinator-traced-before-link.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/coordinator-traced-before-link.json",
+      "sha256": "682706ad15c8a95868e74b89dc7b5897d07c1bcc6db12c06bea475da7f97bcea"
+    },
+    "memory-owner-comparison.json": {
+      "path": "2026-09-09-owner-evidence/memory-owner-comparison.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/memory-owner-comparison.json",
+      "sha256": "83b78e3e13d37e16595fc6e782da773d940d4167d07417b348e2000a50bc778d"
+    },
+    "normal-smokes.json": {
+      "path": "2026-09-09-owner-evidence/normal-smokes.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/normal-smokes.json",
+      "sha256": "e82dd69220a9bba9c00066217cb3a6ae27b511358f4f8f33c2b4140bc4841200"
+    },
+    "final-source.json": {
+      "path": "2026-09-09-owner-evidence/final-source.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-source.json",
+      "sha256": "d3d710e7223b27c7ac312d7a9e2eb0d6ccc18ca8b9dd0b3a7ceddd79eec630a2"
+    },
+    "quota-override.json": {
+      "path": "2026-09-09-owner-evidence/quota-override.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/quota-override.json",
+      "sha256": "14c4b1fedd63f4c606d8dbd99103ad4860ba364bdd30858bbe9a82a79903dfcc"
+    },
+    "final-native-gates-watch.json": {
+      "path": "2026-09-09-owner-evidence/final-native-gates-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-native-gates-watch.json",
+      "sha256": "2827703e03e57a12b30065b3856c7bb1fac4a6e2c838b3b98e425341225f05d8"
+    },
+    "leaf-root-after.json": {
+      "path": "2026-09-09-owner-evidence/leaf-root-after.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/leaf-root-after.json",
+      "sha256": "9b37332759f412f0368c80ce7c35f0dbd6cfbc01fead2ec92897b6f337fd65f8"
+    },
+    "final-focused-tests.json": {
+      "path": "2026-09-09-owner-evidence/final-focused-tests.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-focused-tests.json",
+      "sha256": "6481385fdda94004d2b84779be64595045c86798fd99965a37b1e393dd94e09c"
+    },
+    "linear-merge-tests.json": {
+      "path": "2026-09-09-owner-evidence/linear-merge-tests.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/linear-merge-tests.json",
+      "sha256": "bdfc1d55002a053ebf116914e1848b858d111db1350b2c27d085e1379da73cb5"
+    },
+    "gateway-final-tests.json": {
+      "path": "2026-09-09-owner-evidence/gateway-final-tests.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/gateway-final-tests.json",
+      "sha256": "57489c2d071301834cabcc0f5892c9d9e8888ea6a2cecd45fc4e8676281c52f9"
+    },
+    "final-compare-watch.json": {
+      "path": "2026-09-09-owner-evidence/final-compare-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/final-compare-watch.json",
+      "sha256": "259ce2773fc9fa83c39bb8b71c88947e5126c6e7dafaf32bb3d634706b2202a4"
+    },
+    "focused-after-v2.json": {
+      "path": "2026-09-09-owner-evidence/focused-after-v2.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/focused-after-v2.json",
+      "sha256": "e46e5ae47f3b3dd5a493539cef558faaa9eef2bc4815792593e2a3da1ac3066a"
+    },
+    "owner-after.json": {
+      "path": "2026-09-09-owner-evidence/owner-after.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/owner-after.json",
+      "sha256": "47bda4ebe5972211a322f6530863013e4638b79bd949bdf9645ecd786bb93ad0"
+    },
+    "calls-stage1-watch.json": {
+      "path": "2026-09-09-owner-evidence/calls-stage1-watch.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/calls-stage1-watch.json",
+      "sha256": "d413d739a05d3f99d2f4a92289459b3b83f34008a63856dc237fa0118def4bc1"
+    },
+    "calls-stage1-watch-v2.json": {
+      "path": "2026-09-09-owner-evidence/calls-stage1-watch-v2.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/calls-stage1-watch-v2.json",
+      "sha256": "a7969c6ed029bd911e17c1e1f3fc3c212fb5cc7f1be07995c6f6d7b910397a3d"
+    },
+    "calls-stage1-watch-v3.json": {
+      "path": "2026-09-09-owner-evidence/calls-stage1-watch-v3.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/calls-stage1-watch-v3.json",
+      "sha256": "72ef2279e78dbdf348f57138547a42962f5b554d7fd325336ebd4002dd718051"
+    },
+    "calls-stage1-v3.stderr": {
+      "path": "2026-09-09-owner-evidence/calls-stage1-v3.stderr",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/calls-stage1-v3.stderr",
+      "sha256": "ea90ae33d39e148e8312a6eeca684f2ab7928af9c6d4aa473fd53d0bf0bebaba"
+    },
+    "quota-stop-process-audit.json": {
+      "path": "2026-09-09-owner-evidence/quota-stop-process-audit.json",
+      "raw_path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/quota-stop-process-audit.json",
+      "sha256": "fed1d6702f20e1dec7ad1554f0e538bfd0b89ce913e23ab5a4f20d2a5eaea96b"
+    }
+  },
+  "normal_native_validation": {
+    "cases": 20,
+    "gc_backends": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "passed": true,
+    "scenarios": [
+      "tuple iterator contents and failure",
+      "boxed bool",
+      "native relocation record roundtrip",
+      "structured child failure cleanup"
+    ],
+    "build_qualification": "Direct-built compiler in normal mode. The Stage1 harness failed its separate native-direct smoke; not full-build qualification."
+  },
+  "optimizer": {
+    "scope": "Host pcc builds a native optimizer from post2-source, newer than benchmark compiler; full real runtime IR under GC0, small differential under GC0\u20134",
+    "input_bytes": 6164629,
+    "passes": "inline-defined,instcombine,simplifycfg,dce",
+    "pass_seconds": 51.31028700003098,
+    "full_gate_peak_tree_rss_bytes": 2394390528,
+    "final_heap_live_bytes": 1096639473,
+    "matches_host": true,
+    "remaining": "Latest generic call-owner fixes reduce this baseline from 1.10 GB to 713 MB; see latest_call_owner_fixes. Remaining live owners are unresolved.",
+    "source_manifest": "2026-09-09-owner-evidence/optimizer-source-manifest.json",
+    "heap_census": {
+      "path": "2026-09-09-owner-evidence/final-heap-census-summary.json",
+      "live_requested_bytes": 1096571030,
+      "string_count": 6670217,
+      "string_requested_bytes": 643959836,
+      "list_count": 1095784,
+      "list_and_backing_bytes": 97476976,
+      "simplifycfg_live_growth_bytes": 698783971,
+      "bad_headers": 0,
+      "output_equal": true,
+      "string_sample_overflow": 4362110,
+      "scope": "GC0 quiescent observer; external clang diagnostic helper. Type totals complete; detailed string samples partial."
+    }
+  },
+  "memory": {
+    "earlier_complete_stage1": {
+      "elapsed_s": 321.94,
+      "peak_tree_rss_bytes": 4198924288,
+      "latest_source": false
+    },
+    "latest_text_route": {
+      "status": "MEMORY_LIMIT",
+      "peak_tree_rss_bytes": 4855726080,
+      "cap_bytes": 4831838208
+    },
+    "latest_direct_route": {
+      "peak_tree_rss_bytes": 3978182656,
+      "elapsed_s": 246.758,
+      "binary_produced": true,
+      "harness_returncode": 1,
+      "failed_gate": "native-direct compile smoke Bus error; normal-mode compile/run and 20 native cases pass"
+    },
+    "coordinator_diagnostic": {
+      "rss_bytes": 1347141632,
+      "tracemalloc_current_bytes": 29622452,
+      "gc_collected": 0,
+      "malloc_size_in_use": 18016528,
+      "malloc_size_allocated": 859832320,
+      "pressure_relieved_bytes": 0,
+      "interpretation": "Evidence supports allocator retention/fragmentation; not a live Python IR owner. No production gc/trim workaround added."
+    }
+  },
+  "throughput_experiment": {
+    "receipt": "2026-09-09-owned-cfg-runtime-reference.json",
+    "control_qps": 55894.02492345131,
+    "owned_second_qps": 77153.94526031858,
+    "asyncio_qps": 82353.86585788317,
+    "llvm_o2_reference_qps": 84959.96264407608,
+    "scope": "Experimental 12-module combined-runtime optimization; host executes owned passes, external LLVM emits objects. Earlier runtime before GC4 leaf fix, not latest qualified pcc1/default result."
+  },
+  "unqualified": [
+    "Stage1 -> Stage2 -> Stage3 fixed point",
+    "latest source full compiler build",
+    "native direct indexed emission smoke",
+    "whole optimized runtime GC0\u20134",
+    "live HTTP and HTTPS for this candidate",
+    "default flag promotion",
+    "installed compiler replacement"
+  ],
+  "gateway_default_tests": {
+    "passed": 294,
+    "deselected": 20,
+    "seconds": 4.13,
+    "scope": "host model/default suite; native integration separate"
+  },
+  "final_comparison": {
+    "path": "2026-09-09-owner-final-three-way.json",
+    "source_sha256": "60cf99abfb62af9111aca7a75ade43281a0125e825ac2a13ff180db977a5aa30",
+    "runs": 90,
+    "summary": [
+      {
+        "concurrency": 1,
+        "delay_ms": 0,
+        "implementation": "asyncio",
+        "p50_ms": 0.060416990891098976,
+        "p95_ms": 0.06966700311750174,
+        "process_peak_rss_bytes_median": 29589504,
+        "requests_per_second_max": 9584.981101580688,
+        "requests_per_second_median": 9499.453603579856,
+        "requests_per_second_min": 9271.664222074389
+      },
+      {
+        "concurrency": 1,
+        "delay_ms": 0,
+        "implementation": "host-pcc",
+        "p50_ms": 0.01100008375942707,
+        "p95_ms": 0.012999982573091984,
+        "process_peak_rss_bytes_median": 15138816,
+        "requests_per_second_max": 38738.74397565355,
+        "requests_per_second_median": 37890.772274946285,
+        "requests_per_second_min": 37589.67486772982
+      },
+      {
+        "concurrency": 1,
+        "delay_ms": 0,
+        "implementation": "pcc1",
+        "p50_ms": 0.01100008375942707,
+        "p95_ms": 0.01200009137392044,
+        "process_peak_rss_bytes_median": 14991360,
+        "requests_per_second_max": 38420.90096897293,
+        "requests_per_second_median": 38227.834067480595,
+        "requests_per_second_min": 37922.096637021365
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 0,
+        "implementation": "asyncio",
+        "p50_ms": 0.11937494855374098,
+        "p95_ms": 0.13400213210843456,
+        "process_peak_rss_bytes_median": 29622272,
+        "requests_per_second_max": 51895.54430012443,
+        "requests_per_second_median": 49718.56186861554,
+        "requests_per_second_min": 49262.287029389554
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 0,
+        "implementation": "host-pcc",
+        "p50_ms": 0.08000002708286047,
+        "p95_ms": 0.09300000965595245,
+        "process_peak_rss_bytes_median": 15122432,
+        "requests_per_second_max": 54638.837286510134,
+        "requests_per_second_median": 54127.63838305408,
+        "requests_per_second_min": 53421.086376051804
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 0,
+        "implementation": "pcc1",
+        "p50_ms": 0.08100003469735384,
+        "p95_ms": 0.0950000248849392,
+        "process_peak_rss_bytes_median": 14974976,
+        "requests_per_second_max": 54412.44085081538,
+        "requests_per_second_median": 53478.08066151547,
+        "requests_per_second_min": 52117.53547880236
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 0,
+        "implementation": "asyncio",
+        "p50_ms": 0.6952909752726555,
+        "p95_ms": 0.7729169446974993,
+        "process_peak_rss_bytes_median": 30097408,
+        "requests_per_second_max": 90130.65578375164,
+        "requests_per_second_median": 89946.50991109344,
+        "requests_per_second_min": 87251.45404461853
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 0,
+        "implementation": "host-pcc",
+        "p50_ms": 0.7650000043213367,
+        "p95_ms": 0.863000052049756,
+        "process_peak_rss_bytes_median": 15777792,
+        "requests_per_second_max": 57475.06299781566,
+        "requests_per_second_median": 56562.52563585124,
+        "requests_per_second_min": 55449.58523923745
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 0,
+        "implementation": "pcc1",
+        "p50_ms": 0.7690000347793102,
+        "p95_ms": 0.8619999280199409,
+        "process_peak_rss_bytes_median": 15630336,
+        "requests_per_second_max": 57004.74278956947,
+        "requests_per_second_median": 56443.442250970525,
+        "requests_per_second_min": 54862.30931181049
+      },
+      {
+        "concurrency": 1,
+        "delay_ms": 100,
+        "implementation": "asyncio",
+        "p50_ms": 101.73458303324878,
+        "p95_ms": 102.39709590096027,
+        "process_peak_rss_bytes_median": 28065792,
+        "requests_per_second_max": 9.863741865050773,
+        "requests_per_second_median": 9.847285431197635,
+        "requests_per_second_min": 9.809380036610788
+      },
+      {
+        "concurrency": 1,
+        "delay_ms": 100,
+        "implementation": "host-pcc",
+        "p50_ms": 100.23949999595061,
+        "p95_ms": 101.04390003834851,
+        "process_peak_rss_bytes_median": 3883008,
+        "requests_per_second_max": 9.979820802042038,
+        "requests_per_second_median": 9.971312533633165,
+        "requests_per_second_min": 9.939853944034812
+      },
+      {
+        "concurrency": 1,
+        "delay_ms": 100,
+        "implementation": "pcc1",
+        "p50_ms": 100.39749997667968,
+        "p95_ms": 101.13949996302836,
+        "process_peak_rss_bytes_median": 3735552,
+        "requests_per_second_max": 9.98600960097149,
+        "requests_per_second_median": 9.959970877189798,
+        "requests_per_second_min": 9.919001434148184
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 100,
+        "implementation": "asyncio",
+        "p50_ms": 102.00529202120379,
+        "p95_ms": 102.89637499954551,
+        "process_peak_rss_bytes_median": 28229632,
+        "requests_per_second_max": 98.28592212633978,
+        "requests_per_second_median": 97.86143006338666,
+        "requests_per_second_min": 97.3246033929954
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 100,
+        "implementation": "host-pcc",
+        "p50_ms": 100.4650000249967,
+        "p95_ms": 101.20399994775653,
+        "process_peak_rss_bytes_median": 4030464,
+        "requests_per_second_max": 99.4565693008327,
+        "requests_per_second_median": 99.33169634623064,
+        "requests_per_second_min": 99.08485230288149
+      },
+      {
+        "concurrency": 10,
+        "delay_ms": 100,
+        "implementation": "pcc1",
+        "p50_ms": 100.41849996196106,
+        "p95_ms": 101.17605007835664,
+        "process_peak_rss_bytes_median": 3883008,
+        "requests_per_second_max": 99.52001497400438,
+        "requests_per_second_median": 99.30723274108934,
+        "requests_per_second_min": 98.93868472171522
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 100,
+        "implementation": "asyncio",
+        "p50_ms": 103.58850000193343,
+        "p95_ms": 106.39877088251524,
+        "process_peak_rss_bytes_median": 28704768,
+        "requests_per_second_max": 959.1938937990537,
+        "requests_per_second_median": 955.8581513684547,
+        "requests_per_second_min": 951.5882258866291
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 100,
+        "implementation": "host-pcc",
+        "p50_ms": 101.84500005561858,
+        "p95_ms": 103.90410001273267,
+        "process_peak_rss_bytes_median": 5128192,
+        "requests_per_second_max": 965.7664757870383,
+        "requests_per_second_median": 957.7599145244034,
+        "requests_per_second_min": 954.2603909269526
+      },
+      {
+        "concurrency": 100,
+        "delay_ms": 100,
+        "implementation": "pcc1",
+        "p50_ms": 101.83100000722334,
+        "p95_ms": 104.11420009913854,
+        "process_peak_rss_bytes_median": 4997120,
+        "requests_per_second_max": 964.8923903902446,
+        "requests_per_second_median": 960.2476669966704,
+        "requests_per_second_min": 957.3793845760192
+      }
+    ],
+    "scope": "normal-mode candidate; four opt-in flags; no combined-runtime experimental optimization"
+  },
+  "issue_progress": "https://github.com/allstoalls/pcc/issues/188#issuecomment-5602440322",
+  "validation_readback": {
+    "all_copied_receipt_hashes_match": true,
+    "updated_markdown_relative_links_exist": true
+  },
+  "latest_call_owner_fixes": {
+    "files": [
+      "pcc/py_frontend/codegen/unary_call_lowering.py",
+      "pcc/py_frontend/codegen/call_object_lowering.py"
+    ],
+    "census_before_live_bytes": 1096571030,
+    "return_fix_live_bytes": 799285177,
+    "both_fixes_live_bytes": 713391304,
+    "before_string_bytes": 643959836,
+    "after_string_bytes": 343560366,
+    "same_output": true,
+    "census_receipt": "2026-09-09-owner-evidence/calls-heap-census-summary.json",
+    "test_selections": [
+      {
+        "passed": 32,
+        "receipt": "call-owner-regression-after.json"
+      },
+      {
+        "passed": 17,
+        "receipt": "dynamic-args-after.json"
+      },
+      {
+        "passed": 1,
+        "gc_backends": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "receipt": "dynamic-args-failure-gc.json"
+      }
+    ],
+    "counts_overlap": true,
+    "benchmark_compiler_includes_these_fixes": false
+  },
+  "latest_full_compiler_attempt": {
+    "source": "/Users/jiamo/my/pcc/build/gateway-calls-owner-stage1-v3-20260909/source-snapshot",
+    "output_dir": "/Users/jiamo/my/pcc/build/gateway-calls-owner-stage1-v3-20260909",
+    "elapsed_s": 277.4350929580396,
+    "peak_tree_rss_bytes": 4057038848,
+    "returncode": 1,
+    "status": "FAILED_NATIVE_DIRECT_SMOKE",
+    "error": "multi-codegen worker Bus error; wrapper reports PCC-PY-COMPILE-001 __init__",
+    "normal_mode_latest_tests": "NOT RUN: quota checkpoint reached",
+    "compiler_exists": true,
+    "compiler_sha256": "e258f906f35cdc535926fd20fa2a448fabfb38913cd44caa705d9709f70b8755"
+  },
+  "quota_checkpoint": {
+    "observed_at": "2026-09-09T13:59:53.054Z",
+    "remaining_percent": 10,
+    "stop_at_remaining_percent": 10,
+    "work_stopped": true,
+    "task_processes_remaining": 0,
+    "build_finished_during_stop_audit": true,
+    "user_review_required_before_continuing": true
+  },
+  "completion_meaning": "Evidence checkpoint completed; user performance/memory objectives remain open"
+}

@@ -1,0 +1,4 @@
+pcc stage1 build error: stage1 pcc1 function compile smoke failed rc=1: /bin/sh: line 9: 93758 Bus error: 10           ( PCC_PY_FRONTEND_JOBS=1 /Users/jiamo/my/pcc/build/gateway-calls-owner-stage1-v3-20260909/pcc1 --pcc-python-multi-codegen-worker /Users/jiamo/my/pcc/build/gateway-calls-owner-stage1-v3-20260909/private-state/tmp/pcc_py_frontend_workers_qt0qfc/worker_0.manifest )
+error: PCC-PY-COMPILE-001: [python-frontend] __init__
+  note: exception_type=Exception; backend=self; python_libpython=off; ir_scaffold=on
+

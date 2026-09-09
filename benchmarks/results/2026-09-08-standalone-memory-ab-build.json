@@ -1,0 +1,183 @@
+{
+  "complete": true,
+  "claim": "Two runtime members compiled from receipt-bound historical source with current frozen host pcc and PCC_PYTHON_IR_PASSES=off. Identical pre-pass IR and self emitter in both arms; remaining runtime members are prebuilt external-LLVM artifacts. Host CPython runs owned passes, emission and linking. Native standalone optimizer build remains unqualified.",
+  "input_manifest": {
+    "origin": "/private/tmp/pcc_owned_runtime_ab_v2/build-report.json",
+    "claim": "Two runtime members compiled from receipt-bound historical source with current frozen host pcc and PCC_PYTHON_IR_PASSES=off. Identical pre-pass IR and self emitter in both arms; remaining runtime members are prebuilt external-LLVM artifacts. Host CPython runs owned passes, emission and linking. Native standalone optimizer build remains unqualified.",
+    "files": {
+      "app-1.pco": "cd109d7d14d48f1a43d4e05523ab79bd33e423884c619a6c5f85b712b2c002e9",
+      "app-0.pco": "681b881861cc28f613ecdc8242b0f242ee19c4178dbe7f1e10293e6c26ba6fa5",
+      "libpy_runtime_pcc_py.a": "1092c06a9c3bc55ed7ba7dd589113414710b42834449563f25b85e8f3dbeffdd",
+      "py_list.py": "253c3d29beeaf0a8e053710cd5c68eeeccae50ade062383813467da44784e787",
+      "py_obj.py": "3719fe6ebb1adf1ad625f9b96100a104145767cb627a47f5a787fa0e0644c45b",
+      "py_list.ll": "5f2e8050daf1e6b613b0da146b8701cad088189a835aa2fca5e59d2d904df03d",
+      "py_obj.ll": "d6f78660a1a587d3cbc921222a2d11cfc912d702a53c64a4f0da227a237e5a6c"
+    },
+    "runtime_ir": {
+      "py_obj": {
+        "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/py_obj.ll",
+        "sha256": "d6f78660a1a587d3cbc921222a2d11cfc912d702a53c64a4f0da227a237e5a6c",
+        "source_sha256": "3719fe6ebb1adf1ad625f9b96100a104145767cb627a47f5a787fa0e0644c45b",
+        "pre_passes": "off",
+        "runtime_port_exports": true,
+        "implicit_gc_roots": false
+      },
+      "py_list": {
+        "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/py_list.ll",
+        "sha256": "5f2e8050daf1e6b613b0da146b8701cad088189a835aa2fca5e59d2d904df03d",
+        "source_sha256": "253c3d29beeaf0a8e053710cd5c68eeeccae50ade062383813467da44784e787",
+        "pre_passes": "off",
+        "runtime_port_exports": true,
+        "implicit_gc_roots": false
+      }
+    }
+  },
+  "passes": {
+    "control": "instsimplify,simplifycfg,inline-defined,instsimplify,simplifycfg,instcombine,dce",
+    "candidate": "mem2reg,sroa,instsimplify,simplifycfg,inline-defined,instsimplify,simplifycfg,instcombine,dce"
+  },
+  "modules": [
+    {
+      "arm": "control",
+      "module": "py_obj",
+      "before": {
+        "alloca": 178,
+        "load": 876,
+        "store": 370,
+        "phi": 127
+      },
+      "after": {
+        "alloca": 178,
+        "load": 829,
+        "store": 370,
+        "phi": 126
+      },
+      "input_sha256": "d6f78660a1a587d3cbc921222a2d11cfc912d702a53c64a4f0da227a237e5a6c",
+      "ir_sha256": "5528e9e0672e7ade4a4f16965b5d542456203dfa3ded57a6ca43e60c24bf0c0b",
+      "assembly_sha256": "0714d01d40573575cbf3ac6ca505e85889859fc75e779f5855e0844c3d0a4923",
+      "seconds": 0.657601291895844
+    },
+    {
+      "arm": "control",
+      "module": "py_list",
+      "before": {
+        "alloca": 608,
+        "load": 2371,
+        "store": 1112,
+        "phi": 83
+      },
+      "after": {
+        "alloca": 608,
+        "load": 2226,
+        "store": 1112,
+        "phi": 79
+      },
+      "input_sha256": "5f2e8050daf1e6b613b0da146b8701cad088189a835aa2fca5e59d2d904df03d",
+      "ir_sha256": "94efbf09ae5ba71509638a3dd2569061f6d7e8d7ddc30cf82b4d35ad91689830",
+      "assembly_sha256": "249ab2f6044001ee51ecf9bdb5a57c26c3294504ea67e540d680f0a46c97525b",
+      "seconds": 1.1455017919652164
+    },
+    {
+      "arm": "candidate",
+      "module": "py_obj",
+      "before": {
+        "alloca": 178,
+        "load": 876,
+        "store": 370,
+        "phi": 127
+      },
+      "after": {
+        "alloca": 7,
+        "load": 191,
+        "store": 107,
+        "phi": 210
+      },
+      "input_sha256": "d6f78660a1a587d3cbc921222a2d11cfc912d702a53c64a4f0da227a237e5a6c",
+      "ir_sha256": "1e4f198622af5bf55b402e3f69789215b2803511f3c094092585739614419716",
+      "assembly_sha256": "068afbb506c05faede276786247c094727ef6ffd48711509a5e0444592cbfd79",
+      "seconds": 0.669273916981183
+    },
+    {
+      "arm": "candidate",
+      "module": "py_list",
+      "before": {
+        "alloca": 608,
+        "load": 2371,
+        "store": 1112,
+        "phi": 83
+      },
+      "after": {
+        "alloca": 105,
+        "load": 271,
+        "store": 159,
+        "phi": 247
+      },
+      "input_sha256": "5f2e8050daf1e6b613b0da146b8701cad088189a835aa2fca5e59d2d904df03d",
+      "ir_sha256": "8762c733243db9438d7f6c53a3c1ff3220472bc85618e7a8ad4bb7773ac81e18",
+      "assembly_sha256": "b9ee7d48fb0acf1f0eca1d751e31e4804701af6e5b9d8ef24ed271ac7270dfe4",
+      "seconds": 1.0764714590040967
+    }
+  ],
+  "artifacts": {
+    "control": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/control",
+      "sha256": "616d76042127f5240c29da50b87900ef895dbcb8548d84b419305cffd7087e28",
+      "link_command": [
+        "/Users/jiamo/my/pcc-gateway/.venv/bin/python",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/candidate-source/scripts/pcc_link_macho.py",
+        "--out",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/control",
+        "--archive",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/libpy_runtime_pcc_py.a",
+        "--native-object",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/app-0.pco",
+        "--native-object",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/app-1.pco",
+        "--asm",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/control-py_obj.s",
+        "--asm",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/control-py_list.s"
+      ],
+      "smoke": {
+        "concurrency": 100,
+        "delay_ms": 0,
+        "elapsed_ms": 7.075999979861081,
+        "latency_max_ms": 1.5259999781847,
+        "latency_min_ms": 1.462999964132905,
+        "requests": 200,
+        "rounds": 2,
+        "warmup_requests": 200
+      }
+    },
+    "candidate": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/candidate",
+      "sha256": "e9a1436514684cf088fc63044e594323264a08c9d3eb67f6f4ee100160fa06c3",
+      "link_command": [
+        "/Users/jiamo/my/pcc-gateway/.venv/bin/python",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/candidate-source/scripts/pcc_link_macho.py",
+        "--out",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/candidate",
+        "--archive",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/libpy_runtime_pcc_py.a",
+        "--native-object",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/app-0.pco",
+        "--native-object",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-input/app-1.pco",
+        "--asm",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/candidate-py_obj.s",
+        "--asm",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-08-asyncio-challenge/runtime-valid-raw-ab/candidate-py_list.s"
+      ],
+      "smoke": {
+        "concurrency": 100,
+        "delay_ms": 0,
+        "elapsed_ms": 5.341000040061772,
+        "latency_max_ms": 1.306000049225986,
+        "latency_min_ms": 1.088000019080937,
+        "requests": 200,
+        "rounds": 2,
+        "warmup_requests": 200
+      }
+    }
+  }
+}

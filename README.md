@@ -21,8 +21,7 @@ pcc1 dashboard_app.py -o dashboard_app
 
 Use the shared `~/.local/bin/pcc1` through PATH. The compiler resolves
 `pcc_gateway/` from the checkout; `PCC_PACKAGE_SITE` is not needed here.
-Default pcc1 options are sufficient. The tested compiler candidate and
-installation qualification status are recorded in the [benchmark notes](benchmarks/README.md).
+Default pcc1 options are sufficient.
 
 The dashboard uses `TaskScope` to run two child operations concurrently,
 join their results, and cancel/drain children on failure. See
@@ -42,46 +41,41 @@ uv run pytest -q
 uv run pytest -q -x -m integration tests/test_native_examples.py
 ```
 
-The default suite passes **290 tests**. Native integration tests run separately;
+Native integration tests run separately;
 `PCC_TEST_PCC1=/path/to/pcc1` selects a candidate compiler.
 
-## Performance (2026-09-08)
+## Performance
 
-Apple M2 Max, macOS 26.5.1, Python 3.15.0rc1, self backend with the owned
-`mem2reg,sroa` IR pass tier and `PCC_GENERATOR_FIRST_ENTRY_INIT=1
-PCC_FAST_COMPLETED_CONTINUATIONS=1 PCC_DIRECT_GENERATOR_TASKS=1`. Median
-handler QPS over five repeats, one run, all arms measured together;
-compilation, startup and HTTP sockets excluded. Concurrency is the number of
-requests started per batch, and the batch finishes before the next begins.
+On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the latest optimized native
+runtime reaches **79,801 requests/s**, versus **76,504 for asyncio** — a
+**4.3% higher median in this run**.
 
-| Child wait (ms) | Concurrency | pcc QPS | pcc1 QPS | LLVM-O2 runtime QPS | asyncio QPS |
-|---:|---:|---:|---:|---:|---:|
-| 0 | 1 | 27,898 | 31,728 | 30,411 | 8,802 |
-| 0 | 10 | 39,587 | 45,762 | 41,592 | 50,544 |
-| 0 | 100 | 39,097 | 46,551 | 43,056 | 80,502 |
-| 100 | 1 | 10.0 | 10.0 | 10.0 | 9.9 |
-| 100 | 10 | 99.5 | 99.6 | 99.6 | 98.7 |
-| 100 | 100 | 972.3 | 977.5 | 974.2 | 976.8 |
+| Implementation | Median requests/s | Median peak RSS |
+|---|---:|---:|
+| pcc optimized native runtime | **79,801** | 102.8 MiB |
+| CPython asyncio | 76,504 | 34.9 MiB |
 
-`pcc1` is the native self-hosted compiler and is the fastest pcc arm, 19% ahead
-of the host compiler at concurrency 100.
+Measured at concurrency 100, zero child wait, 200,000 requests per repeat and
+seven rotating repeats. Each request runs two child tasks, joins them and
+validates its JSON result. This measures handler throughput on one carrier /
+event loop; HTTP sockets, compilation and startup are excluded.
+Peak RSS includes warmups and storage of the 200,000 latency measurements.
 
-The `LLVM-O2 runtime` column is not an LLVM backend. Every arm emits its code
-through the self backend; that column only replaces the owned IR pass tier with
-LLVM `default<O2>` over the same 170 runtime archive members, which is the only
-way to vary the optimizer without also varying the code generator. `pcc1` is
-8.1% ahead of it at concurrency 100, so the owned pass tier now beats LLVM O2
-on this runtime.
-
-Against asyncio, pcc is 3.2x to 3.6x faster at concurrency 1 and 1.73x slower
-at concurrency 100. Under a real child wait every arm lands within 0.3%,
-because the wait dominates. Peak RSS is 8.2 MiB against asyncio's 27.6 MiB.
+To reproduce, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
 
 ```bash
-PCC_GENERATOR_FIRST_ENTRY_INIT=1 PCC_FAST_COMPLETED_CONTINUATIONS=1 \
-PCC_DIRECT_GENERATOR_TASKS=1 uv run python benchmarks/compare.py \
-  --pcc1 /path/to/pcc1 --output benchmarks/results/my-comparison.json
+env -u LC_ALL uv run python benchmarks/reproduce.py \
+  --pcc-source ../pcc \
+  --runtime-archive ../pcc/pcc/py_runtime/libpy_runtime_pcc_py.a \
+  --output-dir benchmarks/build/reproduce
 ```
 
-[Receipts](benchmarks/results/) and [benchmark notes](benchmarks/README.md).
-Optimization is tracked in [pcc #188](https://github.com/allstoalls/pcc/issues/188).
+Use a fresh output directory for each run. The runner builds the runtime
+variants, checks GC0–4 behavior, and compares the optimized executable with
+asyncio under time, memory and process-lifetime limits.
+
+The optimized runtime configuration and detailed results are recorded in the
+[benchmark report](benchmarks/results/2026-09-09-owned-runtime-exact-cache-long.json).
+See [benchmark methods](benchmarks/README.md) for reproduction and
+[non-HTTP comparisons](benchmarks/results/2026-09-09-runtime-progress/non-http.json)
+for object, container and string workloads.

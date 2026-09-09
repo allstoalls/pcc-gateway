@@ -1,0 +1,8 @@
+{
+  "scope": "post2 snapshot plus final user-call return and argument-tuple ownership fixes; diagnostic drivers/probes excluded",
+  "source_root": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/calls-final-source",
+  "changed_files": {
+    "pcc/py_frontend/codegen/unary_call_lowering.py": "4c245305e8d20c27a4c4605271af494633e6a24045d2f0812dda0991fa28c3bf",
+    "pcc/py_frontend/codegen/call_object_lowering.py": "58e5565bdf56ecbeecf99f38fb5b3c6561e8fd1a5cfb94691c89f73381a1d91f"
+  }
+}

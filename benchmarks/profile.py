@@ -46,7 +46,9 @@ def main():
                 binary = args.binary.resolve()
                 report.update(binary=str(binary), binary_sha256=digest(binary))
                 target = subprocess.Popen([str(binary), *arguments], cwd=ROOT,
-                    env=environment, stdout=stdout, stderr=stderr, start_new_session=True)
+                    # Keep the outer watchdog's session while owning a group
+                    # that this profiler can terminate independently.
+                    env=environment, stdout=stdout, stderr=stderr, process_group=0)
                 try:
                     command = [sys.executable, str(core / "scripts/pcc_flamegraph.py"),
                         "cpu", str(target.pid), str(args.seconds), "--exact-pid",

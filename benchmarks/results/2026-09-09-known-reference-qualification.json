@@ -1,0 +1,567 @@
+{
+  "scope": "scoped native generator/object-reference optimization; live HTTP/HTTPS and self-host fixed point not qualified",
+  "compiler": {
+    "path": "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+    "sha256": "788acb37ebab17b5425105df268cdfc183b2f56837072cc141f5ed4224263001",
+    "source_manifest_sha256": "c30ea9eefe84e8c96307a793eaa8c193995e9cecb9d1e03904399534e462cceb",
+    "runtime_archive_sha256": "0dd5e14ab490b21f3fff5ec8e90373fc0e5b463c23164a6be51ebff4dfbbd0ca"
+  },
+  "application_runtime": {
+    "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_waiter_fixed/libpy_runtime_pcc_py.a",
+    "sha256": "3aa7eb02a23e4c2e426a9c96410910c0bf634d0c95e5c645d50b27a0d91a18ac",
+    "source_delta_from_compiler_bundle": "py_threading._waiter_clear raw initialization fix",
+    "provenance": "68787f5d4c2414ba815133daa5aee35f257abb5fcf1029201779427f5e54c48e"
+  },
+  "default_promotion": false,
+  "installed_compiler_replaced": false,
+  "performance_flags": [
+    "PCC_KNOWN_OBJECT_REFS=1",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT=1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS=1",
+    "PCC_DIRECT_GENERATOR_TASKS=1"
+  ],
+  "native_tests": "2026-09-09-compact-native-gates.json (19 passed)",
+  "waiter_pool_tests": "2026-09-09-waiter-initialization-gates.json (11 passed)",
+  "native_ab": "2026-09-09-compact-native-ab.json",
+  "evidence": {
+    "compact-full-focused": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-full-focused.json",
+      "sha256": "d10c3cd80e6f7f29967e18cb6261b6c9cee55140ca1a8e003f1aff177eb6c148",
+      "result": {
+        "artifacts": {
+          "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-full-focused.samples",
+          "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-full-focused.stderr",
+          "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-full-focused.stdout"
+        },
+        "command": [
+          "env",
+          "PCC_RUNTIME_ARCHIVE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_compact_full/libpy_runtime_pcc_py.a",
+          "uv",
+          "run",
+          "pytest",
+          "tests/python/test_known_object_refcounts.py",
+          "-x",
+          "-n0",
+          "-vv",
+          "--tb=short"
+        ],
+        "command_lookup_failure_count": 0,
+        "completed_at_utc": "2026-09-09T03:29:06.602735+00:00",
+        "cwd": "/Users/jiamo/my/pcc",
+        "darwin_preflight_reserve_bytes": 0,
+        "elapsed_s": 11.365231708041392,
+        "environment": {
+          "HOME": "/Users/jiamo",
+          "LANG": "C.UTF-8",
+          "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin",
+          "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+        },
+        "interval_s": 0.25,
+        "known_process_count": 33,
+        "largest_process_observed": {
+          "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/scripts/pcc_link_macho.py --out /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pytest-of-jiamo/pytest-1410/test_known_object_cleanup_gc_b0/known_objects.tmp --previous-output /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pytest-of-jiamo/pytest-1410/test_known_object_cleanup_gc_b0/known_objects --asm /var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc_py_self_p19zwsxz/self_backend.s --archive /Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_compact_full/libpy_runtime_pcc_py.a",
+          "elapsed_s": 3.727142,
+          "manifest_paths": [],
+          "pid": 43023,
+          "ppid": 42522,
+          "rss_bytes": 137265152
+        },
+        "max_tree_rss_bytes": 4294967296,
+        "peak_process_count": 6,
+        "peak_tree_rss_bytes": 262258688,
+        "process_table_retry_count": 0,
+        "process_table_timeouts_s": [
+          1.0
+        ],
+        "returncode": 0,
+        "sample_count": 41,
+        "schema": "pcc.process_tree_sample.v1",
+        "started_at_utc": "2026-09-09T03:28:55.237350+00:00",
+        "status": "COMPLETE",
+        "terminal_processes": [
+          {
+            "command": "uv run pytest tests/python/test_known_object_refcounts.py -x -n0 -vv --tb=short",
+            "manifest_paths": [],
+            "pid": 42520,
+            "ppid": 42519,
+            "rss_bytes": 0
+          }
+        ],
+        "timeout_s": 120.0
+      }
+    },
+    "compact-full-mirrors": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-full-mirrors.json",
+      "sha256": "8b9e8c0b2b821d488bf5e7b585c92487c20219a874ad0aeadc5aeab60cd1092c",
+      "result": {
+        "scope": "C and pcc-Python refcount module differential over the corresponding complete C and pcc-Python runtimes; external C harness",
+        "runs": [
+          {
+            "kind": "py",
+            "gc_backend": 0,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 1,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 2,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 3,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 4,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 0,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 1,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 2,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 3,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 4,
+            "returncode": 0,
+            "stdout": "known-ref-checks-ok\n",
+            "stderr": ""
+          }
+        ],
+        "complete": true
+      }
+    },
+    "compact-full-frame-mirrors": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-full-frame-mirrors.json",
+      "sha256": "8f5ab6dc455233de1dbce2e70dd96e7728dc3b74762c6aac021b6bea9a3a6e8d",
+      "result": {
+        "scope": "C and pcc-Python refcount module differential over the corresponding complete C and pcc-Python runtimes; external C harness",
+        "runs": [
+          {
+            "kind": "py",
+            "gc_backend": 0,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 1,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 2,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 3,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "py",
+            "gc_backend": 4,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 0,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 1,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 2,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 3,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          },
+          {
+            "kind": "c",
+            "gc_backend": 4,
+            "returncode": 0,
+            "stdout": "known-frame-checks-ok\n",
+            "stderr": ""
+          }
+        ],
+        "complete": true
+      }
+    },
+    "compact-qualification": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-qualification.json",
+      "sha256": "8225da9d8de10a58d1d95c836c4d552cfb2757cbb3bbc67010d62d78a1e45fb2",
+      "result": {
+        "complete": true,
+        "compiler_sha256": "788acb37ebab17b5425105df268cdfc183b2f56837072cc141f5ed4224263001",
+        "archive_sha256": "0dd5e14ab490b21f3fff5ec8e90373fc0e5b463c23164a6be51ebff4dfbbd0ca",
+        "steps": [
+          {
+            "name": "compact-full-mirrors-run",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/test_compact_full_mirrors.py"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-full-frames-run",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/test_compact_full_frames.py"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "verification-control-build",
+            "command": [
+              "/usr/bin/clang",
+              "-I/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/source-snapshot/pcc/py_runtime/include",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verification_control.c",
+              "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/runtime-bundle/libpy_runtime_pcc_py.a",
+              "-pthread",
+              "-o",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verification-control"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "verification-control-off",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verification-control"
+            ],
+            "returncode": 9
+          },
+          {
+            "name": "verification-control-on",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verify_counter.py",
+              "verification-control",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verification-control"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-compiler-verified",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verify_counter.py",
+              "compact-compiler-verified",
+              "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+              "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+              "-o",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verified-benchmark"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-gateway-verified",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verify_counter.py",
+              "compact-gateway-verified",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verified-benchmark",
+              "100",
+              "0",
+              "200",
+              "--summary"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-set-build",
+            "command": [
+              "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/set_cleanup_probe.py",
+              "-o",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/set-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-set-verified",
+            "command": [
+              "/Users/jiamo/my/pcc/.venv/bin/python",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verify_counter.py",
+              "compact-set-verified",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/set-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-build",
+            "command": [
+              "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+              "/Users/jiamo/my/pcc-gateway/tests/fixtures/gateway/structured_scope_app.py",
+              "-o",
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-gc0",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-gc1",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-gc2",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-gc3",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          },
+          {
+            "name": "compact-cleanup-gc4",
+            "command": [
+              "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/structured-cleanup"
+            ],
+            "returncode": 0
+          }
+        ]
+      }
+    },
+    "compact-compiler-verified-counter": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-compiler-verified-counter.json",
+      "sha256": "c4ea56f9c4a8fa3c6c2a8f4ac13dfbe293f5f8bd46e9de10df8b8ae3f39545b2",
+      "result": {
+        "binary": "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+        "binary_sha256": "788acb37ebab17b5425105df268cdfc183b2f56837072cc141f5ed4224263001",
+        "counter_symbol_address": "000000010eb122b0",
+        "command": [
+          "/Users/jiamo/my/pcc/build/gateway-compact-refs-stage1-full-20260909/pcc1",
+          "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+          "-o",
+          "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verified-benchmark"
+        ],
+        "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+        "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+        "returncode": 0,
+        "process_counters": [
+          {
+            "pid": 82342,
+            "unmanaged_refcount_ops": 0
+          }
+        ],
+        "total_unmanaged_refcount_ops": 0
+      }
+    },
+    "compact-gateway-verified-counter": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-gateway-verified-counter.json",
+      "sha256": "0c29b5e5f890b2fb5df2eb4078d10bfc06ccc5ee8b787b9946815d9eb25dac22",
+      "result": {
+        "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verified-benchmark",
+        "binary_sha256": "87480ce9025f93b24b35c04de6610b1c689e79074c83d93e3ce512a681b01f86",
+        "counter_symbol_address": "000000010020b400",
+        "command": [
+          "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/verified-benchmark",
+          "100",
+          "0",
+          "200",
+          "--summary"
+        ],
+        "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+        "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+        "returncode": 0,
+        "process_counters": [
+          {
+            "pid": 82649,
+            "unmanaged_refcount_ops": 0
+          }
+        ],
+        "total_unmanaged_refcount_ops": 0
+      }
+    },
+    "compact-set-verified-counter": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/compact-set-verified-counter.json",
+      "sha256": "1c7337d91571c75bf0652e7a8acb4d6485d000b3e14daad17136d93ef792e799",
+      "result": {
+        "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/set-cleanup",
+        "binary_sha256": "ac0fbac7fa58c0c6f8b6b477b545cfd77d6e4ae6c6ce90a58b7f11ab8fa17a56",
+        "counter_symbol_address": "00000001001b9030",
+        "command": [
+          "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/set-cleanup"
+        ],
+        "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+        "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+        "returncode": 0,
+        "process_counters": [
+          {
+            "pid": 82826,
+            "unmanaged_refcount_ops": 0
+          }
+        ],
+        "total_unmanaged_refcount_ops": 0
+      }
+    },
+    "waiter-fixed-http-verified-counter": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/waiter-fixed-http-verified-counter.json",
+      "sha256": "0f32023b8355fa5015d61d1ea406c58408fbd40959f1296b9826c2076a025af0",
+      "result": {
+        "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http-waiter-fixed",
+        "binary_sha256": "d9b6d332d97b960fa9e548c9d0ec6609c8c7e6e295764954691636b8818e5d9d",
+        "counter_symbol_address": "00000001010bdb00",
+        "command": [
+          "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/local-http-waiter-fixed"
+        ],
+        "observer_sha256": "0e7573539a336c63d1622e4949951958a06c825db3757b568b51639268a9f578",
+        "scope": "verification enabled before main plus exit-counter diagnostic via external observer dylib; only the exact named native image is observed",
+        "returncode": 0,
+        "process_counters": [
+          {
+            "pid": 10707,
+            "unmanaged_refcount_ops": 0
+          }
+        ],
+        "total_unmanaged_refcount_ops": 0
+      }
+    },
+    "waiter-alias-gate": {
+      "path": "benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.json",
+      "sha256": "a4b0569237b99f0f9a30730dac81dac217682f1780fb2744f64bfbbc422f8163",
+      "result": {
+        "artifacts": {
+          "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.samples",
+          "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.stderr",
+          "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/waiter-alias-gate.stdout"
+        },
+        "command": [
+          "env",
+          "PCC_RUNTIME_ARCHIVE=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/py_runtime_waiter_fixed/libpy_runtime_pcc_py.a",
+          "uv",
+          "run",
+          "pytest",
+          "tests/python/test_waiter_raw_initialization.py",
+          "-x",
+          "-n0",
+          "-vv",
+          "--tb=short"
+        ],
+        "command_lookup_failure_count": 0,
+        "completed_at_utc": "2026-09-09T03:52:03.246617+00:00",
+        "cwd": "/Users/jiamo/my/pcc",
+        "darwin_preflight_reserve_bytes": 0,
+        "elapsed_s": 1.4798330420162529,
+        "environment": {
+          "HOME": "/Users/jiamo",
+          "LANG": "C.UTF-8",
+          "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin",
+          "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+        },
+        "interval_s": 0.25,
+        "known_process_count": 14,
+        "largest_process_observed": {
+          "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/.venv/bin/pytest tests/python/test_waiter_raw_initialization.py -x -n0 -vv --tb=short",
+          "elapsed_s": 1.169237,
+          "manifest_paths": [],
+          "pid": 2094,
+          "ppid": 2092,
+          "rss_bytes": 84099072
+        },
+        "max_tree_rss_bytes": 2147483648,
+        "peak_process_count": 9,
+        "peak_tree_rss_bytes": 160890880,
+        "process_table_retry_count": 0,
+        "process_table_timeouts_s": [
+          1.0
+        ],
+        "returncode": 0,
+        "sample_count": 6,
+        "schema": "pcc.process_tree_sample.v1",
+        "started_at_utc": "2026-09-09T03:52:01.766675+00:00",
+        "status": "COMPLETE",
+        "terminal_processes": [
+          {
+            "command": "uv run pytest tests/python/test_waiter_raw_initialization.py -x -n0 -vv --tb=short",
+            "manifest_paths": [],
+            "pid": 2092,
+            "ppid": 2091,
+            "rss_bytes": 0
+          }
+        ],
+        "timeout_s": 60.0
+      }
+    }
+  },
+  "gateway_default_tests": "2026-09-09-compact-gateway-tests.json (294 passed, 20 deselected)",
+  "final_comparison": "2026-09-09-compact-final-three-way.json (90 completed runs)",
+  "http_local_gc_gate": "2026-09-09-waiter-fixed-http-run.json (GC0\u20134 passed; verification counter zero)"
+}

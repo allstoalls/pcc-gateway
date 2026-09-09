@@ -7,9 +7,20 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
+| [Latest cache long comparison](2026-09-09-owned-runtime-exact-cache-long.json) | 21 runs, 200k requests/repeat: owned runtime 77,958, same plus cache 79,801, asyncio 76,504 QPS. Cache wins 4/7 paired asyncio comparisons; paired median ratio 1.0018×, so no stable-lead claim. |
+| [Non-HTTP operation comparison](2026-09-09-runtime-progress/non-http.json) | 192 runs, eight unchanged core workloads, N/2N startup subtraction, CPython-matching outputs. Most object/container/string instruction counts fall 21–28% against the original runtime; wall-time gains are workload-dependent. |
+| [Corrected-runtime CFG reproduction](2026-09-09-current-owned-cfg-runtime.json) | 35 runs: 55,233 -> 77,070 QPS, asyncio 84,288. Each runtime arm passes scoped GC0–4 handler, failure-cleanup and ownership checks. |
+| [Earlier compiler comparison](2026-09-09-owner-final-three-way.json) / [table](2026-09-09-owner-final-three-way.md) | 90 validated normal-mode runs: C100 host pcc 56,563, pcc1 56,443, asyncio 89,947 QPS. C1/C10 lead; C100 remains 37.2% behind. Separate native-direct compiler smoke fails. |
+| [Owner checkpoint](2026-09-09-owner-checkpoint.json) | Native tuple/relocation/cleanup GC0–4 pass; earlier full Stage1 4.20 GB, latest text route memory limit 4.86 GB, direct-built candidate 3.98 GB with failed native-direct smoke. Native full runtime-IR optimizer completes in 51.3 s but retains 1.10 GB live heap. |
+| [Owned CFG runtime experiment](2026-09-09-owned-cfg-runtime-reference.json) | 42 runs: control 55,894 -> owned second round 77,154 QPS (+38.0%); asyncio 82,354; external LLVM-O2 reference 84,960. Earlier runtime, 12 combined modules, host-executed owned passes and external LLVM emission; no whole-runtime/default qualification. |
+| [2026-09-09 final three-way comparison](2026-09-09-final-three-way.json) / [table](2026-09-09-final-three-way.md) | 90 validated runs, same current source/runtime. Zero-wait/C100: host pcc 48,398, pcc1 48,004, asyncio 88,736 QPS. High-concurrency parity remains unmet. |
+| [2026-09-09 native qualification](2026-09-09-native-memory-qualification.json) | 63 pcc1-compiled ownership cases passed; native HTTP/dashboard/structured-failure examples passed. HTTP compile: pcc1 187.1 s / 2.35 GB, host pcc 81.5 s / 1.76 GB. Isolated Stage1, externally emitted runtime, no fixed-point or live-network claim. |
+| [2026-09-09 current native profile](2026-09-09-current-native-profile.json) / [stacks](2026-09-09-current-native-profile.folded) | Complete 1M-request diagnostic, 3,842 samples. Disjoint provenance/refcount/barrier/graph-lock leaf groups total 54.4%; profiled QPS is not used as a comparative speed result. |
+| [2026-09-09 string-memory follow-up](2026-09-09-string-memory-followup.json) | Same 36.26 MB IR and pinned runtime: 1,214.5 → 815.8 MB peak RSS, 488.2 → 275.3 MB live strings. Last parser step: 62.30 → 52.15 s, identical output. Standalone native optimizer; full compiler/gateway qualification is separate. |
+| [2026-09-08 standalone memory-tier A/B](2026-09-08-standalone-memory-ab.md) / [raw](2026-09-08-standalone-memory-ab.json) | Complete 90-run, two-module diagnostic: 24,531.3 → 31,079.2 QPS (+26.7%), instructions/request -11.3%; same-run asyncio 66,105.5. Host executes owned passes/self emission/linking, other runtime members prebuilt with external LLVM. Fixes a standalone dispatcher/benchmark manifest gap; normal frontend already selected memory promotion. Native optimizer build times out; no production pcc1 or five-GC qualification. |
 | [Owned runtime emission pilot](2026-09-07-owned-runtime-emission-pilot.json) / [notes and reproduction](2026-09-07-owned-runtime-emission-pilot.md) | Complete 28-run diagnostic, same application objects. Self-control 19,763.3 → owned passes 22,185.0 QPS (+12.3%); historical LLVM-runtime reference 57,777.4, same-run asyncio 86,080.5. Partial runtime emission experiment, not whole-runtime independence or a new pcc/pcc1 frontend comparison. |
 | [Optimized-runtime pcc1 profile](2026-09-07-runtime-o2-profile.json) / [stacks](2026-09-07-runtime-o2-profile.folded) | Completed 1M-request diagnostic, 2,302 CPU samples. Object-start validation remains the largest leaf (368 samples); profiled QPS is not comparative throughput evidence. |
-| [2026-09-07-runtime-o2-three-way.json](2026-09-07-runtime-o2-three-way.json) / [table](2026-09-07-runtime-o2-three-way.md) | **Current three-way comparison**, normal optimized runtime and pcc1 2b08f3a7aac1; 90 valid runs. Zero-wait/C100: 57,469.9 / 57,662.8 / 85,437.0 QPS; pcc1 gap 1.48×. |
+| [2026-09-07-runtime-o2-three-way.json](2026-09-07-runtime-o2-three-way.json) / [table](2026-09-07-runtime-o2-three-way.md) | Earlier three-way comparison, normal optimized runtime and pcc1 2b08f3a7aac1; 90 valid runs. Zero-wait/C100: 57,469.9 / 57,662.8 / 85,437.0 QPS; pcc1 gap 1.48×. |
 | [Three-module runtime O2](2026-09-07-runtime-ir-o2-ab.json) / [build receipt](2026-09-07-runtime-ir-o2-build.json) | Complete, 42 runs. Same runtime source, only py_obj/py_list/py_gen IR optimized: 49,193.0 → 55,135.9 QPS (+12.1%), instructions/request -7.1%. |
 | [Five-module runtime O2](2026-09-07-runtime-ir-o2-five-ab.json) / [build receipt](2026-09-07-runtime-ir-o2-five-build.json) | Complete, 42 runs. Add GC backend/index-table optimization: 55,401.7 → 59,032.4 QPS (+6.6%), CPU/request 18 → 17 µs; same-run asyncio 88,549.8. Normal-build/pcc1 qualification follows separately. |
 | [Application Clang O2](2026-09-07-llvm-o2-application-ab.json) | Complete, 42 runs: default LLVM application emission 51,647.0 / explicit -O2 51,338.8 QPS. No gain. This holds the runtime unchanged. |
@@ -40,8 +51,26 @@ Machine load and compiler/runtime identities differ between reports.
 | [2026-09-07-frame-runtime-frozen-control-v2.json](2026-09-07-frame-runtime-frozen-control-v2.json) | Complete frozen-compiler retry under variable load. Bulk frame initialization disabled in both arms; zero-wait median 19,678.2 → 18,899.5 QPS with overlapping ranges. All 20 runs retained; its summary contains only zero-wait rows. |
 | [2026-09-07-frame-init-frozen-counters.json](2026-09-07-frame-init-frozen-counters.json) | Bulk-frame diagnostic: 15 runs, 20,000 requests each, zero wait, summary output, same-run asyncio witness. Instructions/request fall 3.7%, user CPU/request unchanged, QPS ranges overlap. Bulk frame initialization remains disabled by default. |
 
-The latest three-way report measures both host pcc and native pcc1 with the
-optimized runtime. Earlier runtime A/B experiments use host pcc only. The
+The earlier [proven-reference report](2026-09-09-compact-final-three-way.json)
+contains 90 validated runs with the proven-reference candidate and corrected
+waiter initialization. At zero wait pcc1 reaches 36,013 / 50,244 / 52,213 QPS
+at C1 / C10 / C100, versus asyncio 8,509 / 48,693 / 83,211. C10 leads by
+3.2% in this run; C100 remains behind. The [native on/off A/B](2026-09-09-compact-native-ab.json)
+is a separate 21-run comparison (+15.1% QPS, -11.5% instructions at C100).
+See [scoped qualification](2026-09-09-known-reference-qualification.json),
+[waiter defect and fix](2026-09-09-waiter-initialization-audit.json),
+[updated profile](2026-09-09-compact-native-profile.json), and
+[294 gateway tests](2026-09-09-compact-gateway-tests.json).
+
+The initial known-frame/compact host experiments used incremental archives
+with mixed compiler checksums and remain explicitly experimental. Their
+Stage1 rejection is retained in `2026-09-09-compact-stage1.json`; the coherent
+rebuild succeeds in `2026-09-09-compact-full-stage1.json`. The unchecked
+refcount ceiling is diagnostic only and is not an accepted implementation.
+
+The three-way reports measure host pcc and native pcc1 with a common application
+runtime. The compact native A/B also uses native pcc1; earlier runtime A/B
+experiments use host pcc. The
 remaining high-concurrency throughput gap is tracked in
 [pcc #188](https://github.com/allstoalls/pcc/issues/188). These reports measure
 handler throughput, not HTTP socket QPS.

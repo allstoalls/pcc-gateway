@@ -1,0 +1,4 @@
+{
+  "matches": [],
+  "scope": "owned artifact/build command paths, excluding audit shell and current reader"
+}

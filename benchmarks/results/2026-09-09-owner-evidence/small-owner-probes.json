@@ -1,0 +1,61 @@
+{
+  "scope": "Warmed emitted-native small reproducers, same runtime; no whole-workload gain inferred",
+  "runs": {
+    "instlines-probe": {
+      "returncode": 0,
+      "stdout": "inst_lines 2 0\nraw_drop 1 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/instlines-probe-run.json",
+      "raw_receipt_sha256": "19bba5994bef21351efb5ee33520b61cd4f894fd87c07b6f92f6b708dd6fc96a"
+    },
+    "cfg-probe": {
+      "returncode": 0,
+      "stdout": "chunks 1 0\nblocks 2 0\nsimplify 67 682900\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/cfg-probe-run.json",
+      "raw_receipt_sha256": "64e52564f09ec0831d2ec4bb19169a698c8dcbaf90f03903e19da1c41bdf5f64"
+    },
+    "cfg-probe2": {
+      "returncode": 0,
+      "stdout": "cleanup 90 158500\nattrs 1 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/cfg-probe2-run.json",
+      "raw_receipt_sha256": "608f8e61c90a9d0f53f0e1d2dbda86baf5cb4894a8a86b3a9953237128545cea"
+    },
+    "cfg-probe3": {
+      "returncode": 0,
+      "stdout": "_rewrite_simple_conditional_blocks 2 112628\n_drop_unreachable_blocks 2 65800\n_prune_invalid_phi_incomings 2 360812\n_merge_linear_successors 1 243100\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/cfg-probe3-run.json",
+      "raw_receipt_sha256": "95f37b282e73775ebecd00d1e1ae2e99bb6e23a43e77420bf98cc0c661a7c38f"
+    },
+    "cfg-probe4": {
+      "returncode": 0,
+      "stdout": "targets 1 461912\ncounts 2 329000\nphi True 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/cfg-probe4-run.json",
+      "raw_receipt_sha256": "bd0c60b20f9d48928951fe415403c1615418b2b38810326e618b057d6e5e70aa"
+    },
+    "cfg-alias-probe": {
+      "returncode": 0,
+      "stdout": "targets 1 461912\ncounts 2 329000\nphi True 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/cfg-alias-probe-run.json",
+      "raw_receipt_sha256": "c81d0ab5b45305894ad42e9df281aa49fe5c2641cc510b9892ca1e0770252307"
+    },
+    "call-owner-probe": {
+      "returncode": 0,
+      "stdout": "targets 1 55000\ncounts 2 105000\nphi True 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/call-owner-probe-run.json",
+      "raw_receipt_sha256": "a09865ed9d9c54553d6b542479e01da7d12c84299abb0128e3cc7202b83bab5c"
+    },
+    "regex-return-probe": {
+      "returncode": 0,
+      "stdout": "0 0\n1 0\n2 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/regex-return-probe-run.json",
+      "raw_receipt_sha256": "a48ef3b27b8172bd6f934dd2ec85cbd489331afc17c498ecb74251371f2f1602"
+    },
+    "regex-internal-probe": {
+      "returncode": 0,
+      "stdout": "0 0\n1 0\n2 0\n",
+      "raw_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-quota20-tuple/regex-internal-probe-run.json",
+      "raw_receipt_sha256": "5f03c0559170da9044e6ff0bcbcfa8c6a743a00cdffac9b880c48f0dc37e36c3"
+    }
+  },
+  "denied": "Additional re alias emitter owner marker did not reduce retention and was not applied to core.",
+  "accepted": "Preserving the existing owned user-function return contract through _call_user root reload reduces branch-target probe growth 461912 -> 55000 bytes/1000 calls."
+}

@@ -1,12 +1,12 @@
 # Design: pcc virtual-thread gateway and HTTP framework
 
-Status: reference study and an implementation-only source pass are complete.
-Focused/current-pcc1/GC/network gates have not run, so no gateway capability or
-nginx-replacement claim exists yet. See the unverified checkpoint in
-[`docs/goal/evidence/2026-08-13-vthread-gateway-source-implementation.md`](../goal/evidence/2026-08-13-vthread-gateway-source-implementation.md).
+Historical design record from the 2026-08-13 source review. Implementation
+status and unrun-gate statements below describe that review, not today's
+checkout. Start with `pcc_gateway/`, `tests/` and matching compiler/runtime
+receipts for current capability; use this document for design context.
 
 Reference pins and license labels:
-[`docs/refs_docs/gateway-research/README.md`](../refs_docs/gateway-research/README.md).
+[`gateway-research/README.md`](gateway-research/README.md).
 
 ## Decision
 

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "recovered",
+    "compile_returncode": 0,
+    "compile_stdout": "",
+    "compile_stderr": "pcc link: dropped unwind metadata (no __unwind_info synthesis): __LD,__compact_unwind, __TEXT,__eh_frame\n",
+    "returncode": 0,
+    "stdout": "42\n",
+    "stderr": ""
+  },
+  {
+    "name": "direct",
+    "compile_returncode": 0,
+    "compile_stdout": "",
+    "compile_stderr": "",
+    "returncode": 0,
+    "stdout": "42\n",
+    "stderr": ""
+  }
+]

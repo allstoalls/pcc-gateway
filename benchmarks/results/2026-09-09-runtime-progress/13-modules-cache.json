@@ -1,0 +1,746 @@
+{
+  "schema": "pcc-gateway.combined-runtime.v1",
+  "complete": true,
+  "scope": "host-owned passes; external LLVM merge and O0 runtime emission; self application emission/linking",
+  "pcc_source": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/address-source",
+  "runtime_archive": {
+    "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/libpy_runtime_pcc_py.a",
+    "sha256": "c4a3223df7810680ec4628455f2d02bc505fd8c387937931740a4ddc2058a128"
+  },
+  "llvm_version": [
+    20,
+    1,
+    8
+  ],
+  "script_sha256": "8daa1090550aa7d2e1e7d4ef5294d5310cc9f31802fdc3c1fe949f843fa5852f",
+  "environment": {
+    "PCC_SOURCE_ROOT": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/address-source",
+    "PCC_REPO_ROOT": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/address-source",
+    "PCC_RUNTIME_ARCHIVE": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/libpy_runtime_pcc_py.a",
+    "PCC_RUNTIME_CC": "/usr/bin/false",
+    "PCC_GC_BACKEND": "0",
+    "PCC_KNOWN_OBJECT_REFS": "1",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT": "1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS": "1",
+    "PCC_DIRECT_GENERATOR_TASKS": "1",
+    "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "1",
+    "PCC_PY_FRONTEND_JOBS": "4",
+    "PCC_SELF_BACKEND_JOBS": "4"
+  },
+  "runtime_ir": {
+    "py_obj": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_obj.ll",
+      "sha256": "a211824d006052e9d158ecac68a8dfc3d98adf756b0d694626e32a24e0787823"
+    },
+    "py_gen": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_gen.ll",
+      "sha256": "5e8df55f90dff9def7d7dfa7cdf08f2a5bddc3504316ae84b1731eebba8c53cd"
+    },
+    "py_coroutine": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_coroutine.ll",
+      "sha256": "47a4ead7383cc6831543a31e14987ab105e01c44fffbafe5355a40833b680867"
+    },
+    "py_virtual_thread_runtime": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_virtual_thread_runtime.ll",
+      "sha256": "0605436e5092cb5ae94f8f4895e130461d9b1390d3090b55d1693c2d4e083417"
+    },
+    "py_gc_backend": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_gc_backend.ll",
+      "sha256": "6d3061f6d2f8932c6e917b6f83a94e4e6c21af6725c3718da6088474b33e6938"
+    },
+    "py_list": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_list.ll",
+      "sha256": "5007bc188d1f4c3c2e00a4812d43ecec3ea2519a43de6b5b2ee77c0db5f23838"
+    },
+    "py_dict": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_dict.ll",
+      "sha256": "e0ea28b8ff213d5428876399a6d8caad4d1ed0c9f5467b6a3d40fda7b68518ec"
+    },
+    "py_class": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_class.ll",
+      "sha256": "9751a7fe04c66fd9e0939cf337ca40ad5ed4e86347c5b7797c6f70f66b0913bd"
+    },
+    "py_obj_dealloc": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/py_obj_dealloc.ll",
+      "sha256": "10636eacb9c0685a6688d7f0f576a5ff717866c3340553c7474e61d7efe8a68d"
+    },
+    "freestanding_gc_index_table": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/freestanding_gc_index_table.ll",
+      "sha256": "e591e7429a7102677716c4343ae5aadd102e94264df9bad370a3ba04deb1dc62"
+    },
+    "freestanding_runtime_high_substrate": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/freestanding_runtime_high_substrate.ll",
+      "sha256": "3cab5768b450b8e8070b9e3fdd9fa7c4b113c9a0e76a8bc89322d6b7b4324888"
+    },
+    "freestanding_thread_kernel": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/freestanding_thread_kernel.ll",
+      "sha256": "c0688faa03be00e9754123245f9b575ed764c7b6160fb1086300730d6a6ed77d"
+    },
+    "freestanding_allocator": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/py_runtime_exact_start/build_py/freestanding_allocator.ll",
+      "sha256": "7468148d602a83f157b8d4d7365617fefaf68205c2bdec83a7e17657c6cf2a7c"
+    }
+  },
+  "passes": [
+    {
+      "round": 1,
+      "name": "inline-defined",
+      "changed": true,
+      "seconds": 2.595003291964531,
+      "input_bytes": 6404379,
+      "output_bytes": 9826415,
+      "sha256": "3d69b8848e85334b6df4961474e8c54a402ec771b29480471d59b6070c4f2dc0"
+    },
+    {
+      "round": 1,
+      "name": "instcombine",
+      "changed": true,
+      "seconds": 0.7959839999675751,
+      "input_bytes": 9826415,
+      "output_bytes": 9512224,
+      "sha256": "25426d2e38d64caff1540ac79ed08a1de80c901b1ce96b305982981748d87753"
+    },
+    {
+      "round": 1,
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 1.973695916007273,
+      "input_bytes": 9512224,
+      "output_bytes": 7572255,
+      "sha256": "f1ef766278acc4a16a35c3732cebd11796a639def6539f8158b454ec802be1c4"
+    },
+    {
+      "round": 1,
+      "name": "dce",
+      "changed": true,
+      "seconds": 0.7409934169845656,
+      "input_bytes": 7572255,
+      "output_bytes": 7558827,
+      "sha256": "2ae689d23ca68867df3bc31e9cbf4f376d0f9192587b3856948a46ad6c681670"
+    },
+    {
+      "round": 2,
+      "name": "inline-defined",
+      "changed": true,
+      "seconds": 2.218639833969064,
+      "input_bytes": 7558827,
+      "output_bytes": 9538323,
+      "sha256": "5ed5b604071abf9472f414963a70ebd0a850acd22b650a0bd85e389de74241f5"
+    },
+    {
+      "round": 2,
+      "name": "instcombine",
+      "changed": false,
+      "seconds": 0.40280970896128565,
+      "input_bytes": 9538323,
+      "output_bytes": 9538323,
+      "sha256": "5ed5b604071abf9472f414963a70ebd0a850acd22b650a0bd85e389de74241f5"
+    },
+    {
+      "round": 2,
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 1.4713726670015603,
+      "input_bytes": 9538323,
+      "output_bytes": 9373379,
+      "sha256": "9125ab85e2a3c81a7f1363c5d7ae97a4a15b7f0aa0506881f791693dc0da76a5"
+    },
+    {
+      "round": 2,
+      "name": "dce",
+      "changed": true,
+      "seconds": 0.6308152920100838,
+      "input_bytes": 9373379,
+      "output_bytes": 9369494,
+      "sha256": "250ff41e597963578f5dc7884d5221c551eb103c67ba97f6e71b193c3b2e8f0d"
+    }
+  ],
+  "programs": {
+    "benchmark": {
+      "source": "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+      "sha256": "e4bbb90b0a9a4212b6dc3e9bcddb65d568e43f9d918c2e9e133886ebb44c8cb5",
+      "binaries": {
+        "baseline": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-baseline",
+          "sha256": "8fdf2eb75fc4db8139220b67bbedadd8fdb8c1954e1b9a79d8122d72b1b76ed9"
+        },
+        "merged_o0": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-merged_o0",
+          "sha256": "fbdf44363c0b04a979fcbfc7627b4c15dd00694fe40ac7419e5d70aa9c123920"
+        },
+        "owned_round1": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round1",
+          "sha256": "8954b41adacb675dac71ba23003c814f9627beffb78ee2efc09e97de27dbabf4"
+        },
+        "owned_round2": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2",
+          "sha256": "943514743b49cf244624ff403afe8045ae5bd8a38d0faa9679ff96e96ecbfcb2"
+        }
+      }
+    },
+    "cleanup": {
+      "source": "/Users/jiamo/my/pcc-gateway/tests/fixtures/gateway/structured_scope_app.py",
+      "sha256": "0052471cd1d007e3c898c2279e54b75dd5a3a991381c8fa0c6c16764618428e9",
+      "binaries": {
+        "baseline": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/cleanup-baseline",
+          "sha256": "5ba6620a60674ce5d14d8d9351be8fb8526123bef7303bef600d5fe9a787fec9"
+        },
+        "merged_o0": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/cleanup-merged_o0",
+          "sha256": "75e479588a8839f79a257639b791edb59bbddfcb0dee337cedb1ec7a2c768671"
+        },
+        "owned_round1": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/cleanup-owned_round1",
+          "sha256": "2cbad578f5586c8d6624f13a593bbc3eb8cee7c5dfd6b32b5033721a10080561"
+        },
+        "owned_round2": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/cleanup-owned_round2",
+          "sha256": "44f70311a60836ae11d5dfe76a51fd5276b3b0aaa58c97b81111417e43195bc5"
+        }
+      }
+    },
+    "ownership": {
+      "source": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/ownership_probe.py",
+      "sha256": "3f4fc0fd7bd53665a42af62650fc6a26d64a7bafcf7f4f66f8ff416b29f2c6a0",
+      "binaries": {
+        "baseline": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/ownership-baseline",
+          "sha256": "d25cf78fea3dd89bb9d335fbf544c855b8d9c5a1953fade7311c9ad8faba54f6"
+        },
+        "merged_o0": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/ownership-merged_o0",
+          "sha256": "8b615d622fb0d179dd48b290ae55c57681c43e017ea4bdd934d3e27cae42bcf1"
+        },
+        "owned_round1": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/ownership-owned_round1",
+          "sha256": "b84d6049633bea22275c892f48a43b96eca5d8e8eb0c789f22d521701e4d2f08"
+        },
+        "owned_round2": {
+          "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/ownership-owned_round2",
+          "sha256": "b487c8ef74a18a9b6d5e03c6a05548a4e877e29beaf14ec7ccf23c6d6dd6cae5"
+        }
+      }
+    }
+  },
+  "artifacts": {
+    "merged_o0": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/merged_o0.o",
+      "sha256": "ba03b1b515f2583451cacbf176c484795239ad61c9c73ef41dd02907e9cc893c",
+      "triple": "arm64-apple-darwin25.5.0"
+    },
+    "owned_round1": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/owned_round1.o",
+      "sha256": "36ef9e2b1e1830578dc7454374423808c7fb348b56707358a9b8d0b6fccbb0df",
+      "triple": "arm64-apple-darwin25.5.0"
+    },
+    "owned_round2": {
+      "path": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/owned_round2.o",
+      "sha256": "fd1958807a719e1ff30a24ecfeeca3a1e6b35e85bbe1aab840871e34b57a8912",
+      "triple": "arm64-apple-darwin25.5.0"
+    }
+  },
+  "gates": [
+    {
+      "program": "benchmark",
+      "arm": "baseline",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 3.325000056065619, \"latency_max_ms\": 0.7879999466240406, \"latency_min_ms\": 0.6249999860301614, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "baseline",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 8.929000003263354, \"latency_max_ms\": 2.3450000444427133, \"latency_min_ms\": 1.8890000646933913, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "baseline",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 9.105999954044819, \"latency_max_ms\": 2.116000046953559, \"latency_min_ms\": 1.9709999905899167, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "baseline",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 11.203999980352819, \"latency_max_ms\": 2.630000002682209, \"latency_min_ms\": 2.3639999562874436, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "baseline",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 17.18199998140335, \"latency_max_ms\": 4.680000012740493, \"latency_min_ms\": 3.310999949462712, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "merged_o0",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 3.397999913431704, \"latency_max_ms\": 0.8410000009462237, \"latency_min_ms\": 0.6280000088736415, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "merged_o0",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 8.675999939441681, \"latency_max_ms\": 2.007999923080206, \"latency_min_ms\": 1.8570000538602471, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "merged_o0",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 8.753999951295555, \"latency_max_ms\": 2.0569999469444156, \"latency_min_ms\": 1.9439999014139175, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "merged_o0",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 11.05000008828938, \"latency_max_ms\": 2.5939999613910913, \"latency_min_ms\": 2.3240000009536743, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "merged_o0",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 17.289999988861382, \"latency_max_ms\": 4.4559999369084835, \"latency_min_ms\": 3.389999968931079, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round1",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 2.439000061713159, \"latency_max_ms\": 0.5799999926239252, \"latency_min_ms\": 0.46399992424994707, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round1",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 6.886999937705696, \"latency_max_ms\": 1.7950000474229455, \"latency_min_ms\": 1.4750000555068254, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round1",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 6.961000035516918, \"latency_max_ms\": 1.8159999744966626, \"latency_min_ms\": 1.442000037059188, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round1",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 9.058000054210424, \"latency_max_ms\": 2.506999997422099, \"latency_min_ms\": 1.8649999983608723, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round1",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 11.701000039465725, \"latency_max_ms\": 2.7230000123381615, \"latency_min_ms\": 2.3720000172033906, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round2",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 2.395999967120588, \"latency_max_ms\": 0.5720000481233001, \"latency_min_ms\": 0.4509999416768551, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round2",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 6.125000072643161, \"latency_max_ms\": 1.4400000218302011, \"latency_min_ms\": 1.3800000306218863, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round2",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 6.223000003956258, \"latency_max_ms\": 1.4550000196322799, \"latency_min_ms\": 1.3339999131858349, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round2",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 7.858999888412654, \"latency_max_ms\": 1.787999994121492, \"latency_min_ms\": 1.6210000030696392, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "benchmark",
+      "arm": "owned_round2",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "{\"concurrency\": 100, \"delay_ms\": 0, \"elapsed_ms\": 11.043999926187098, \"latency_max_ms\": 2.549000084400177, \"latency_min_ms\": 2.1930000511929393, \"requests\": 200, \"rounds\": 2, \"warmup_requests\": 200}\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "baseline",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "baseline",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "baseline",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "baseline",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "baseline",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "merged_o0",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "merged_o0",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "merged_o0",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "merged_o0",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "merged_o0",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round1",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round1",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round1",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round1",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round1",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round2",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round2",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round2",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round2",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "cleanup",
+      "arm": "owned_round2",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "PCC1_STRUCTURED_FAILURE_CLEANUP_OK\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "baseline",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "baseline",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "baseline",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "baseline",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "baseline",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "merged_o0",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "merged_o0",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "merged_o0",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "merged_o0",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "merged_o0",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round1",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round1",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round1",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round1",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round1",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round2",
+      "gc": 0,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round2",
+      "gc": 1,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round2",
+      "gc": 2,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round2",
+      "gc": 3,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    },
+    {
+      "program": "ownership",
+      "arm": "owned_round2",
+      "gc": 4,
+      "returncode": 0,
+      "stdout": "[1, 2, 3, 4, 5]\n",
+      "stderr": ""
+    }
+  ],
+  "selected_modules": [
+    "py_obj",
+    "py_gen",
+    "py_coroutine",
+    "py_virtual_thread_runtime",
+    "py_gc_backend",
+    "py_list",
+    "py_dict",
+    "py_class",
+    "py_obj_dealloc",
+    "freestanding_gc_index_table",
+    "freestanding_runtime_high_substrate",
+    "freestanding_thread_kernel",
+    "freestanding_allocator"
+  ],
+  "ownership_test_source": {
+    "path": "/Users/jiamo/my/pcc/tests/python/test_known_object_refcounts.py",
+    "sha256": "a0d5acb4ee2f07e65507c562e39d3b182e0313a3133b8ab79036bfeac5e1af4a"
+  },
+  "source_hashes_receipt": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/build-report.json",
+  "source_file_count": 861
+}
