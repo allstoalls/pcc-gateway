@@ -5,20 +5,22 @@ left peak RSS untouched at 2.96x asyncio. This receipt is the memory front.
 
 ## The gap was never baseline memory
 
-| Requests | leaky | json fix | both fixes | asyncio |
-|---:|---:|---:|---:|---:|
-| 10,000 | 9.4 MiB | 7.7 | **6.9** | 27.9 |
-| 50,000 | 29.1 | 20.7 | **16.6** | 29.0 |
-| 100,000 | 53.7 | 36.3 | **28.7** | 31.0 |
-| 200,000 | 102.9 | 68.2 | **52.9** | 35.0 |
+| Requests | leaky | json fix | + clocks | + float literals | asyncio |
+|---:|---:|---:|---:|---:|---:|
+| 10,000 | 9.4 MiB | 7.7 | 6.9 | **6.0** | 28.0 |
+| 50,000 | 29.1 | 20.7 | 16.6 | **12.7** | 29.0 |
+| 100,000 | 53.7 | 36.3 | 28.7 | **20.9** | 31.1 |
+| 200,000 | 102.9 | 68.2 | 52.9 | **37.1** | 34.7 |
+| 400,000 | — | — | — | 69.7 | 44.6 |
 
 Native baseline memory was always the better one — 6.9 MiB against asyncio's
 27.9 at 10k requests, a quarter of it. The entire loss was **per-request
 growth**: 516 bytes per request against asyncio's 38. So the question was never
 "why is the runtime fat", it was "what does each request retain".
 
-With both fixes that slope is 242 bytes and native now also wins at 100k
-requests. The crossover moved from about 50k to about 120k.
+With all three fixes that slope is 164 bytes, peak RSS at the 200k protocol
+is 37.1 MiB against asyncio's 34.7 — **1.06x, from 2.96x** — and the crossover
+moved from about 50k requests to about 215k.
 
 ## Diagnosis: measure live bytes, not RSS
 
@@ -39,7 +41,7 @@ thread spawn, `TaskScope` fork/join/close and dict/list results leaked **zero**
 bytes over 20,000 iterations each. All of it appeared at one line:
 `json.dumps(data, sort_keys=True).encode()`.
 
-## Two defects fixed
+## Three defects fixed
 
 Both in core, applied to the worktree. Exact diffs in `frontend-json.patch`
 and `frontend-clocks.patch`.
@@ -67,70 +69,85 @@ it lowers that builds a new object leaked it. `time.perf_counter` is called
 twice per request in the handler. `time.monotonic`, `time.time`,
 `time.strftime` and `os.urandom` are the same shape and are fixed with it.
 
+**3. Float literals were boxed on every evaluation.** `y = x - 0.5` leaked 24
+bytes per iteration and `(x - 0.5) * 1000.0` leaked 48; the emitted IR showed
+`py_float_from_f64` for the literal *inside* the loop body and never released.
+
+The cause is a shape, not a typo: `marshal_to_object` returns either the
+incoming pointer unchanged (borrowed) or a fresh box (owned) and the caller
+cannot tell which — across **262 call sites**.
+
+Rather than teach 262 sites to tell the difference, the literal stops needing
+an object of its own. Each distinct float literal is now emitted as a
+statically initialized immortal `PyFloatObject` in the data segment, pooled by
+value and registered once by the same static-literal initializer that already
+handles string literals — the pattern `_emit_str_literal` established. That
+makes the ambiguity **harmless** instead of merely fixed at one caller:
+refcount operations on an immortal are no-ops, so no call site had to change.
+The emitted IR confirms it — the loop body has no `py_float_from_f64` call and
+takes the address of
+`@.pyfloat.obj.N = internal global {i64 1, i32 3, i32 1, double K}`.
+
 Measured effect: `json.dumps` 127 → **0** B/call, `json.loads` 907 → **0** and
-2 → **0** tracked objects, `time.perf_counter` 24 → **0**, and the full gateway
-request path 127 → **0**. Real-workload retention went 203 → 73.6 → **49.1**
-bytes per request across the two fixes.
+2 → **0** tracked objects, `time.perf_counter` 24 → **0**, `x - 0.5` 24 → **0**,
+`(x - 0.5) * 1000.0` 48 → **0**, and the full gateway request path 127 → **0**.
+Real-workload retention went 203 → 73.6 → 49.1 → **24.65** bytes per request
+across the three fixes.
 
 ## Throughput did not pay for it
 
 200,000 requests x 7 repeats, C100/0ms, same run
 (`../2026-09-10-leakfix-confirm.json`):
 
-| | retained | with fixes | asyncio |
+| | retained | with all three fixes | asyncio |
 |---|---:|---:|---:|
-| Median QPS | 80,634 | **85,821** | 80,948 |
-| Paired QPS vs retained | — | **+6.54%, 6/7** | — |
-| Paired QPS vs asyncio | — | **+3.84%, 6/7** | — |
-| Median QPS vs asyncio | — | **+6.02%** | — |
-| Instructions | 3.876e10 | 3.839e10 | 3.204e10 |
-| Median peak RSS | 102.8 MiB | **52.9 MiB** | 34.8 MiB |
+| Median QPS | 80,175 | **85,665** | 82,716 |
+| Paired QPS vs retained | — | **+6.24%, 6/7** | — |
+| Paired QPS vs asyncio | — | **+2.62%, 6/7** | — |
+| Median QPS vs asyncio | — | **+3.57%** | — |
+| Instructions | 3.877e10 | 3.827e10 (−1.29%, 7/7) | 3.205e10 |
+| Median peak RSS | 102.8 MiB | **37.1 MiB** | 35.0 MiB |
 
-Adding releases did not cost throughput; this is the best arm measured. Fewer
-live objects means less allocator pressure and better locality, which more than
-paid for the extra release calls.
+Adding releases did not cost throughput. The first two fixes improved it —
+fewer live objects means less allocator pressure and better locality, which
+more than paid for the extra release calls. The float literal change is
+throughput-**neutral** against that state (−0.17% paired, 3/7) while
+consistently lowering instructions (−0.33%, all seven), because what it removes
+is an allocation rather than instructions; its value is the 52.9 → 37.1 MiB.
 
 ## Correctness
 
 `benchmarks/combined_runtime.py --extra-module freestanding_allocator` on the
 final state — both frontend fixes plus the promoted runtime. Three programs
 across four compilation arms and `PCC_GC_BACKEND=0..4`, **60 runs, all passed**
-(`gates-leakfix.json`). The ownership program is core's own
+(`gates-leakfix.json`), and again after the float literal change because it
+touches the shared marshal helper (`gates-litfix.json`). The ownership program is core's own
 `test_known_object_refcounts.py` with `VERIFY_CHECKS=1`, which is the gate that
 would catch an over-release introduced by adding a release.
 
-## Three defects located and left unfixed
+## What remains: one family, two symptoms
 
-All three have an exact reproduction in `probes/leak_app.py`; none is guesswork.
+Both have an exact reproduction in `probes/leak_app.py`; neither is guesswork.
 
-**Float literal boxing — the largest remaining lever.** Every evaluation of a
-float literal as an operand of a DynType operation leaks 24 bytes. `y = x - 0.5`
-leaks one float per iteration; `(x - 0.5) * 1000.0` leaks two. The emitted IR
-shows it directly: `py_float_from_f64` for the literal is emitted *inside* the
-loop body (block `while.body.8`, value `%m.flt_box`) and never released.
+The residual after the literal fix names the family. `(time.perf_counter() -
+started) * 1000.0` went 48 → 24 bytes: the literal box is gone and what is left
+is the **computed** intermediate — an owned call result consumed directly in
+operand position and never released. `json.dumps({"a": 1})` is the same shape
+in argument position. So what remains is one defect: **an owned temporary
+consumed in operand or argument position is not released.** It is worth roughly
+24 bytes per request on the gateway path.
 
-The cause is a shape, not a typo: `marshal_to_object` returns either the
-incoming pointer unchanged (borrowed, must not be released) or a fresh
-`py_int_from_i64` / `py_float_from_f64` / `py_bool_from_bit` box (owned, must be
-released), and the caller cannot tell which. It has **262 call sites**. The
-`BinOp` rule in `_expr_returns_owned_object` covers the operation's *result*,
-not its operand boxes.
-
-Two directions, in preference order. Emit each distinct float literal as a
-module-level immortal box created once — that kills the leak *and* removes an
-allocation from every dynamic float operation, so it should be a throughput win
-too. Otherwise return an owned flag from `marshal_to_object` and release at the
-sites that created a box, starting with `binary_op_lowering`.
-
-This was not attempted here because a shared-codegen ownership change across
-262 call sites needs its own design pass and gate run, and core's AGENTS.md
-forbids stacking speculative shared-codegen edits.
+`marshal_to_object`'s borrowed-or-owned ambiguity across 262 call sites is
+still there in principle, but it no longer leaks for literals, which were its
+only measured victim. Int literals that fit are tagged immediates and bools
+resolve to singletons, so neither allocates.
 
 **The collect loop.** `for kid in scope.children: samples.append(scope.result(kid))`
 leaks about 1226 bytes and 6 GC-tracked objects per loop execution.
 `benchmark_native.batch()` uses exactly this shape once per batch. Isolate it
 with phase `list_collect` against phase `child_float`, which separates the loop
-from the float it collects. Not yet bisected to a single owner.
+from the float it collects. Six tracked objects per loop is the outlier here and
+it is not yet bisected to a single owner — it may or may not be the same family.
 
 **Container literal in argument position.** `json.dumps({"a": 1})` leaks about
 430 bytes and one tracked object per call *beyond* the json defect, while

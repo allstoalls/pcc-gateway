@@ -1,0 +1,129 @@
+{
+  "schema": "pcc-gateway.memory-accounting.v1",
+  "complete": true,
+  "started_utc": "2026-09-09T18:11:54.276345+00:00",
+  "compiler_source": "/Users/jiamo/my/pcc",
+  "archive_sha256": "813d22aa5d52f04d79ac26f018e8d67c0b2708e25fc76b4b31c4fac5090dec04",
+  "probe_sha256": "ccefe2c12f1f1978cfdda05bfea7cd4bbd49b98a1853cd01d41a6a3a3809daa4",
+  "gc_backend": 0,
+  "rounds": 100,
+  "repeats": 4,
+  "columns": [
+    "label",
+    "tracked",
+    "live_requested",
+    "live_usable",
+    "mapped",
+    "metadata_mapped",
+    "fully_free_slabs",
+    "granule_count"
+  ],
+  "command": [
+    "/Users/jiamo/my/pcc-gateway/.venv/bin/pcc",
+    "--backend",
+    "self",
+    "--python-libpython",
+    "off",
+    "--ir-scaffold",
+    "on",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-10-memacct-litfix/memory_probe_app.py",
+    "-o",
+    "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-10-memacct-litfix/memory_probe_app"
+  ],
+  "artifact_sha256": "608213209e6a420ddee9ac9934dd3cc23c6f73e0424aeefd00a9270a25c98d70",
+  "returncode": 0,
+  "stdout": "before 35 42666 53056 1179648 327680 0 208\nrequests 10000\nafter 39 774882 922832 4001792 458752 1 768\ncollected 39 774882 922832 4001792 458752 1 768\nrequests 10000\nafter 43 1021386 1251568 4788224 458752 1 960\ncollected 43 1021386 1251568 4788224 458752 1 960\nrequests 10000\nafter 47 1267890 1580304 5804032 622592 1 1168\ncollected 47 1267890 1580304 5804032 622592 1 1168\nrequests 10000\nafter 51 1514394 1909040 6590464 622592 1 1360\ncollected 51 1514394 1909040 6590464 622592 1 1360\n",
+  "stderr": "",
+  "rows": [
+    [
+      "before",
+      35,
+      42666,
+      53056,
+      1179648,
+      327680,
+      0,
+      208
+    ],
+    [
+      "after",
+      39,
+      774882,
+      922832,
+      4001792,
+      458752,
+      1,
+      768
+    ],
+    [
+      "collected",
+      39,
+      774882,
+      922832,
+      4001792,
+      458752,
+      1,
+      768
+    ],
+    [
+      "after",
+      43,
+      1021386,
+      1251568,
+      4788224,
+      458752,
+      1,
+      960
+    ],
+    [
+      "collected",
+      43,
+      1021386,
+      1251568,
+      4788224,
+      458752,
+      1,
+      960
+    ],
+    [
+      "after",
+      47,
+      1267890,
+      1580304,
+      5804032,
+      622592,
+      1,
+      1168
+    ],
+    [
+      "collected",
+      47,
+      1267890,
+      1580304,
+      5804032,
+      622592,
+      1,
+      1168
+    ],
+    [
+      "after",
+      51,
+      1514394,
+      1909040,
+      6590464,
+      622592,
+      1,
+      1360
+    ],
+    [
+      "collected",
+      51,
+      1514394,
+      1909040,
+      6590464,
+      622592,
+      1,
+      1360
+    ]
+  ]
+}

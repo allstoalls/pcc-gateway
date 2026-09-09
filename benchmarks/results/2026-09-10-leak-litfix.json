@@ -1,0 +1,60 @@
+{
+  "schema": "pcc-gateway.leak-bisect.v1",
+  "iterations": 20000,
+  "archive_sha256": "813d22aa5d52f04d79ac26f018e8d67c0b2708e25fc76b4b31c4fac5090dec04",
+  "probe_sha256": "cb1b3aa069028dfa0855e996e5efb085e5e0b6c2fd6c2ce002593917cc3b0179",
+  "columns": [
+    "label",
+    "tracked",
+    "live_requested",
+    "live_usable",
+    "mapped"
+  ],
+  "returncode": 0,
+  "stdout": "warm 59 56616 70208 1277952\nfloat_sub 59 56616 70208 1277952\nfloat_chain 59 56616 70208 1277952\nperf_delta 59 536616 710208 2981888\njson_loads 59 536616 710208 2981888\nfull_request 59 537176 711104 2981888\n",
+  "stderr": "",
+  "rows": [
+    [
+      "warm",
+      59,
+      56616,
+      70208,
+      1277952
+    ],
+    [
+      "float_sub",
+      59,
+      56616,
+      70208,
+      1277952
+    ],
+    [
+      "float_chain",
+      59,
+      56616,
+      70208,
+      1277952
+    ],
+    [
+      "perf_delta",
+      59,
+      536616,
+      710208,
+      2981888
+    ],
+    [
+      "json_loads",
+      59,
+      536616,
+      710208,
+      2981888
+    ],
+    [
+      "full_request",
+      59,
+      537176,
+      711104,
+      2981888
+    ]
+  ]
+}

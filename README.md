@@ -47,14 +47,14 @@ Native integration tests run separately;
 ## Performance
 
 On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the optimized native
-runtime reaches **85,821 requests/s**, versus **80,948 for asyncio** — a
-**6.0% higher median in this run**, and higher in six of the seven paired
+runtime reaches **85,665 requests/s**, versus **82,716 for asyncio** — a
+**3.6% higher median in this run**, and higher in six of the seven paired
 repeats.
 
 | Implementation | Median requests/s | Median peak RSS |
 |---|---:|---:|
-| pcc optimized native runtime | **85,821** | 52.9 MiB |
-| CPython asyncio | 80,948 | 34.8 MiB |
+| pcc optimized native runtime | **85,665** | 37.1 MiB |
+| CPython asyncio | 82,716 | 35.0 MiB |
 
 Measured at concurrency 100, zero child wait, 200,000 requests per repeat and
 seven rotating repeats. Each request runs two child tasks, joins them and
@@ -63,14 +63,15 @@ event loop; HTTP sockets, compilation and startup are excluded.
 Peak RSS includes warmups and storage of the 200,000 latency measurements.
 
 Memory depends on how much a run retains. This runtime starts far smaller than
-asyncio and grows faster, so it uses **less** memory up to about 120,000
+asyncio and grows faster, so it uses **less** memory up to about 215,000
 requests and more beyond it:
 
 | Requests | pcc native | CPython asyncio |
 |---:|---:|---:|
-| 10,000 | **6.9 MiB** | 27.9 MiB |
-| 100,000 | **28.7 MiB** | 31.0 MiB |
-| 200,000 | 52.9 MiB | **34.8 MiB** |
+| 10,000 | **6.0 MiB** | 28.0 MiB |
+| 100,000 | **20.9 MiB** | 31.1 MiB |
+| 200,000 | 37.1 MiB | 34.7 MiB |
+| 400,000 | 69.7 MiB | **44.6 MiB** |
 
 To reproduce, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
 

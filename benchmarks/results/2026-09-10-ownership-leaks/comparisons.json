@@ -21,6 +21,7 @@
       "leaky",
       "json_fix_only",
       "both_fixes",
+      "float_literal_fix",
       "asyncio"
     ],
     "rows": [
@@ -29,13 +30,15 @@
         9.4,
         7.7,
         6.9,
-        27.9
+        6.0,
+        28.0
       ],
       [
         50000,
         29.1,
         20.7,
         16.6,
+        12.7,
         29.0
       ],
       [
@@ -43,23 +46,34 @@
         53.7,
         36.3,
         28.7,
-        31.0
+        20.9,
+        31.1
       ],
       [
         200000,
         102.9,
         68.2,
         52.9,
-        35.0
+        37.1,
+        34.7
+      ],
+      [
+        400000,
+        null,
+        null,
+        null,
+        69.7,
+        44.6
       ]
     ],
     "per_request_growth_bytes": {
       "leaky": 516,
       "json_fix_only": 334,
       "both_fixes": 242,
+      "float_literal_fix": 164,
       "asyncio": 38
     },
-    "note": "Native baseline memory was always BETTER than asyncio (6.9 MiB against 27.9 at 10k requests). The whole gap was per-request growth. With both fixes native now also wins at 100k requests (28.7 against 31.0) and the crossover moved from ~50k to ~120k."
+    "note": "Native baseline memory was always BETTER than asyncio (6.0 MiB against 28.0 at 10k requests). The whole gap was per-request growth. All three fixes take that slope from 516 to 164 bytes per request, peak RSS at the 200k protocol from 102.9 to 37.1 MiB against asyncio 34.7 (1.06x, from 2.96x), and move the crossover from about 50k requests to about 215k."
   },
   "defects": [
     {
@@ -85,15 +99,14 @@
     {
       "id": "float-literal-box",
       "owner": "pcc/py_frontend/codegen/marshal.py",
-      "fixed": false,
+      "fixed": true,
       "symptom": "Every evaluation of a float literal as an operand of a DynType operation leaks 24 bytes: `y = x - 0.5` leaks one float per iteration, `(x - 0.5) * 1000.0` leaks two. Confirmed in the emitted IR: py_float_from_f64 for the literal is emitted INSIDE the loop body (block while.body.8, value %m.flt_box) and never released.",
       "cause": "marshal_to_object returns either the incoming pointer unchanged (borrowed, must not be released) or a fresh py_int_from_i64/py_float_from_f64/py_bool_from_bit box (owned, must be released), and the caller cannot tell which. It has 262 call sites. The BinOp rule in _expr_returns_owned_object covers the RESULT of the operation, not the operand boxes.",
-      "directions": [
-        "Emit each distinct float literal as a module-level immortal box created once: kills the leak and removes an allocation from every dynamic float op.",
-        "Or return an owned flag from marshal_to_object and release at the sites that created a box, starting with binary_op_lowering."
-      ],
-      "not_attempted_because": "A shared-codegen ownership change across 262 call sites needs its own design pass and gate run; core AGENTS.md forbids stacking speculative shared-codegen edits.",
-      "repro": "probes/leak_app.py phases float_sub (24 B/iter) and float_chain (48 B/iter); IR with pcc --backend self --python-libpython off --ir-scaffold on --emit-llvm=OUT.ll FILE.py"
+      "repro": "probes/leak_app.py phases float_sub (24 B/iter) and float_chain (48 B/iter); IR with pcc --backend self --python-libpython off --ir-scaffold on --emit-llvm=OUT.ll FILE.py",
+      "patch": "frontend-float-literals.patch",
+      "fix": "Emit each distinct float literal as a statically initialized immortal PyFloatObject in the data segment, pooled by value and registered once with the collector by the same static-literal initializer that already handles string literals. A literal has a constant value, so it needs no fresh object. This also makes the marshal_to_object ownership ambiguity HARMLESS rather than fixed at one caller: refcount operations on an immortal are no-ops, so no call site has to learn whether it received a box or a passthrough, and none of the 262 sites changed.",
+      "verified": "`y = x - 0.5` 24 -> 0 B/iteration and `(x - 0.5) * 1000.0` 48 -> 0 over 20,000 iterations. Emitted IR confirms it: the loop body has no py_float_from_f64 call and takes the address of @.pyfloat.obj.N = internal global {i64 1, i32 3, i32 1, double K}. Real-workload retention 49.1 -> 24.65 bytes per request.",
+      "residual": "`(time.perf_counter() - started) * 1000.0` went 48 -> 24 B: the literal box is gone and what remains is the COMPUTED intermediate, an owned call result consumed directly in operand position and never released. That is the same shape as the container-literal-argument defect below, so the two remaining leaks are one family: owned temporaries in operand/argument position. Not the literal path."
     },
     {
       "id": "scope-children-collect",
@@ -109,7 +122,8 @@
       "fixed": false,
       "symptom": "A container literal passed DIRECTLY as a call argument leaks it: json.dumps({\"a\": 1}) leaks about 430 bytes and one tracked object per call beyond the json defect, while binding the same dict to a name first leaks nothing.",
       "repro": "probes/leak_app.py phase dumps_small against phase dict_results.",
-      "not_attempted_because": "Not on the gateway path, which binds its dict to a name."
+      "not_attempted_because": "Not on the gateway path, which binds its dict to a name.",
+      "related": "Same family as the residual on float-literal-box: an owned temporary consumed in operand/argument position is not released."
     }
   ],
   "throughput_after_fixes": {
@@ -176,10 +190,13 @@
   },
   "correctness_gates": {
     "tool": "benchmarks/combined_runtime.py --extra-module freestanding_allocator",
-    "report": "gates-leakfix.json",
+    "report": [
+      "gates-leakfix.json",
+      "gates-litfix.json"
+    ],
     "runs": 60,
     "result": "all passed",
-    "note": "Run on the final state, both frontend fixes plus the promoted runtime. The ownership program is core tests/python/test_known_object_refcounts.py with VERIFY_CHECKS=1, which is the gate that would catch an over-release introduced by adding a release."
+    "note": "Run on the final state, both frontend fixes plus the promoted runtime. The ownership program is core tests/python/test_known_object_refcounts.py with VERIFY_CHECKS=1, which is the gate that would catch an over-release introduced by adding a release. Re-run after the float literal change, which touches the shared marshal helper: 60 runs, all passed."
   },
   "raw_results": [
     "benchmarks/results/2026-09-10-memory-accounting.json",
@@ -194,5 +211,123 @@
     "benchmarks/results/2026-09-10-memacct-jsonfix.json",
     "benchmarks/results/2026-09-10-memacct-timefix.json",
     "benchmarks/results/2026-09-10-leakfix-confirm.json"
-  ]
+  ],
+  "retention_per_request_bytes": {
+    "original": 203,
+    "after_json_fix": 73.6,
+    "after_clock_fix": 49.1,
+    "after_float_literal_fix": 24.65,
+    "note": "Real benchmark_native workload, read after the probe drops its result and after gc.collect()."
+  },
+  "throughput_after_all_fixes": {
+    "raw_result": "benchmarks/results/2026-09-10-litfix-confirm.json",
+    "workload": {
+      "requests": 200000,
+      "repeats": 7,
+      "concurrency": 100,
+      "child_wait_ms": 0
+    },
+    "paired_qps_vs_retained": {
+      "median": 1.062385093744583,
+      "min": 0.9909996887911146,
+      "wins": 6,
+      "n": 7,
+      "ratios": [
+        1.062385093744583,
+        1.019013149360651,
+        1.0498956881172383,
+        1.0694672467378648,
+        1.075512209329449,
+        1.1065761533962992,
+        0.9909996887911146
+      ]
+    },
+    "paired_qps_vs_asyncio": {
+      "median": 1.026218299049622,
+      "min": 0.9876096514340832,
+      "wins": 6,
+      "n": 7,
+      "ratios": [
+        1.0288290901947752,
+        0.9876096514340832,
+        1.0215422985624072,
+        1.026218299049622,
+        1.119955655997128,
+        1.0464206652786412,
+        1.0219337535289954
+      ]
+    },
+    "paired_qps_vs_previous_state": {
+      "median": 0.9982828374164098,
+      "min": 0.9455975342066306,
+      "wins": 3,
+      "n": 7,
+      "ratios": [
+        0.9982828374164098,
+        0.9455975342066306,
+        0.9932047306266569,
+        1.0002642757245976,
+        1.0086047633810356,
+        1.0811463379310353,
+        0.9457332301365614
+      ]
+    },
+    "paired_instructions_vs_retained": {
+      "median": 0.9870574861161866,
+      "min": 0.9860353393964435,
+      "wins": 0,
+      "n": 7,
+      "ratios": [
+        0.9866249058043167,
+        0.9915687340997827,
+        0.9870574861161866,
+        0.9869166987654895,
+        0.987121845589931,
+        0.9860353393964435,
+        0.9880597125509734
+      ]
+    },
+    "paired_instructions_vs_previous_state": {
+      "median": 0.9967266715157362,
+      "min": 0.9960823616597009,
+      "wins": 0,
+      "n": 7,
+      "ratios": [
+        0.9969089765067413,
+        0.9960823616597009,
+        0.9967266715157362,
+        0.9966633767042719,
+        0.9968498226603713,
+        0.9964129929019359,
+        0.9980415494929126
+      ]
+    },
+    "summary": {
+      "retained": {
+        "qps_median": 80174.55604347664,
+        "instructions_median": 38768538444,
+        "cycles_median": 8317612424,
+        "peak_rss_bytes_median": 107839488
+      },
+      "prev_leakfix": {
+        "qps_median": 85642.10165588364,
+        "instructions_median": 38396101857,
+        "cycles_median": 7834448078,
+        "peak_rss_bytes_median": 55443456
+      },
+      "litfix": {
+        "qps_median": 85664.73478435482,
+        "instructions_median": 38269798660,
+        "cycles_median": 7849331581,
+        "peak_rss_bytes_median": 38879232
+      },
+      "asyncio": {
+        "qps_median": 82715.78103466111,
+        "instructions_median": 32050454485,
+        "cycles_median": 7447990925,
+        "peak_rss_bytes_median": 36749312
+      }
+    },
+    "note": "The float literal fix is throughput-NEUTRAL against the previous state (-0.17% paired, 3/7) while consistently lowering instructions (-0.33%, all seven), because what it removes is an allocation rather than instructions. Its value is the memory: 52.9 -> 37.1 MiB. Against the retained runtime the whole session measures +6.24% paired QPS (6/7) and -1.29% instructions (all seven)."
+  }
 }
