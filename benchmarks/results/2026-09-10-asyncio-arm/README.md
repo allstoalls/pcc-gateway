@@ -14,11 +14,11 @@ can be pointed at the same file a native arm was built from.
 ## Status
 
 The harness is finished and the CPython arm runs. **The native arm compiles
-but does not yet complete a run**, and what remains is one root cause rather
-than a list.
+with no libpython fallback anywhere, and still does not complete a run**: one
+blocker remains, reproduced in 18 lines below.
 
-Getting from "does not compile" to "compiles and runs into asyncio" took five
-fixes in core, each with its own reproduction:
+Getting from "does not compile" to "compiles clean and runs into asyncio" took
+seven fixes in core, each with its own reproduction:
 
 | Blocker | Fix |
 |---|---|
@@ -27,38 +27,61 @@ fixes in core, each with its own reproduction:
 | `heapq` is CPython's, and it opens `from _heapq import *` | pure Python `heapq`, 1,989 differential assertions against CPython, zero mismatches |
 | `gather` awaited in argument position (`out.append(await child)`) | bound to a local; the receiver is not spilled across the suspension, recorded as a compiler gap with a 16-line repro |
 | `contextvars.copy_context()` resolved through CPython, stubbing `Task.__init__` | `contextvars` given a compiled provider, joining platform and subprocess |
+| a field initialised `self._x = None` stayed NoneType forever, so every read fell back | a non-`__init__` write widens it to Dyn; the cleanup-sentinel protection it was guarding is kept |
+| `[None]` typed its element NoneType, so `_BOX = [None]` made every reader NoneType | an all-`None` list literal gets a Dyn element, as `[]` already did |
 
 `benchmark_asyncio_gather.py` itself needed the same await-in-argument rewrite
 (`samples.extend(await batch(...))`). Both arms run the identical rewritten
 source, so the comparison is unaffected.
 
-## What is left is one root cause
+## The NoneType root cause is fixed
 
-**A value whose inferred type is NoneType does not widen when something
-assigns it a real object, and using it as an object falls back to libpython.**
-The IR says so directly: `py_cpy_from_pcc_none(%self._loop)`.
+Two narrow inference rules in core, `aebb8cfb`:
 
-It accounts for all of the remaining failures:
+- a field the constructor only initialises to `None` and that another method
+  writes is Dyn — the skip that made the constructor's `None` final exists to
+  stop a cleanup sentinel erasing a real type, and still does, because the
+  widening applies only when the known type is NoneType
+- a list literal whose elements are all `None` has a Dyn element type, which is
+  what the line above it already gives `[]`
 
-- five asyncio stubs — `self._loop`, `self._waiter`, `self._on_completed_fut`,
-  `self._parent_task`, all initialised to `None` in `__init__`
-- `loop.create_task(awaitable)` raising "native function got too many
-  positional arguments": `get_event_loop()` returns `_LOOP_BOX[0]` where
-  `_LOOP_BOX = [None]`, so the loop is NoneType and the method call
-  misdispatches to the module-level `create_task`, which takes one positional
-- the gateway's own `pcc_gateway.dns.step`, via `py_cpy_from_pcc_none(%self.server)`
+**Every libpython stub in asyncio is gone**, including `_run_once`, and so is
+the gateway's own `pcc_gateway.dns.step`. Reproductions kept in `repro/`:
+`none_attribute_method.py` (a guarded `self._x.method()` after `self._x = None`)
+and `none_list_box.py` (the `_BOX = [None]` mutable-cell idiom feeding an
+attribute). Both compile natively and match CPython now.
 
-Reproduces in 30 lines: `__init__` sets `self._x = None`, a setter assigns a
-real object, and a guarded `self._x.method()` is enough. Copying the attribute
-to a local and calling a *builtin* on it compiles natively; calling a method
-on the attribute does not, and annotating the setter's parameter does not
-change the outcome.
+## One blocker remains, and there is still no native throughput number
 
-Class field types come from `_class_fields_from_def` and `_append_field` in
-`pcc/py_frontend/type_infer.py`, whose merge is last-write-wins with no
-widening. Since annotating the setter changes nothing, the setter's assignment
-is evidently not reaching that merge at all — which of the two it is has not
-been established, and widening a core inference rule wants its own gate run.
+`repro/super_keyword_only.py`, 18 lines:
+
+```python
+class Base:
+    def __init__(self, *, loop=None) -> None:
+        self.loop = loop
+
+class Child(Base):
+    def __init__(self, coro, *, loop=None) -> None:
+        super().__init__(loop=loop)
+        self.coro = coro
+```
+
+CPython prints `7 42`; native raises **`TypeError: native function got too many
+positional arguments`**. `super().__init__(kw=value)` against a keyword-only
+base parameter is lowered as a positional call, and the runtime binder in
+`py_func.py` correctly refuses it — the signature it is handed has two formals
+of which one is not positional, and two positionals arrive.
+
+The failure is reached through `asyncio.run` -> `run_until_complete` ->
+`ensure_future` -> `loop.create_task`, and lldb confirms the binder is entered
+from inside `_Loop.create_task` rather than from a misdispatch: the correct
+method is called. Making `Future.__init__`'s `loop` positional-or-keyword did
+NOT clear it, so the exact call inside `create_task` has not been pinned; the
+18-line reproduction is the reliable artifact, not that hypothesis.
+
+Until it is fixed there is **no throughput figure for the pcc-compiled asyncio
+arm**. Running the arm under `--python-libpython=on` would produce a number,
+but not a native one, so it is not reported.
 
 ## Running it
 
