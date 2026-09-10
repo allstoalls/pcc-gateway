@@ -175,3 +175,55 @@ env -u LC_ALL uv run python probes/leak_bisect.py \
 
 Run both under core's process-tree watchdog; they take the performance lock
 themselves, so pass `--no-performance-lock` to the watchdog.
+
+## Traced afterwards: why `pcc_gateway.dns` needs libpython — 2026-09-10
+
+The gateway's `pytest -m integration` stops on
+`NotImplementedError: no-libpython function unavailable: pcc_gateway.dns.encode_name`.
+Nothing is missing from the gateway: `pcc_gateway/dns.py` is tracked and
+`encode_name` is at line 60. The message is the compiler's own fail-closed
+stub. Under `--python-libpython off`, if a function body still needs a
+`py_cpy_*` call, `user_function_lowering.py` replaces the **whole body** with a
+stub that raises at runtime and names the function. The owner is therefore
+core, not the gateway, even though a gateway test is what surfaces it.
+
+`PCC_DEBUG_STRICT_NOLIB_STUB=1` (with `PCC_PY_FRONTEND_JOBS=1`, or the worker's
+diagnostic never reaches stderr) names the exact call. Compiling
+`tests/fixtures/gateway/current_pcc1_async_dns.py` reports two:
+
+    pcc_gateway.dns.encode_name: py_cpy_from_pccstr(ptr %label...)
+    pcc_gateway.dns.step:        py_cpy_from_pcc_obj(ptr %self.server...)
+
+The first is `label.encode("ascii")`. A three-way probe isolates it exactly:
+
+| expression | result |
+|---|---|
+| `text.encode()` | native |
+| `text.encode("utf-8")` | native |
+| **`text.encode("ascii")`** | **falls back, function stubbed** |
+
+`string_method_lowering.py` recognises only `utf-8/utf8/UTF-8/UTF8` (to
+`py_str_utf8_encode`) and `latin-1/latin1` (to `py_str_latin1_encode`).
+`ascii` is simply absent from both encode gates. It cannot be aliased to
+utf-8: it has to reject code points above 127.
+
+`pending-str-ascii-encode.patch` implements it — `py_str_ascii_encode` in
+`py_str_accessors.py` structurally identical to the reviewed latin-1 encoder
+with the bound at 127, its ABI entry, and both lowering gates. Verified: the
+fallback is gone (no stub emitted) and the built archive exports the symbol.
+
+**It is a patch and not a commit because its runtime behaviour is unverified.**
+Both routes to a behaviour test were blocked: an isolation worktree aborts on
+the pre-existing `[DEBUG-dict-slot]` guard even at pure HEAD with no patch
+applied, so it can validate nothing, and the main checkout was concurrently
+being edited by another session whose in-progress work references a runtime
+symbol (`py_tuple_set`) that does not exist yet, so nothing links there.
+Isolation ruled out `PCC_WITH_THREADS`, `PCC_PYTHON_IR_PASSES` and the fix
+being absent; the remaining difference is the `PYTHON` used for object
+emission. What still needs checking before this lands: `"abc".encode("ascii")`
+equals `b"abc"`, and a non-ASCII string raises. Note also that the NULL return
+this mirrors from latin-1 does not produce `UnicodeEncodeError` specifically,
+which `dns.encode_name`'s own `except UnicodeError` expects — worth settling in
+the same pass.
+
+`pcc_gateway.dns.step` is untouched and still needs the same treatment.
