@@ -207,23 +207,42 @@ The first is `label.encode("ascii")`. A three-way probe isolates it exactly:
 `ascii` is simply absent from both encode gates. It cannot be aliased to
 utf-8: it has to reject code points above 127.
 
-`pending-str-ascii-encode.patch` implements it — `py_str_ascii_encode` in
-`py_str_accessors.py` structurally identical to the reviewed latin-1 encoder
-with the bound at 127, its ABI entry, and both lowering gates. Verified: the
-fallback is gone (no stub emitted) and the built archive exports the symbol.
+**Landed** in core as `py_str_ascii_encode`, the reviewed latin-1 encoder with
+the bound at 127, plus its ABI entry and both lowering gates. `encode_name`'s
+stub is gone; the app's remaining stub is `pcc_gateway.dns.step` alone.
 
-**It is a patch and not a commit because its runtime behaviour is unverified.**
-Both routes to a behaviour test were blocked: an isolation worktree aborts on
-the pre-existing `[DEBUG-dict-slot]` guard even at pure HEAD with no patch
-applied, so it can validate nothing, and the main checkout was concurrently
-being edited by another session whose in-progress work references a runtime
-symbol (`py_tuple_set`) that does not exist yet, so nothing links there.
-Isolation ruled out `PCC_WITH_THREADS`, `PCC_PYTHON_IR_PASSES` and the fix
-being absent; the remaining difference is the `PYTHON` used for object
-emission. What still needs checking before this lands: `"abc".encode("ascii")`
-equals `b"abc"`, and a non-ASCII string raises. Note also that the NULL return
-this mirrors from latin-1 does not produce `UnicodeEncodeError` specifically,
-which `dns.encode_name`'s own `except UnicodeError` expects — worth settling in
-the same pass.
+Behaviour is verified against CPython on both paths, and verifying it turned up
+a second, worse bug in the encoder it was mirroring. **Out of range, both
+encoders returned NULL and raised nothing**, so `"日本".encode("latin-1")`
+produced EMPTY BYTES rather than an error — silently malformed output, and
+exactly what `dns.encode_name`'s `try/except UnicodeError` was written to
+prevent. Both now raise and both gates emit the post-call error check.
+ValueError is the closest correct supertype: CPython raises
+UnicodeEncodeError, and the builtin exception table has no UnicodeError to
+raise, so adding one is its own change against a shared header.
 
-`pcc_gateway.dns.step` is untouched and still needs the same treatment.
+| expression | before | after | CPython |
+|---|---|---|---|
+| `"abc".encode("ascii")` | libpython stub | `b"abc"` | `b"abc"` |
+| `"café".encode("ascii")` | libpython stub | raises | raises |
+| `"日本".encode("latin-1")` | **empty bytes** | raises | raises |
+
+## `pcc_gateway.dns.step` — one root cause, shared with asyncio
+
+The second stub has the same shape as five in `pcc/py_stdlib/asyncio.py`
+(`self._loop`, `self._waiter`, `self._on_completed_fut`, `self._parent_task`):
+**a method call on an instance attribute initialised to `None` falls back to
+libpython**, even when another method assigns that attribute an annotated
+non-None type. The IR names it — `py_cpy_from_pcc_none(%self.server)`.
+
+Reproduces in 30 lines: a class whose `__init__` sets `self._x = None`, a
+setter that assigns a real object, and a guarded `self._x.method()`. Copying
+the attribute to a local first and calling a *builtin* on it compiles
+natively; calling a method on the attribute does not.
+
+Class field types come from `_class_fields_from_def` and `_append_field` in
+`pcc/py_frontend/type_infer.py`, whose merge is last-write-wins with no
+widening. But annotating the setter's parameter does not change the outcome,
+so the setter's assignment is evidently not reaching that merge at all, and
+which of the two it is has not been established. Widening a core inference
+rule wants its own gate run rather than a tail-end edit.
