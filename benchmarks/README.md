@@ -16,11 +16,24 @@ env -u LC_ALL uv run python scripts/run_process_tree_sample.py \
   --result build/runtime-reproduce.json \
   --samples build/runtime-reproduce.samples \
   --stdout build/runtime-reproduce.stdout --stderr build/runtime-reproduce.stderr \
-  --timeout 600 --max-tree-rss-bytes 4294967296 -- \
-  make -j4 -C pcc/py_runtime PCC="$PWD/.venv/bin/pcc" \
+  --timeout 1800 --max-tree-rss-bytes 4294967296 -- \
+  make -B -j4 -C pcc/py_runtime PCC="$PWD/.venv/bin/pcc" \
   PYTHON="$PWD/.venv/bin/python" PCC_REPO_ROOT="$PWD" \
   PCC_WITH_THREADS=0 libpy_runtime_pcc_py.a
 ```
+
+`-B` is not optional. Every runtime module is compiled BY the pcc frontend,
+and `make` has no dependency edge from `pcc/py_frontend/**` to
+`build_py/*.o` -- it compares source timestamps only. A frontend change
+therefore rebuilds nothing, and the archive keeps objects emitted by an older
+compiler while looking current.
+
+That is not hypothetical. A compiler regression on 2026-09-09 left two
+freestanding modules uncompilable, and because no runtime source had changed,
+incremental builds kept linking pre-regression objects for a day: benchmarks
+measured a runtime that could no longer be built, and the breakage only
+surfaced when a content-hash cache forced a real rebuild. Force the rebuild,
+or the identity you record is not the identity you measured.
 
 Use an up-to-date runtime: the builder verifies recorded IR hashes, and the
 geometry-cache result requires the core allocator source containing that cache.

@@ -47,14 +47,17 @@ Native integration tests run separately;
 ## Performance
 
 On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the optimized native
-runtime reaches **85,665 requests/s**, versus **82,716 for asyncio** — a
-**3.6% higher median in this run**, and higher in six of the seven paired
+runtime reaches **86,862 requests/s**, versus **84,456 for asyncio** — a
+**2.9% higher median in this run**, and higher in six of the seven paired
 repeats.
 
 | Implementation | Median requests/s | Median peak RSS |
 |---|---:|---:|
-| pcc optimized native runtime | **85,665** | 37.1 MiB |
-| CPython asyncio | 82,716 | 35.0 MiB |
+| pcc optimized native runtime | **86,862** | 37.1 MiB |
+| CPython asyncio | 84,456 | 34.9 MiB |
+
+These come from `benchmarks/reproduce.py` on a from-scratch runtime build, so
+the command below is the one that produced them.
 
 Measured at concurrency 100, zero child wait, 200,000 requests per repeat and
 seven rotating repeats. Each request runs two child tasks, joins them and
@@ -63,15 +66,15 @@ event loop; HTTP sockets, compilation and startup are excluded.
 Peak RSS includes warmups and storage of the 200,000 latency measurements.
 
 Memory depends on how much a run retains. This runtime starts far smaller than
-asyncio and grows faster, so it uses **less** memory up to about 215,000
+asyncio and grows faster, so it uses **less** memory up to roughly 175,000
 requests and more beyond it:
 
 | Requests | pcc native | CPython asyncio |
 |---:|---:|---:|
-| 10,000 | **6.0 MiB** | 28.0 MiB |
-| 100,000 | **20.9 MiB** | 31.1 MiB |
-| 200,000 | 37.1 MiB | 34.7 MiB |
-| 400,000 | 69.7 MiB | **44.6 MiB** |
+| 10,000 | **6.1 MiB** | 27.8 MiB |
+| 100,000 | **21.0 MiB** | 30.9 MiB |
+| 200,000 | 37.1 MiB | 35.0 MiB |
+| 400,000 | 69.8 MiB | **44.3 MiB** |
 
 To reproduce, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
 
@@ -88,6 +91,8 @@ asyncio under time, memory and process-lifetime limits.
 
 The runtime configuration, per-repeat results and correctness gates behind
 these numbers are recorded in the
+[reproduction receipt](benchmarks/results/2026-09-10-reproduce-clean/README.md),
+with how the work got here in the
 [throughput receipt](benchmarks/results/2026-09-10-object-start-inline/README.md)
 and the [memory receipt](benchmarks/results/2026-09-10-ownership-leaks/README.md).
 See [benchmark methods](benchmarks/README.md) for reproduction and
