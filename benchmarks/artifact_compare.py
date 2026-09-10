@@ -27,6 +27,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--native", action="append", required=True, metavar="LABEL=PATH")
     parser.add_argument("--build-report", type=Path)
+    parser.add_argument("--asyncio-script", type=Path, default=ROOT / "benchmark_asyncio.py",
+                        help="CPython workload; use the same source as a native asyncio arm")
     parser.add_argument("--concurrency", default="100")
     parser.add_argument("--delays", default="0")
     parser.add_argument("--requests", type=int, default=20000)
@@ -43,7 +45,7 @@ def main():
             parser.error("native artifacts need unique LABEL=PATH entries")
         binary = Path(path).resolve(strict=True)
         commands[label] = [str(binary)]
-    commands["asyncio"] = [sys.executable, str(ROOT / "benchmark_asyncio.py")]
+    commands["asyncio"] = [sys.executable, str(args.asyncio_script.resolve(strict=True))]
     concurrencies = [int(value) for value in args.concurrency.split(",")]
     delays = [int(value) for value in args.delays.split(",")]
     if min(concurrencies) < 1 or min(delays) < 0 or min(args.requests, args.wait_rounds, args.repeats) < 1:
