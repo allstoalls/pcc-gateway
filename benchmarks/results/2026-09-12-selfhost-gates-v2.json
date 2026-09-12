@@ -1,0 +1,89 @@
+{
+  "application_runtime": {
+    "path": "/Users/jiamo/my/pcc/pcc/py_runtime/libpy_runtime_pcc_py.a",
+    "sha256": "f0f998c13e6a0e380d93f672bb67bbeb2d99cfc41adcb1e07caf193a2c835109"
+  },
+  "compiler_source": "/Users/jiamo/my/pcc",
+  "compiler_source_sha256": "74f5c175c51600f917dcd092463ab80b9ae3cf1d840860b4e1c1c5b1feda0d1a",
+  "compilers": {
+    "host-pcc": {
+      "command": [
+        "/Users/jiamo/my/pcc/.venv/bin/pcc",
+        "--backend",
+        "self",
+        "--python-libpython",
+        "off",
+        "--ir-scaffold",
+        "on",
+        "/Users/jiamo/my/pcc-gateway/benchmark_native.py",
+        "-o",
+        "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-12-selfhost-gates-v2/host-pcc"
+      ],
+      "compile_seconds": 5.554031082894653,
+      "path": "/Users/jiamo/my/pcc/.venv/bin/pcc",
+      "returncode": 0,
+      "sha256": "afb914a53606ca68ce759b2082f8852623c6f12199ea86fbf2a786f0b24b0d0a"
+    }
+  },
+  "complete": false,
+  "core_commit": "74e9702965cc05e1f279fe5b21a678c62c16bea1",
+  "core_diff_sha256": "bd87cf09773c36ee304860441196e44e3da82e0a45864a797b858e8f509cde79",
+  "core_dirty": true,
+  "cpu_count": 12,
+  "cpu_model": "Apple M2 Max",
+  "gateway_commit": "f9ea00a107369b72cd521da7d05758b7c9ae7979",
+  "gateway_dirty": true,
+  "load_average_start": [
+    3.087890625,
+    3.89404296875,
+    4.50927734375
+  ],
+  "machine": "arm64",
+  "memory_scope": "Darwin /usr/bin/time per-process peak RSS, including startup and warmups",
+  "optimization_environment": {
+    "PCC_DIRECT_GENERATOR_TASKS": null,
+    "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT": "1",
+    "PCC_FAST_COMPLETED_CONTINUATIONS": null,
+    "PCC_GC_BACKEND": "0",
+    "PCC_GENERATOR_FIRST_ENTRY_INIT": null,
+    "PCC_KNOWN_OBJECT_REFS": null,
+    "PCC_RUNTIME_HIGH": "py",
+    "PCC_WITH_THREADS": "0"
+  },
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "python_executable": "/Users/jiamo/my/pcc/.venv/bin/python",
+  "python_version": "3.15.0rc1 (main, Aug 25 2026, 13:50:37) [Clang 22.1.3 ]",
+  "repeats": 5,
+  "rounds": 10,
+  "runs": [],
+  "schema": "pcc-gateway.asyncio-comparison.v1",
+  "sources": {
+    "benchmark_asyncio.py": "18f69e6ce478e976e3dee8c67c99ad774fffa70d39e0e4fcd2ecf563b2368383",
+    "benchmark_native.py": "e4bbb90b0a9a4212b6dc3e9bcddb65d568e43f9d918c2e9e133886ebb44c8cb5",
+    "benchmarks/compare.py": "1f386437ba243f8b3452adece540d400d0f82107df4bc9525aa784138c96716b",
+    "pcc_gateway/__init__.py": "caea0c5d5805d8bba4f5b2e44aca323f4abbab33ffc78e777797a3c4c32eddd5",
+    "pcc_gateway/buffer.py": "c2c667ead0972aab51f6fc7cd0b7ece22312b2da7eeed0e3fe16fadca8eb1dba",
+    "pcc_gateway/channel.py": "b93a3f1dee944b9076732a3ee64ed83429ddf0f55736db85a56e27a3369d560f",
+    "pcc_gateway/config.py": "c67ff65dcecd96509a7502360a2eda314447a89801f9f6130ba4fc2ca4faf123",
+    "pcc_gateway/control.py": "3316b3c7111790c28390d55a6ab89b3bd5ba54e5f0421fb6c42c664f12b898d9",
+    "pcc_gateway/dns.py": "b9a748842142e3b4239a6559657363112b9c599790aeb42ab1928a8ba06e066b",
+    "pcc_gateway/dns_native.py": "81ec8d280455fb3974a640d3ec3b0777a6e77a07f85594d7cebc9d3a33201fb4",
+    "pcc_gateway/http1.py": "4dbbb3fea97531a9bfea76a81624529a947b6a8b7730392121fe5a9d086260fc",
+    "pcc_gateway/lifecycle.py": "0277d8112a708103738d094f802d8f233fa93f2be5015713c617f54bfee31463",
+    "pcc_gateway/models.py": "5c95c397f69b05e7dcf5ca360338634b184236d4b1402b7fee4ec2c69a7af340",
+    "pcc_gateway/proxy.py": "cc455ee2fd697a760926a61c816de8218005daf9f4e826b259683bd0554e4bdf",
+    "pcc_gateway/proxy_http1.py": "60f5578144067e0d6bce5718d85e6c5b7e87a5fd14539adedb60dff70dc076f3",
+    "pcc_gateway/routing.py": "d01842fe795e95a2242eab4f130af9a9850012d235f29f42aa26304e956aabde",
+    "pcc_gateway/server.py": "e92760de7917fdc275a0eb7e580102838308672df0c00d18269fbe8a6e03b96d",
+    "pcc_gateway/structured.py": "95497b4c28d6fc417024ec9031410c478e7d567efe6511e54bd4ee70c1f57a52",
+    "pcc_gateway/tls.py": "283a30aad36ffafbf5f80cf3e1905f1ec8ec2affc1acd5e12b89e1508d44b439",
+    "pcc_gateway/web/__init__.py": "e0975b19093f85093673f56c6f570de5502f1b6db5591877188ad69c6a30aea2",
+    "pcc_gateway/web/app.py": "1a236d081d1ad5845e9cadb3aa2740f7717e1f7cacbf3089398943c10f7d5d9a",
+    "pcc_gateway/web/models.py": "2cccbb3e48ea2eaf8c921ebce4abb749ad94d43b354eb40a5f19a2ec995a42d4"
+  },
+  "started_utc": "2026-09-12T09:43:08.456077+00:00",
+  "summary": [],
+  "warmup_batches": 2,
+  "workload": "Two child waits, TaskScope/TaskGroup barrier, identical sorted JSON bytes; no HTTP/socket I/O",
+  "zero_delay_requests": 5000
+}

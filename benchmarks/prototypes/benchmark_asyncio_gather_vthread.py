@@ -1,6 +1,6 @@
 """Identical asyncio.gather workload for native pcc and CPython."""
 
-import asyncio
+import asyncio_vthread as asyncio
 import json
 import sys
 import time

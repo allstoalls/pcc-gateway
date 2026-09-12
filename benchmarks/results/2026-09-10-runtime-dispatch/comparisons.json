@@ -1,0 +1,55 @@
+{
+  "scope": "No correctness suites per user instruction. Short GC0 handler experiments, same application objects and external LLVM O0 runtime emission.",
+  "comparisons": [
+    {
+      "candidate": "backend-once",
+      "control_qps": 80450.91126934394,
+      "candidate_qps": 81550.63641820403,
+      "asyncio_qps": 79646.04241487323,
+      "paired_qps_ratio": 1.0273501263580307,
+      "instruction_ratio": 1.0041685737271802,
+      "paired_ratios": [
+        0.9427981076682923,
+        1.2478862074767423,
+        1.0584428568479924,
+        1.0085631868854255,
+        1.0273501263580307
+      ],
+      "adopted": false
+    },
+    {
+      "candidate": "backend-split",
+      "control_qps": 78046.40483456918,
+      "candidate_qps": 79299.56282026765,
+      "asyncio_qps": 72184.0722527252,
+      "paired_qps_ratio": 1.0160565754227209,
+      "instruction_ratio": 0.9927219430849719,
+      "paired_ratios": [
+        0.9117385210295113,
+        1.0909050755997154,
+        1.0160565754227209,
+        1.2138581935096873,
+        0.935342280193666
+      ],
+      "adopted": false
+    },
+    {
+      "candidate": "early-cse",
+      "control_qps": 80299.87184384074,
+      "candidate_qps": 82366.28452140692,
+      "asyncio_qps": 83693.64318986713,
+      "paired_qps_ratio": 1.0257336983250078,
+      "instruction_ratio": 0.9998993465343117,
+      "paired_ratios": [
+        1.0257336983250078,
+        1.0088442808258828,
+        1.007493918316078,
+        1.0285716171706771,
+        1.0940682229707244
+      ],
+      "adopted": false
+    }
+  ],
+  "pending": "object-start-split runtime built; overlay and throughput not run. User steered to identical-source asyncio comparison.",
+  "core_implementation_changes": []
+}

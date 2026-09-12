@@ -1,0 +1,64 @@
+{
+  "artifacts": {
+    "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-runtime.samples",
+    "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-runtime.stderr",
+    "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-runtime.stdout"
+  },
+  "command": [
+    "env",
+    "PYTHONPATH=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-stage1-source",
+    "PCC_SOURCE_ROOT=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-stage1-source",
+    "make",
+    "-j4",
+    "-C",
+    "benchmarks/build/2026-09-09-runtime-followup/py_runtime_object_start_split",
+    "PCC=/Users/jiamo/my/pcc/.venv/bin/pcc",
+    "PYTHON=/Users/jiamo/my/pcc/.venv/bin/python",
+    "PCC_REPO_ROOT=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-stage1-source",
+    "PCC_WITH_THREADS=0",
+    "libpy_runtime_pcc_py.a"
+  ],
+  "command_lookup_failure_count": 0,
+  "completed_at_utc": "2026-09-09T17:06:48.235852+00:00",
+  "cwd": "/Users/jiamo/my/pcc-gateway",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 5.725710833095945,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "en_US.UTF-8",
+    "PATH": "/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.claude/plugins/cache/anthropic-agent-skills/document-skills/41bbe19d1a1a/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/slack/1.2.0/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/frontend-design/85cce0381e78/bin:/Users/jiamo/.claude/plugins/cache/understand-anything/understand-anything/2.9.5/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/datadog/0.7.17/bin",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 37,
+  "largest_process_observed": {
+    "command": "/Users/jiamo/my/pcc/.venv/bin/python3 /Users/jiamo/my/pcc/.venv/bin/pcc --python-library --emit-llvm=build_py/freestanding_allocator.ll py/freestanding_allocator.py",
+    "elapsed_s": 1.434454,
+    "manifest_paths": [],
+    "pid": 81785,
+    "ppid": 81783,
+    "rss_bytes": 96845824
+  },
+  "max_tree_rss_bytes": 3221225472,
+  "peak_process_count": 10,
+  "peak_tree_rss_bytes": 104513536,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 0,
+  "sample_count": 21,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-09T17:06:42.509932+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "/Applications/Xcode.app/Contents/Developer/usr/bin/make -j4 -C benchmarks/build/2026-09-09-runtime-followup/py_runtime_object_start_split PCC=/Users/jiamo/my/pcc/.venv/bin/pcc PYTHON=/Users/jiamo/my/pcc/.venv/bin/python PCC_REPO_ROOT=/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-refcount-specialization/compact-stage1-source PCC_WITH_THREADS=0 libpy_runtime_pcc_py.a",
+      "manifest_paths": [],
+      "pid": 81777,
+      "ppid": 81776,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 300.0
+}

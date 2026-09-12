@@ -1,0 +1,71 @@
+{
+  "artifacts": {
+    "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-compare.samples",
+    "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-compare.stderr",
+    "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/object-start-split-compare.stdout"
+  },
+  "command": [
+    "env",
+    "-u",
+    "LC_ALL",
+    "uv",
+    "run",
+    "python",
+    "benchmarks/artifact_compare.py",
+    "--native",
+    "retained=benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2",
+    "--native",
+    "object_start_split=benchmarks/build/2026-09-09-runtime-followup/object-start-split-ab/candidate",
+    "--build-report",
+    "benchmarks/build/2026-09-09-runtime-followup/object-start-split-ab/build-report.json",
+    "--requests",
+    "100000",
+    "--repeats",
+    "5",
+    "--output",
+    "benchmarks/results/2026-09-10-object-start-split-runtime.json"
+  ],
+  "command_lookup_failure_count": 0,
+  "completed_at_utc": "2026-09-09T17:08:43.962996+00:00",
+  "cwd": "/Users/jiamo/my/pcc-gateway",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 19.06285145902075,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "en_US.UTF-8",
+    "PATH": "/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.claude/plugins/cache/anthropic-agent-skills/document-skills/41bbe19d1a1a/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/slack/1.2.0/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/frontend-design/85cce0381e78/bin:/Users/jiamo/.claude/plugins/cache/understand-anything/understand-anything/2.9.5/bin:/Users/jiamo/.claude/plugins/cache/claude-plugins-official/datadog/0.7.17/bin",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 32,
+  "largest_process_observed": {
+    "command": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2 100 0 1000 --summary",
+    "elapsed_s": 10.082824,
+    "manifest_paths": [],
+    "pid": 84232,
+    "ppid": 84231,
+    "rss_bytes": 56115200
+  },
+  "max_tree_rss_bytes": 1073741824,
+  "peak_process_count": 4,
+  "peak_tree_rss_bytes": 113672192,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 0,
+  "sample_count": 69,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-09T17:08:24.899956+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "uv run python benchmarks/artifact_compare.py --native retained=benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2 --native object_start_split=benchmarks/build/2026-09-09-runtime-followup/object-start-split-ab/candidate --build-report benchmarks/build/2026-09-09-runtime-followup/object-start-split-ab/build-report.json --requests 100000 --repeats 5 --output benchmarks/results/2026-09-10-object-start-split-runtime.json",
+      "manifest_paths": [],
+      "pid": 84066,
+      "ppid": 84065,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 240.0
+}

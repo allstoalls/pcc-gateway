@@ -1,0 +1,71 @@
+{
+  "artifacts": {
+    "samples": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/backend-split-compare.samples",
+    "stderr": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/backend-split-compare.stderr",
+    "stdout": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/backend-split-compare.stdout"
+  },
+  "command": [
+    "env",
+    "-u",
+    "LC_ALL",
+    "uv",
+    "run",
+    "python",
+    "benchmarks/artifact_compare.py",
+    "--native",
+    "retained=benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2",
+    "--native",
+    "backend_split=benchmarks/build/2026-09-09-runtime-followup/backend-split-ab/candidate",
+    "--build-report",
+    "benchmarks/build/2026-09-09-runtime-followup/backend-split-ab/build-report.json",
+    "--requests",
+    "100000",
+    "--repeats",
+    "5",
+    "--output",
+    "benchmarks/results/2026-09-10-backend-split-runtime.json"
+  ],
+  "command_lookup_failure_count": 0,
+  "completed_at_utc": "2026-09-09T16:51:34.259908+00:00",
+  "cwd": "/Users/jiamo/my/pcc-gateway",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 21.166739125037566,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "en_US.UTF-8",
+    "PATH": "/Users/jiamo/my/pcc-gateway/.venv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.codex/tmp/arg0/codex-arg0C8YzPk:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin:/Users/jiamo/.lmstudio/bin",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 32,
+  "largest_process_observed": {
+    "command": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2 100 0 1000 --summary",
+    "elapsed_s": 13.716669,
+    "manifest_paths": [],
+    "pid": 66526,
+    "ppid": 66525,
+    "rss_bytes": 54378496
+  },
+  "max_tree_rss_bytes": 1073741824,
+  "peak_process_count": 4,
+  "peak_tree_rss_bytes": 112443392,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 0,
+  "sample_count": 75,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-09T16:51:13.092956+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "uv run python benchmarks/artifact_compare.py --native retained=benchmarks/build/2026-09-09-runtime-cfg-current/exact-cache-experiment/benchmark-owned_round2 --native backend_split=benchmarks/build/2026-09-09-runtime-followup/backend-split-ab/candidate --build-report benchmarks/build/2026-09-09-runtime-followup/backend-split-ab/build-report.json --requests 100000 --repeats 5 --output benchmarks/results/2026-09-10-backend-split-runtime.json",
+      "manifest_paths": [],
+      "pid": 66312,
+      "ppid": 66311,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 100.0
+}

@@ -18,6 +18,7 @@ import shutil
 import statistics
 import subprocess
 import sys
+import tempfile
 
 try:
     from .processes import run_command
@@ -58,7 +59,58 @@ def percentile(values, fraction):
 
 def save(path, report):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, prefix=path.name + ".", delete=False) as stream:
+            temporary = Path(stream.name)
+            json.dump(report, stream, indent=2, sort_keys=True)
+            stream.write("\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def compile_arm(label, compiler, source, output, log, *, env, report, report_path):
+    command = [compiler, "--backend", "self", "--python-libpython", "off",
+               "--ir-scaffold", "on", str(source), "-o", str(output)]
+    row = {
+        "path": compiler, "sha256": digest(compiler), "command": command,
+        "source": str(source), "log": str(log), "status": "RUNNING",
+        "compile_timeout_seconds": 300,
+    }
+    report["compilers"][label] = row
+    save(report_path, report)
+    started = time.perf_counter()
+    try:
+        with log.open("w") as stream:
+            compiled = run_command(command, cwd=ROOT, env=env, stdout=stream,
+                                   stderr=subprocess.STDOUT, timeout=300)
+        row["returncode"] = compiled.returncode
+        if compiled.returncode:
+            raise RuntimeError(f"{label} compilation failed: {log}")
+        row["artifact_sha256"] = digest(output)
+        if sys.platform == "darwin":
+            linkage = subprocess.check_output(["otool", "-L", str(output)], text=True, timeout=10)
+            if "libpython" in linkage.lower() or "libllvm" in linkage.lower():
+                raise RuntimeError(label + " unexpectedly links an external compiler/Python runtime")
+            row["dynamic_dependencies"] = linkage.splitlines()[1:]
+        row["status"] = "COMPILED"
+    except BaseException as exc:
+        row["status"] = "TIMEOUT" if isinstance(exc, subprocess.TimeoutExpired) else "FAILED"
+        row["error"] = type(exc).__name__ + ": " + str(exc)
+        report["status"] = "FAILED"
+        report["failure"] = {"phase": "compile", "implementation": label,
+                             "status": row["status"], "log": str(log), "error": row["error"]}
+        raise
+    finally:
+        row["compile_seconds"] = time.perf_counter() - started
+        save(report_path, report)
+        if report.get("failure"):
+            write_markdown(report_path, report)
+    return [str(output)]
 
 
 def process_metrics(stderr):
@@ -85,6 +137,7 @@ def write_markdown(path, report):
         "# Structured-concurrency comparison",
         "",
         f"Run: {report['started_utc']}; {report['platform']}; {report['cpu_model']}.",
+        "Status: " + report.get("status", "COMPLETE" if report.get("complete") else "INCOMPLETE") + ".",
         "",
         "Two concurrent child waits and validated JSON per request; one carrier/event loop.",
         "These are handler requests/s, excluding HTTP and network transport.",
@@ -94,6 +147,10 @@ def write_markdown(path, report):
         "| Wait (ms) | Concurrency | Implementation | Median QPS | Min–max QPS | p50 (ms) | p95 (ms) | Peak RSS (MiB) |",
         "|---:|---:|---|---:|---:|---:|---:|---:|",
     ]
+    if report.get("failure"):
+        failure = report["failure"]
+        lines[5:5] = ["", f"{failure['phase']} failed for {failure['implementation']}: {failure['error']}",
+                      f"Log: `{failure['log']}`", ""]
     for row in report["summary"]:
         rss = row.get("process_peak_rss_bytes_median")
         memory = f"{rss / 1024**2:.2f}" if rss is not None else "n/a"
@@ -119,6 +176,8 @@ def main():
                         help="native executable behind a pcc1 environment wrapper")
     parser.add_argument("--pcc1-receipt", type=Path,
                         help="optional core Stage1 build receipt for this native executable")
+    parser.add_argument("--include-asyncio-vthread", action="store_true",
+                        help="also compare the asyncio-on-vthreads prototype and CPython gather")
     parser.add_argument("--rounds", type=int, default=10)
     parser.add_argument("--zero-delay-requests", type=int, default=5000,
                         help="minimum requests per run when delay=0")
@@ -144,7 +203,22 @@ def main():
     from run_pcc_compile_ab import _performance_lock
 
     with _performance_lock():
-        compare(args, core, concurrencies, delays, parser)
+        try:
+            compare(args, core, concurrencies, delays, parser)
+        except BaseException as exc:
+            if args.output.is_file():
+                report = json.loads(args.output.read_text())
+                report["status"] = "FAILED"
+                if "failure" not in report:
+                    active = report.get("active_run", {})
+                    report["failure"] = {
+                        "phase": "benchmark", "implementation": active.get("implementation", "unknown"),
+                        "error": type(exc).__name__ + ": " + str(exc),
+                        "log": "see raw report and runner log",
+                    }
+                save(args.output, report)
+                write_markdown(args.output, report)
+            raise
 
 
 def compare(args, core, concurrencies, delays, parser):
@@ -171,6 +245,7 @@ def compare(args, core, concurrencies, delays, parser):
         "schema": "pcc-gateway.asyncio-comparison.v1",
         "started_utc": datetime.now(timezone.utc).isoformat(),
         "complete": False,
+        "status": "RUNNING",
         "platform": platform.platform(),
         "machine": platform.machine(),
         "cpu_model": cpu_model,
@@ -190,13 +265,16 @@ def compare(args, core, concurrencies, delays, parser):
         "sources": {str(path.relative_to(ROOT)): digest(path)
                     for path in sorted([
                         ROOT / "benchmark_native.py", ROOT / "benchmark_asyncio.py", Path(__file__).resolve(),
+                        ROOT / "benchmarks/processes.py",
                         *ROOT.glob("pcc_gateway/**/*.py")])},
         "workload": "Two child waits, TaskScope/TaskGroup barrier, identical sorted JSON bytes; no HTTP/socket I/O",
         "optimization_environment": {key: env.get(key) for key in (
             "PCC_GC_BACKEND", "PCC_WITH_THREADS", "PCC_RUNTIME_HIGH",
             "PCC_DISABLE_BULK_GENERATOR_FRAME_INIT", "PCC_GENERATOR_FIRST_ENTRY_INIT",
             "PCC_FAST_COMPLETED_CONTINUATIONS", "PCC_DIRECT_GENERATOR_TASKS",
-            "PCC_KNOWN_OBJECT_REFS")},
+            "PCC_KNOWN_OBJECT_REFS", "PCC_PYTHON_IR_PASSES",
+            "PCC_DIRECT_INDEXED_KERNEL_CAPTURE", "PCC_DIRECT_INDEXED_KERNEL_EMIT",
+            "PCC_DIRECT_INDEXED_NATIVE_OBJECT")},
         "warmup_batches": 2,
         "memory_scope": "Darwin /usr/bin/time per-process peak RSS, including startup and warmups",
         "rounds": args.rounds,
@@ -225,6 +303,20 @@ def compare(args, core, concurrencies, delays, parser):
     save(args.output, report)
     args.output.with_suffix(".md").write_text("Comparison in progress; no complete results yet.\n")
     commands = {"asyncio": [sys.executable, str(ROOT / "benchmark_asyncio.py")]}
+    workloads = [("", ROOT / "benchmark_native.py")]
+    if args.include_asyncio_vthread:
+        prototype = ROOT / "benchmarks/prototypes/benchmark_asyncio_gather_vthread.py"
+        adapter = ROOT / "benchmarks/prototypes/asyncio_vthread.py"
+        gather = ROOT / "benchmark_asyncio_gather.py"
+        workloads.append(("-asyncio-vthread-prototype", prototype))
+        commands["asyncio-gather"] = [sys.executable, str(gather)]
+        for source in (prototype, adapter, gather):
+            report["sources"][str(source.relative_to(ROOT))] = digest(source)
+        report["asyncio_vthread_scope"] = (
+            "Diagnostic run/gather/sleep prototype, not full asyncio compatibility. "
+            "Successful requests validate the same children, JSON bytes, and counts."
+        )
+        save(args.output, report)
     # `--pcc1 none` drops that arm.  An installed pcc1 older than the sources
     # it is asked to compile cannot build this package at all, and refusing to
     # produce the host-pcc/asyncio sweep because of it loses the measurement
@@ -234,33 +326,17 @@ def compare(args, core, concurrencies, delays, parser):
         arms.append(("pcc1", args.pcc1))
     else:
         report["skipped_arms"] = ["pcc1"]
-    for label, compiler in arms:
-        compiler = str(Path(compiler).resolve())
-        output = build / label
-        command = [compiler, "--backend", "self", "--python-libpython", "off",
-                   "--ir-scaffold", "on", str(ROOT / "benchmark_native.py"),
-                   "-o", str(output)]
-        print(f"Compiling {label}", flush=True)
-        started = time.perf_counter()
-        log = build / f"{label}-compile.log"
-        with log.open("w") as stream:
-            compiled = run_command(command, cwd=ROOT, env=env, stdout=stream,
-                                      stderr=subprocess.STDOUT, timeout=300)
-        report["compilers"][label] = {
-            "path": compiler, "sha256": digest(compiler), "command": command,
-            "compile_seconds": time.perf_counter() - started,
-            "returncode": compiled.returncode,
-        }
-        save(args.output, report)
-        if compiled.returncode:
-            raise RuntimeError(f"{label} compilation failed: {log}")
-        report["compilers"][label]["artifact_sha256"] = digest(output)
-        if sys.platform == "darwin":
-            linkage = subprocess.check_output(["otool", "-L", str(output)], text=True, timeout=10)
-            if "libpython" in linkage.lower():
-                raise RuntimeError(label + " unexpectedly links libpython")
-            report["compilers"][label]["dynamic_dependencies"] = linkage.splitlines()[1:]
-        commands[label] = [str(output)]
+    for suffix, source in workloads:
+        for compiler_label, compiler in arms:
+            label = compiler_label + suffix
+            compiler = str(Path(compiler).resolve())
+            output = build / label
+            print(f"Compiling {label}", flush=True)
+            log = build / f"{label}-compile.log"
+            commands[label] = compile_arm(
+                label, compiler, source, output, log,
+                env=env, report=report, report_path=args.output,
+            )
 
     labels = list(commands)
     for delay in delays:
@@ -270,11 +346,16 @@ def compare(args, core, concurrencies, delays, parser):
             for repetition in range(args.repeats):
                 # Rotate arms to avoid always giving one implementation the
                 # first (or last) position. All runs use a single carrier/loop.
-                order = labels[repetition % 3:] + labels[:repetition % 3]
+                offset = repetition % len(labels)
+                order = labels[offset:] + labels[:offset]
                 for label in order:
                     command = commands[label] + [str(concurrency), str(delay), str(rounds)]
                     timed_command = (["/usr/bin/time", "-lp", *command]
                                      if sys.platform == "darwin" else command)
+                    report["active_run"] = {"implementation": label, "command": timed_command,
+                                            "concurrency": concurrency, "delay_ms": delay,
+                                            "repetition": repetition, "rounds": rounds}
+                    save(args.output, report)
                     ran = run_command(timed_command, cwd=ROOT, env=env, text=True,
                                          capture_output=True, timeout=60)
                     if ran.returncode:
@@ -295,6 +376,7 @@ def compare(args, core, concurrencies, delays, parser):
                     measured["load_average"] = os.getloadavg() if hasattr(os, "getloadavg") else None
                     measured.update(process_metrics(ran.stderr))
                     report["runs"].append(measured)
+                    report.pop("active_run", None)
                     save(args.output, report)
                     rate = measured["requests"] * 1000 / measured["elapsed_ms"]
                     print(f"{label}: wait={delay}ms concurrency={concurrency} repeat={repetition + 1} {rate:.1f} requests/s", flush=True)
@@ -323,6 +405,7 @@ def compare(args, core, concurrencies, delays, parser):
         raise RuntimeError("application runtime changed during comparison")
     report["load_average_end"] = os.getloadavg() if hasattr(os, "getloadavg") else None
     report["complete"] = True
+    report["status"] = "COMPLETE"
     save(args.output, report)
     write_markdown(args.output, report)
     print(f"Saved {args.output}", flush=True)

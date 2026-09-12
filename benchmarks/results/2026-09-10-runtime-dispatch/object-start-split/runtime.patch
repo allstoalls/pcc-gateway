@@ -1,0 +1,16 @@
+--- a/pcc/py_runtime/py/freestanding_allocator.py
++++ b/pcc/py_runtime/py/freestanding_allocator.py
+@@ -1321,6 +1321,13 @@
+         if atomic_load_i64(ptr, -48, "acquire") == 5783538902897647428:
+             return 1
+         return -1
++    return _granule_object_start_uncached(ptr, object_bits, object_slot)
++
++
++@c_abi_export("pcc_allocator_granule_object_start_uncached")
++def _granule_object_start_uncached(ptr, object_bits: i64, object_slot: i64) -> i64:
++    # Keep descriptor/radix validation out of the exact-cache hit path.
++    object_cache = global_addr("pcc_allocator_exact_object_cache")
+     key: i64 = logical_shift_right_i64(ptr_diff(ptr, null()), 12)
+     if key <= 0 or logical_shift_right_i64(key, 48) != 0:
+         return -1

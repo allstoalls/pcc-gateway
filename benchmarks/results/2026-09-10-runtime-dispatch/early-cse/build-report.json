@@ -1,0 +1,69 @@
+{
+  "complete": true,
+  "scope": "performance-only conservative owned local CSE on retained optimized runtime; external LLVM O0 emission; no correctness suite",
+  "runtime_sha256": "c4a3223df7810680ec4628455f2d02bc505fd8c387937931740a4ddc2058a128",
+  "inputs": {},
+  "passes": [
+    {
+      "name": "early-cse",
+      "changed": true,
+      "seconds": 0.8897677919594571,
+      "counts": {
+        "alloca": 291,
+        "load": 21863,
+        "store": 4835,
+        "phi": 10410,
+        "call": 24056,
+        "br": 24733
+      }
+    },
+    {
+      "name": "simplifycfg",
+      "changed": true,
+      "seconds": 0.7865246250294149,
+      "counts": {
+        "alloca": 291,
+        "load": 21809,
+        "store": 4817,
+        "phi": 10407,
+        "call": 24050,
+        "br": 24675
+      }
+    },
+    {
+      "name": "dce",
+      "changed": false,
+      "seconds": 0.2427828749641776,
+      "counts": {
+        "alloca": 291,
+        "load": 21809,
+        "store": 4817,
+        "phi": 10407,
+        "call": 24050,
+        "br": 24675
+      }
+    }
+  ],
+  "input_sha256": "250ff41e597963578f5dc7884d5221c551eb103c67ba97f6e71b193c3b2e8f0d",
+  "counts_before": {
+    "alloca": 291,
+    "load": 21903,
+    "store": 4835,
+    "phi": 10458,
+    "call": 24059,
+    "br": 24733
+  },
+  "candidate_source_sha256": "1fe52d7fbeb94928b430b0719b38f6b659df617d354ee86b13f24e713fce7c86",
+  "counts_after": {
+    "alloca": 291,
+    "load": 21809,
+    "store": 4817,
+    "phi": 10407,
+    "call": 24050,
+    "br": 24675
+  },
+  "binary": "/Users/jiamo/my/pcc-gateway/benchmarks/build/2026-09-09-runtime-followup/early-cse-ab/candidate",
+  "binary_sha256": "86a910ffd8ca4e0562a0e4fa8a938826eed1645eb99dc21e939186b65fd58bc5",
+  "triple": "arm64-apple-darwin25.5.0",
+  "correctness_qualification": "NOT RUN"
+}
