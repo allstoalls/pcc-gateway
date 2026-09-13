@@ -1,0 +1,10 @@
+{
+  "arm": "candidate",
+  "error": "command timed out after 420s: /usr/bin/time -lp -o /private/tmp/pcc-owned-perf-20260912-rbrioqup/stage1-u/stage1.time /Users/jiamo/.local/share/uv/python/cpython-3.15.0rc1-macos-aarch64-none/bin/python3.15 -m pcc --profile-json /private/tmp/pcc-owned-perf-20260912-rbrioqup/stage1-u/stage1.profile.json --ir-scaffold=on --backend self --python-libpython off /private/tmp/pcc-owned-perf-20260912-rbrioqup/stage1-u/source-snapshot/pcc/__main__.py -o /private/tmp/pcc-owned-perf-20260912-rbrioqup/stage1-u/pcc1",
+  "failed_at_utc": "2026-09-13T15:40:50.896028+00:00",
+  "run_token": "bd5180dc113a549864e244e60a612b0e",
+  "schema": "pcc.stage1-build-run.v1",
+  "source_root": "/private/tmp/pcc-owned-perf-20260912-rbrioqup/source-candidate-b42",
+  "started_at_utc": "2026-09-13T15:33:49.544671+00:00",
+  "status": "ERROR"
+}

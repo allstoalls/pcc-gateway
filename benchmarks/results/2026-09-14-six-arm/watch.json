@@ -1,0 +1,68 @@
+{
+  "artifacts": {
+    "samples": "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/rss.tsv",
+    "stderr": "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/run.stderr",
+    "stdout": "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/run.stdout"
+  },
+  "command": [
+    "/Users/jiamo/my/pcc/.venv/bin/python",
+    "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/gateway/benchmarks/compare.py",
+    "--pcc",
+    "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/host-pcc",
+    "--pcc1",
+    "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/pcc1-u",
+    "--compiler-source",
+    "/private/tmp/pcc-owned-perf-20260912-rbrioqup/source-candidate-b44",
+    "--runtime-archive",
+    "/private/tmp/pcc-owned-perf-20260912-rbrioqup/frozen-runtime-b40/runtime-bundle/libpy_runtime_pcc_py.a",
+    "--pcc1-binary",
+    "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/pcc1-u",
+    "--include-asyncio-vthread",
+    "--output",
+    "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/comparison.json"
+  ],
+  "command_lookup_failure_count": 2,
+  "completed_at_utc": "2026-09-13T17:12:25.903637+00:00",
+  "cwd": "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/gateway",
+  "darwin_preflight_reserve_bytes": 0,
+  "elapsed_s": 441.97187037509866,
+  "environment": {
+    "HOME": "/Users/jiamo",
+    "LANG": "en_US.UTF-8",
+    "PATH": "/Users/jiamo/my/pcc/.venv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/shims:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/Library/TeX/texbin:/Applications/VMware Fusion.app/Contents/Public:/Users/jiamo/.codex/tmp/arg0/codex-arg0Q2TpmO:/Users/jiamo/.nvm/versions/node/v22.22.3/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/Users/jiamo/.opam/5.3.0+trunk/bin:/Users/jiamo/.local/bin:/Users/jiamo/.bun/bin:/Users/jiamo/.antigravity/antigravity/bin:/Users/jiamo/.codeium/windsurf/bin:/Users/jiamo/.sdkman/candidates/maven/current/bin:/Users/jiamo/.sdkman/candidates/kotlin/current/bin:/Users/jiamo/.sdkman/candidates/java/current/bin:/Users/jiamo/.sdkman/candidates/gradle/current/bin:/Users/jiamo/.elan/bin:/opt/homebrew/Cellar/ninja/1.11.1/bin:/Users/jiamo/.cargo/bin/:/Users/jiamo/.pyenv/bin:/Users/jiamo/.goenv/bin:/Users/jiamo/.nvm/versions/node/v22.22.3/bin:/Users/jiamo/.cargo/bin:/Applications/iTerm.app/Contents/Resources/utilities:/Users/jiamo/.goenv/shims:/Users/jiamo/.lmstudio/bin:/Users/jiamo/.cabal/bin:/Users/jiamo/.ghcup/bin:/Users/jiamo/.docker/bin:/Users/jiamo/.lmstudio/bin",
+    "PCC_NO_AUTO_PCC1": "1",
+    "TMPDIR": "/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/"
+  },
+  "interval_s": 0.25,
+  "known_process_count": 413,
+  "largest_process_observed": {
+    "command": "/private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/pcc1-u --backend self --python-libpython off --ir-scaffold on /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/gateway/benchmarks/prototypes/benchmark_asyncio_gather_vthread.py -o /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/gateway/benchmarks/build/comparison/pcc1-asyncio-vthread-prototype",
+    "elapsed_s": 124.664527,
+    "manifest_paths": [],
+    "pid": 85591,
+    "ppid": 82323,
+    "rss_bytes": 1105444864
+  },
+  "max_tree_rss_bytes": 8589934592,
+  "peak_process_count": 8,
+  "peak_tree_rss_bytes": 1155563520,
+  "process_table_retry_count": 0,
+  "process_table_timeouts_s": [
+    1.0
+  ],
+  "returncode": 0,
+  "sample_count": 1567,
+  "schema": "pcc.process_tree_sample.v1",
+  "started_at_utc": "2026-09-13T17:05:03.924217+00:00",
+  "status": "COMPLETE",
+  "terminal_processes": [
+    {
+      "command": "/Users/jiamo/my/pcc/.venv/bin/python /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/gateway/benchmarks/compare.py --pcc /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/host-pcc --pcc1 /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/pcc1-u --compiler-source /private/tmp/pcc-owned-perf-20260912-rbrioqup/source-candidate-b44 --runtime-archive /private/tmp/pcc-owned-perf-20260912-rbrioqup/frozen-runtime-b40/runtime-bundle/libpy_runtime_pcc_py.a --pcc1-binary /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/pcc1-u --include-asyncio-vthread --output /private/var/folders/39/jsw8wb5x1pl86d3tdvzx1l1w0000gn/T/pcc-gateway-20260914-lx0lzn1b/comparison.json",
+      "manifest_paths": [],
+      "pid": 82323,
+      "ppid": 82322,
+      "rss_bytes": 0
+    }
+  ],
+  "timeout_s": 1800.0
+}

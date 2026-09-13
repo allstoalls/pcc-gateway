@@ -46,18 +46,68 @@ Native integration tests run separately;
 
 ## Performance
 
-On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, the optimized native
-runtime reaches **86,862 requests/s**, versus **84,456 for asyncio** — a
+### Latest measurement — 2026-09-14
+
+The [six-arm comparison](benchmarks/results/2026-09-14-six-arm/README.md)
+completed **180 validated runs** on Apple M2 Max, macOS 26.5.1 and
+CPython 3.15.0rc1. These are handler requests/s, excluding HTTP sockets,
+compilation and startup. Each request runs two child tasks, joins them and
+validates the same JSON response.
+
+Zero child wait, 5,000 requests per repeat, five rotating repeats; medians:
+
+| Implementation | C1 requests/s | C10 requests/s | C100 requests/s | C100 peak RSS |
+|---|---:|---:|---:|---:|
+| host pcc · virtual threads | 13,268 | 18,577 | 18,075 | 6.42 MiB |
+| pcc1 · virtual threads | 13,309 | 18,419 | 18,092 | 6.38 MiB |
+| host pcc · asyncio/vthread prototype | 7,335 | 9,292 | 9,087 | 30.03 MiB |
+| pcc1 · asyncio/vthread prototype | 7,295 | 9,398 | 9,087 | 30.05 MiB |
+| CPython asyncio TaskGroup | 8,725 | 49,056 | 82,007 | 27.67 MiB |
+| CPython asyncio gather | 8,836 | 46,670 | 78,105 | 27.70 MiB |
+
+At C100, pcc1 virtual threads reached **18,092 requests/s**, versus **82,007
+for asyncio TaskGroup**; the high-concurrency performance target remains open.
+At C1, pcc1 reached 13,309 versus asyncio's 8,725. With 100 ms child waits,
+C100 medians were 941 requests/s for pcc1 and 971 for asyncio TaskGroup.
+The full matrix, latency distributions and process counters are in the
+[raw results](benchmarks/results/2026-09-14-six-arm/comparison.json).
+
+The host arm uses the current frozen compiler source; the native arm uses
+the latest available experimental pcc1 U binary, which predates the final
+closure-cell fix and has not passed full Stage1 qualification. Both compile
+fresh applications using the self backend and the same pinned, prebuilt
+pcc-Python runtime; all 171 runtime objects were self-emitted. Application IR
+passes use the default `mem2reg,sroa` selection. Runtime construction was not
+repeated in this run. Native execution uses GC0; this is not a new five-GC or
+cold-toolchain qualification. [Artifact identities and limits](benchmarks/results/2026-09-14-six-arm/README.md#toolchain-and-scope)
+record these boundaries.
+
+Compilation took 8.49 s / 52.68 s for the ordinary host-pcc / pcc1 arms and
+8.37 s / 54.79 s for their prototype arms, all within the unchanged 300 s limit.
+The asyncio/vthread arm is a `run`/`gather`/`sleep` prototype, not full asyncio
+compatibility. Peak RSS includes startup, warmups and retained latency samples.
+
+### Historical LLVM-assisted reference — 2026-09-10
+
+The result below is a **historical LLVM-assisted reference**, recorded on
+2026-09-10. LLVM merged and emitted the runtime; pcc ran the owned IR passes
+and emitted/linked the application. It does **not** demonstrate that the
+LLVM-free toolchain outperforms asyncio, or describe the current default.
+That performance target remains open.
+
+On Apple M2 Max, macOS 26.5.1 and Python 3.15.0rc1, this reference runtime
+reached **86,862 requests/s**, versus **84,456 for asyncio** — a
 **2.9% higher median in this run**, and higher in six of the seven paired
 repeats.
 
 | Implementation | Median requests/s | Median peak RSS |
 |---|---:|---:|
-| pcc optimized native runtime | **86,862** | 37.1 MiB |
+| pcc application + LLVM-emitted reference runtime | **86,862** | 37.1 MiB |
 | CPython asyncio | 84,456 | 34.9 MiB |
 
-These come from `benchmarks/reproduce.py` on a from-scratch runtime build, so
-the command below is the one that produced them.
+These came from `benchmarks/reproduce.py` and the compiler/runtime identities
+in the linked receipt. Rerunning against another source or runtime measures
+that configuration; it does not reproduce the recorded artifact automatically.
 
 Measured at concurrency 100, zero child wait, 200,000 requests per repeat and
 seven rotating repeats. Each request runs two child tasks, joins them and
@@ -65,18 +115,18 @@ validates its JSON result. This measures handler throughput on one carrier /
 event loop; HTTP sockets, compilation and startup are excluded.
 Peak RSS includes warmups and storage of the 200,000 latency measurements.
 
-Memory depends on how much a run retains. This runtime starts far smaller than
+Memory depends on how much a run retains. This historical runtime started smaller than
 asyncio and grows faster, so it uses **less** memory up to roughly 175,000
 requests and more beyond it:
 
-| Requests | pcc native | CPython asyncio |
+| Requests | pcc with reference runtime | CPython asyncio |
 |---:|---:|---:|
 | 10,000 | **6.1 MiB** | 27.8 MiB |
 | 100,000 | **21.0 MiB** | 30.9 MiB |
 | 200,000 | 37.1 MiB | 35.0 MiB |
 | 400,000 | 69.8 MiB | **44.3 MiB** |
 
-To reproduce, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
+For the reference experiment, first prepare the [matching core runtime and IR](benchmarks/README.md#prepare-the-runtime), then run:
 
 ```bash
 env -u LC_ALL uv run python benchmarks/reproduce.py \

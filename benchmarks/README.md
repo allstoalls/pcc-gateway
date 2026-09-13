@@ -5,6 +5,15 @@ Use Python **3.15.0rc1**, a compatible compiler/runtime pair, a quiet machine
 and a new output name. The runners acquire the core performance lock and
 reject source/archive changes during a measurement.
 
+## Latest measurement — 2026-09-14
+
+[Six arms, 180 validated runs](results/2026-09-14-six-arm/README.md): zero-wait
+C100 medians are 18,075 requests/s for host pcc, 18,092 for pcc1, 9,087 for
+the pcc1 asyncio/vthread prototype, and 82,007 for CPython asyncio TaskGroup.
+Both native compilers used the same prebuilt, self-emitted runtime. The native
+compiler is an experimental U artifact; its source and qualification limits
+are recorded alongside the results. This run did not rebuild the runtime.
+
 ## Prepare the runtime
 
 The optimized-runtime reproduction needs an archive and its matching
@@ -37,35 +46,52 @@ or the identity you record is not the identity you measured.
 
 Use an up-to-date runtime: the builder verifies recorded IR hashes, and the
 geometry-cache result requires the core allocator source containing that cache.
-Runtime IR merging and O0 object emission in this experiment still use
-external LLVM. Host pcc executes the owned passes; this does not establish
-native toolchain independence. Do not edit inputs while measuring.
+The published September 10 reference used external LLVM for runtime IR
+merging and object emission. Host pcc executed the owned passes; this does
+not establish native toolchain independence or current default performance.
+Its `optimization_level=0` disabled LLVM module passes, while the target
+machine still used the default `opt=2` for machine-code generation. Do not
+interpret that historical "O0" label as unoptimized machine code. Check the
+selected emitter and returned artifact receipts with the current compiler.
+Do not edit inputs while measuring.
 `benchmarks/reproduce.py` records the current artifact identities, GC checks,
 QPS, peak process RSS and raw repetitions. Exact timings vary by machine/load.
 
-## Three-way handler comparison
+## Six-arm handler comparison
 
 [compare.py](compare.py) builds [benchmark_native.py](../benchmark_native.py)
 with host pcc and native pcc1, and runs
-[benchmark_asyncio.py](../benchmark_asyncio.py) under CPython:
+[benchmark_asyncio.py](../benchmark_asyncio.py) under CPython. Add
+`--include-asyncio-vthread` to also compile the asyncio-on-virtual-threads
+prototype with both compilers and run CPython's asyncio gather workload:
 
 ```bash
-uv run python benchmarks/compare.py --pcc1 /path/to/pcc1 \
+env -u LC_ALL PCC_NO_AUTO_PCC1=1 uv run python benchmarks/compare.py \
+  --pcc /path/to/host-pcc --pcc1 /path/to/pcc1 \
   --compiler-source /path/to/frozen/pcc \
   --runtime-archive /path/to/libpy_runtime_pcc_py.a \
-  --output benchmarks/results/my-three-way.json
+  --pcc1-binary /path/to/pcc1 --include-asyncio-vthread \
+  --output benchmarks/results/my-six-arm.json
 ```
 
 Inspect the script's current options. `--pcc1-binary` and `--pcc1-receipt`
 bind the native compiler to its build receipt when needed. Explicit compiler
 flags/environment are part of an experiment; historical settings are not
 proof of today's defaults or installed toolchain qualification.
+The host entry must run `python -m pcc`; `PCC_NO_AUTO_PCC1=1` prevents its
+automatic redirection to the installed native compiler. Run the command under
+core's `scripts/run_process_tree_sample.py` with a tree-RSS cap and
+`--no-performance-lock`, because `compare.py` acquires the shared lock itself.
 
 Both workloads start two children, join and validate identical sorted JSON.
 Concurrency is batch width: complete C requests before starting the next batch.
 Defaults are C=1/10/100, child wait=0/100 ms, two warmup batches and five repeats
 with rotating arm order. This is handler throughput, excluding HTTP sockets,
 compilation and process startup. CPU/RSS totals include startup and warmups.
+With the prototype enabled, the default matrix contains 180 validated runs.
+The prototype implements diagnostic `run`/`gather`/`sleep` behavior; it does
+not establish full asyncio compatibility. Compilation is capped at 300 seconds
+per arm, and each benchmark process at 60 seconds.
 
 Reports retain QPS ranges, latency samples/percentiles, process counters and
 source/compiler identities. Only complete, validated reports support a result.

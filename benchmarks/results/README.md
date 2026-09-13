@@ -7,7 +7,8 @@ Machine load and compiler/runtime identities differ between reports.
 
 | Report | Status and interpretation |
 |---|---|
-| [Latest cache long comparison](2026-09-09-owned-runtime-exact-cache-long.json) | 21 runs, 200k requests/repeat: owned runtime 77,958, same plus cache 79,801, asyncio 76,504 QPS. Cache wins 4/7 paired asyncio comparisons; paired median ratio 1.0018×, so no stable-lead claim. |
+| [2026-09-14 six-arm comparison](2026-09-14-six-arm/README.md) / [raw](2026-09-14-six-arm/comparison.json) | **180 validated runs.** Zero-wait C100: host pcc 18,075, pcc1 18,092, pcc1 asyncio/vthread prototype 9,087, CPython asyncio TaskGroup 82,007 requests/s. Same prebuilt self-emitted runtime; experimental U native compiler. Fresh application compilation passes; full Stage1, cold runtime construction and five-GC qualification are separate. |
+| [2026-09-09 cache long comparison](2026-09-09-owned-runtime-exact-cache-long.json) | 21 runs, 200k requests/repeat: owned runtime 77,958, same plus cache 79,801, asyncio 76,504 QPS. Cache wins 4/7 paired asyncio comparisons; paired median ratio 1.0018×, so no stable-lead claim. |
 | [Non-HTTP operation comparison](2026-09-09-runtime-progress/non-http.json) | 192 runs, eight unchanged core workloads, N/2N startup subtraction, CPython-matching outputs. Most object/container/string instruction counts fall 21–28% against the original runtime; wall-time gains are workload-dependent. |
 | [Corrected-runtime CFG reproduction](2026-09-09-current-owned-cfg-runtime.json) | 35 runs: 55,233 -> 77,070 QPS, asyncio 84,288. Each runtime arm passes scoped GC0–4 handler, failure-cleanup and ownership checks. |
 | [Earlier compiler comparison](2026-09-09-owner-final-three-way.json) / [table](2026-09-09-owner-final-three-way.md) | 90 validated normal-mode runs: C100 host pcc 56,563, pcc1 56,443, asyncio 89,947 QPS. C1/C10 lead; C100 remains 37.2% behind. Separate native-direct compiler smoke fails. |

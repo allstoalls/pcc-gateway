@@ -1,5 +1,13 @@
 # The public reproduction, from a clean tree — 2026-09-10
 
+**Scope correction, 2026-09-13:** this is a historical LLVM-assisted reference.
+The accompanying `build-report.json` records external LLVM runtime merging and
+object emission, with host-owned IR passes and self application emission/linking.
+It does not prove LLVM-free construction or that the current owned default
+outperforms asyncio. The old "O0" label means no LLVM module pass pipeline;
+LLVM's target machine still used its default machine-code optimization level 2.
+The recorded numbers and artifacts below are retained unchanged.
+
 `benchmarks/reproduce.py` is the command the product README points at, so it
 is the only number that matters to anyone outside this checkout. Before this
 run it could not complete: a compiler regression on 2026-09-09 had left two
