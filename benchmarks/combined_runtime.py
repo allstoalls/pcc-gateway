@@ -88,6 +88,15 @@ def main():
 
     save()
     records = json.loads(Path(str(archive) + ".provenance.json").read_text())["members"]
+    # Which emitter produced the runtime members is the one fact that separates
+    # a pcc self-backend result from an LLVM-assisted one, and reading it back
+    # out of the archive receipt afterwards is the only way to tell.  A
+    # published comparison that omits it has been misread as a pcc number
+    # before, so record it next to the archive's own hash.
+    emitters = sorted({str(record.get("object_emitter")) for record in records})
+    report["runtime_archive"]["object_emitters"] = emitters
+    report["runtime_archive"]["member_count"] = len(records)
+    save()
     merged = None
     selected = list(MODULES)
     for name in args.extra_module:
@@ -129,7 +138,11 @@ def main():
                 })
                 save()
         print("emit " + label, flush=True)
-        blob, triple = _emit_object_with_triple(text, optimization_level=0)
+        # ``_emit_object_with_triple`` grew a third return value (the selected
+        # emitter) after this harness was written.  Accept both shapes so the
+        # comparison keeps running against the current core.
+        emitted = _emit_object_with_triple(text, optimization_level=0)
+        blob, triple = emitted[0], emitted[1]
         path = out / (label + ".o")
         path.write_bytes(blob)
         overlays[label] = blob
